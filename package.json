@@ -1,0 +1,20 @@
+{
+  "scripts": {
+    "pretest": "eslint ./",
+    "test": "echo \"Error: no test specified\" && exit",
+    "start": "gatsby develop"
+  },
+  "dependencies": {
+    "gatsby": "^2.1.17",
+    "gatsby-plugin-react-helmet": "^3.0.6",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
+    "react-helmet": "^5.2.0"
+  },
+  "devDependencies": {
+    "@trevorblades/eslint-config": "^6.21.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.14.1"
+  }
+}
