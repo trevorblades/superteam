@@ -1,12 +1,13 @@
 {
   "scripts": {
-    "pretest": "eslint ./",
+    "pretest": "eslint src gatsby-*.js",
     "test": "echo \"Error: no test specified\" && exit",
     "start": "gatsby develop"
   },
   "dependencies": {
     "gatsby": "^2.1.17",
     "gatsby-plugin-react-helmet": "^3.0.6",
+    "gatsby-source-graphql": "^2.0.10",
     "prop-types": "^15.7.2",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
