@@ -6,16 +6,28 @@ import {graphql} from 'gatsby';
 export default function Home(props) {
   return (
     <Layout>
-      {props.data.hltv.teamRankings.flatMap(teamRanking =>
-        teamRanking.team.players.map(player => (
-          <div key={player.id}>
-            <h3>{player.ign}</h3>
-            <h4>{player.name}</h4>
-            <h5>{teamRanking.team.name}</h5>
-            <h5>{player.country.name}</h5>
-          </div>
-        ))
-      )}
+      <table border="1">
+        <thead>
+          <tr>
+            <th>IGN</th>
+            <th>Name</th>
+            <th>Team</th>
+            <th>Country</th>
+          </tr>
+        </thead>
+        <tbody>
+          {props.data.hltv.teamRankings.flatMap(teamRanking =>
+            teamRanking.team.players.map(player => (
+              <tr key={player.id}>
+                <td>{player.ign}</td>
+                <td>{player.name}</td>
+                <td>{teamRanking.team.name}</td>
+                <td>{player.country.name}</td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
     </Layout>
   );
 }
@@ -24,6 +36,7 @@ Home.propTypes = {
   data: PropTypes.object.isRequired
 };
 
+// TODO: look into adding data from countries API
 export const pageQuery = graphql`
   {
     hltv {
