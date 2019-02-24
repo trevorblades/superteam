@@ -4,8 +4,8 @@ import Paper from '@material-ui/core/Paper';
 import PlayerCard from '../components/player-card';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
+import theme from '@trevorblades/mui-theme';
 import {graphql} from 'gatsby';
 
 const Container = styled.div({
@@ -13,9 +13,36 @@ const Container = styled.div({
 });
 
 const Footer = styled(Paper)({
-  padding: 12,
+  padding: 16,
   position: 'sticky',
   bottom: 0
+});
+
+const SelectedPlayers = styled.div({
+  display: 'flex'
+});
+
+const selectedPlayerWidth = 72;
+const selectedPlayerAspectRatio = 3 / 4;
+const SelectedPlayer = styled.div(props => ({
+  width: selectedPlayerWidth,
+  height: selectedPlayerWidth / selectedPlayerAspectRatio,
+  border: props.empty ? `1px dashed ${theme.palette.grey[300]}` : 'none',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: props.empty ? 'transparent' : 'grey',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  position: 'relative',
+  ':not(:last-child)': {
+    marginRight: 12
+  }
+}));
+
+const TeamLogo = styled.img({
+  width: 16,
+  position: 'absolute',
+  bottom: 4,
+  left: 4
 });
 
 const MAX_TEAM_SIZE = 5;
@@ -69,11 +96,25 @@ export default class App extends Component {
           </Grid>
         </Container>
         <Footer component="footer" square>
-          {this.state.selectedPlayers.map(player => (
-            <div key={player.id}>
-              <Typography>{player.ign}</Typography>
-            </div>
-          ))}
+          <SelectedPlayers>
+            {this.state.selectedPlayers
+              .concat(Array(MAX_TEAM_SIZE).fill(null))
+              .slice(0, MAX_TEAM_SIZE)
+              .map((player, index) =>
+                player ? (
+                  <SelectedPlayer
+                    key={player.id}
+                    style={{
+                      backgroundImage: `url(${player.image})`
+                    }}
+                  >
+                    <TeamLogo src={player.team.logo} />
+                  </SelectedPlayer>
+                ) : (
+                  <SelectedPlayer key={index} empty />
+                )
+              )}
+          </SelectedPlayers>
         </Footer>
       </Layout>
     );
