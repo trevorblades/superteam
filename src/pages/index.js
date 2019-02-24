@@ -1,33 +1,34 @@
+import Grid from '@material-ui/core/Grid';
 import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Typography from '@material-ui/core/Typography';
+import styled from '@emotion/styled';
 import {graphql} from 'gatsby';
+
+const Container = styled.div({
+  padding: 40
+});
 
 export default function Home(props) {
   return (
     <Layout>
-      <table border="1">
-        <thead>
-          <tr>
-            <th>IGN</th>
-            <th>Name</th>
-            <th>Team</th>
-            <th>Country</th>
-          </tr>
-        </thead>
-        <tbody>
+      <Container>
+        <Grid container spacing={24}>
           {props.data.hltv.teamRankings.flatMap(teamRanking =>
             teamRanking.team.players.map(player => (
-              <tr key={player.id}>
-                <td>{player.ign}</td>
-                <td>{player.name}</td>
-                <td>{teamRanking.team.name}</td>
-                <td>{player.country.name}</td>
-              </tr>
+              <Grid item key={player.id} xs={3}>
+                <Typography variant="h6">{player.ign}</Typography>
+                <Typography variant="caption" gutterBottom>
+                  {player.name}
+                </Typography>
+                <Typography>{teamRanking.team.name}</Typography>
+                <Typography>{player.country.name}</Typography>
+              </Grid>
             ))
           )}
-        </tbody>
-      </table>
+        </Grid>
+      </Container>
     </Layout>
   );
 }
@@ -36,7 +37,6 @@ Home.propTypes = {
   data: PropTypes.object.isRequired
 };
 
-// TODO: look into adding data from countries API
 export const pageQuery = graphql`
   {
     hltv {

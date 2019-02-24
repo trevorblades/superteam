@@ -22,6 +22,10 @@ export default function Layout(props) {
           <Fragment>
             <Helmet defaultTitle={title} titleTemplate={`${title} - %s`}>
               <meta name="description" content={description} />
+              <link
+                rel="stylesheet"
+                href="https://fonts.googleapis.com/css?family=Inconsolata:400,700"
+              />
             </Helmet>
             {props.children}
           </Fragment>

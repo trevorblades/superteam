@@ -5,7 +5,13 @@
     "start": "gatsby develop"
   },
   "dependencies": {
+    "@emotion/core": "^10.0.7",
+    "@emotion/styled": "^10.0.7",
+    "@material-ui/core": "^3.9.2",
+    "@trevorblades/mui-theme": "^4.0.1",
+    "@wapps/gatsby-plugin-material-ui": "^1.2.1",
     "gatsby": "^2.1.17",
+    "gatsby-plugin-emotion": "^4.0.4",
     "gatsby-plugin-react-helmet": "^3.0.6",
     "gatsby-source-graphql": "^2.0.10",
     "prop-types": "^15.7.2",
