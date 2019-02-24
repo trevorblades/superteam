@@ -1,9 +1,9 @@
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Layout from '../components/layout';
+import Paper from '@material-ui/core/Paper';
+import PlayerCard from '../components/player-card';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
 import {graphql} from 'gatsby';
@@ -12,69 +12,73 @@ const Container = styled.div({
   padding: 40
 });
 
-const FlexAlignCenter = styled.div({
-  display: 'flex',
-  alignItems: 'center'
+const Footer = styled(Paper)({
+  padding: 12,
+  position: 'sticky',
+  bottom: 0
 });
 
-const TeamLogo = styled.img({
-  height: 32,
-  marginRight: 8
-});
+const MAX_TEAM_SIZE = 5;
 
-const flagHeight = 24;
-const Flag = styled.img({
-  height: flagHeight,
-  marginRight: 8
-});
+export default class App extends Component {
+  static propTypes = {
+    data: PropTypes.object.isRequired
+  };
 
-export default function Home(props) {
-  const players = props.data.hltv.teamRankings.flatMap(
-    teamRanking => teamRanking.team.players
-  );
+  state = {
+    selectedPlayers: []
+  };
 
-  players.sort((a, b) => b.statistics.rating - a.statistics.rating);
+  onPlayerClick = player => {
+    this.setState(prevState => ({
+      selectedPlayers: prevState.selectedPlayers.includes(player)
+        ? prevState.selectedPlayers.filter(
+            selectedPlayer => selectedPlayer.id !== player.id
+          )
+        : [...prevState.selectedPlayers, player]
+    }));
+  };
 
-  return (
-    <Layout>
-      <Container>
-        <Grid container spacing={24}>
-          {players.map(player => {
-            const {logo, name: teamName} = player.team;
-            return (
-              <Grid item key={player.id} xs={3}>
-                <Card>
-                  <CardContent>
-                    <FlexAlignCenter>
-                      <TeamLogo src={logo} alt={teamName} title={teamName} />
-                      <Typography variant="h6">{player.ign}</Typography>
-                    </FlexAlignCenter>
-                    <Typography variant="caption" gutterBottom>
-                      {player.name}
-                    </Typography>
-                    <FlexAlignCenter>
-                      <Flag
-                        src={`https://www.countryflags.io/${
-                          player.country.code
-                        }/flat/${flagHeight * 2}.png`}
-                      />
-                      <Typography>{player.country.name}</Typography>
-                    </FlexAlignCenter>
-                    <Typography>{player.statistics.rating}</Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            );
-          })}
-        </Grid>
-      </Container>
-    </Layout>
-  );
+  render() {
+    const players = this.props.data.hltv.teamRankings.flatMap(
+      teamRanking => teamRanking.team.players
+    );
+
+    players.sort((a, b) => b.statistics.rating - a.statistics.rating);
+
+    return (
+      <Layout>
+        <Container>
+          <Grid container spacing={24}>
+            {players.map(player => {
+              const isSelected = this.state.selectedPlayers.includes(player);
+              return (
+                <Grid item key={player.id} xs={3}>
+                  <PlayerCard
+                    disabled={
+                      !isSelected &&
+                      this.state.selectedPlayers.length >= MAX_TEAM_SIZE
+                    }
+                    player={player}
+                    onClick={this.onPlayerClick}
+                    selected={isSelected}
+                  />
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Container>
+        <Footer component="footer" square>
+          {this.state.selectedPlayers.map(player => (
+            <div key={player.id}>
+              <Typography>{player.ign}</Typography>
+            </div>
+          ))}
+        </Footer>
+      </Layout>
+    );
+  }
 }
-
-Home.propTypes = {
-  data: PropTypes.object.isRequired
-};
 
 export const pageQuery = graphql`
   {
@@ -85,6 +89,7 @@ export const pageQuery = graphql`
             id
             name
             ign
+            image
             team {
               name
               logo
