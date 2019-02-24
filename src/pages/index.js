@@ -11,22 +11,34 @@ const Container = styled.div({
 });
 
 export default function Home(props) {
+  const players = props.data.hltv.teamRankings.flatMap(
+    teamRanking => teamRanking.team.players
+  );
+
+  players.sort((a, b) => b.statistics.rating - a.statistics.rating);
+
   return (
     <Layout>
       <Container>
         <Grid container spacing={24}>
-          {props.data.hltv.teamRankings.flatMap(teamRanking =>
-            teamRanking.team.players.map(player => (
-              <Grid item key={player.id} xs={3}>
-                <Typography variant="h6">{player.ign}</Typography>
-                <Typography variant="caption" gutterBottom>
-                  {player.name}
-                </Typography>
-                <Typography>{teamRanking.team.name}</Typography>
-                <Typography>{player.country.name}</Typography>
-              </Grid>
-            ))
-          )}
+          {players.map(player => (
+            <Grid item key={player.id} xs={3}>
+              <Typography variant="h6">{player.ign}</Typography>
+              <Typography variant="caption" gutterBottom>
+                {player.name}
+              </Typography>
+              <Typography>{player.statistics.rating}</Typography>
+              <Typography>{player.team.name}</Typography>
+              <Typography>
+                <img
+                  src={`https://www.countryflags.io/${
+                    player.country.code
+                  }/flat/24.png`}
+                />
+                {player.country.name}
+              </Typography>
+            </Grid>
+          ))}
         </Grid>
       </Container>
     </Layout>
@@ -40,13 +52,18 @@ Home.propTypes = {
 export const pageQuery = graphql`
   {
     hltv {
-      teamRankings {
+      teamRankings(limit: 10) {
         team {
-          name
           players {
             id
             name
             ign
+            team {
+              name
+            }
+            statistics {
+              rating
+            }
             country {
               name
               code
