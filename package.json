@@ -14,6 +14,7 @@
     "gatsby-plugin-emotion": "^4.0.4",
     "gatsby-plugin-react-helmet": "^3.0.6",
     "gatsby-source-graphql": "^2.0.10",
+    "polished": "^3.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",

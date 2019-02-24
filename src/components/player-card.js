@@ -5,10 +5,31 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
+import {cover} from 'polished';
+
+const aspectRatio = 3 / 4;
+const StyledCard = styled(Card)({
+  paddingTop: `${(1 / aspectRatio) * 100}%`,
+  position: 'relative'
+});
+
+const StyledCardActionArea = styled(CardActionArea)(cover());
+
+const StyledCardContent = styled(CardContent)({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center'
+});
 
 const FlexAlignCenter = styled.div({
   display: 'flex',
   alignItems: 'center'
+});
+
+const PlayerName = styled(FlexAlignCenter)({
+  marginTop: 'auto'
 });
 
 const TeamLogo = styled.img({
@@ -37,17 +58,27 @@ export default class PlayerCard extends Component {
   render() {
     const {logo, name: teamName} = this.props.player.team;
     return (
-      <Card>
-        <CardActionArea disabled={this.props.disabled} onClick={this.onClick}>
-          <CardContent>
+      <StyledCard>
+        <StyledCardActionArea
+          disabled={this.props.disabled}
+          onClick={this.onClick}
+        >
+          <StyledCardContent
+            style={{
+              backgroundImage: [
+                'linear-gradient(transparent, white)',
+                `url(${this.props.player.image})`
+              ]
+            }}
+          >
             <Typography>
               {this.props.selected ? 'Selected' : 'Not selected'}
             </Typography>
-            {/* <img src={this.props.player.image} /> */}
-            <FlexAlignCenter>
+            <Typography>{this.props.player.statistics.rating}</Typography>
+            <PlayerName>
               <TeamLogo src={logo} alt={teamName} title={teamName} />
               <Typography variant="h6">{this.props.player.ign}</Typography>
-            </FlexAlignCenter>
+            </PlayerName>
             <Typography variant="caption" gutterBottom>
               {this.props.player.name}
             </Typography>
@@ -59,10 +90,9 @@ export default class PlayerCard extends Component {
               />
               <Typography>{this.props.player.country.name}</Typography>
             </FlexAlignCenter>
-            <Typography>{this.props.player.statistics.rating}</Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
+          </StyledCardContent>
+        </StyledCardActionArea>
+      </StyledCard>
     );
   }
 }
