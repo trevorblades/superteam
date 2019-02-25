@@ -4,6 +4,7 @@ import CardContent from '@material-ui/core/CardContent';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
+import emojiFlags from 'emoji-flags';
 import styled from '@emotion/styled';
 import {cover} from 'polished';
 
@@ -23,23 +24,14 @@ const StyledCardContent = styled(CardContent)({
   backgroundPosition: 'center'
 });
 
-const FlexAlignCenter = styled.div({
+const PlayerName = styled.div({
   display: 'flex',
-  alignItems: 'center'
-});
-
-const PlayerName = styled(FlexAlignCenter)({
+  alignItems: 'center',
   marginTop: 'auto'
 });
 
 const TeamLogo = styled.img({
   height: 32,
-  marginRight: 8
-});
-
-const flagHeight = 24;
-const Flag = styled.img({
-  height: flagHeight,
   marginRight: 8
 });
 
@@ -55,8 +47,11 @@ export default class PlayerCard extends Component {
     this.props.onClick(this.props.player);
   };
 
+  renderTeamLogo({logo, teamName}) {
+    return <TeamLogo src={logo} alt={teamName} title={teamName} />;
+  }
+
   render() {
-    const {logo, name: teamName} = this.props.player.team;
     return (
       <StyledCard>
         <StyledCardActionArea
@@ -76,20 +71,13 @@ export default class PlayerCard extends Component {
             </Typography>
             <Typography>{this.props.player.statistics.rating}</Typography>
             <PlayerName>
-              <TeamLogo src={logo} alt={teamName} title={teamName} />
+              {this.renderTeamLogo(this.props.player.team)}
               <Typography variant="h6">{this.props.player.ign}</Typography>
             </PlayerName>
-            <Typography variant="caption" gutterBottom>
+            <Typography variant="subtitle2">
+              {emojiFlags.countryCode(this.props.player.country.code).emoji}{' '}
               {this.props.player.name}
             </Typography>
-            <FlexAlignCenter>
-              <Flag
-                src={`https://www.countryflags.io/${
-                  this.props.player.country.code
-                }/flat/${flagHeight * 2}.png`}
-              />
-              <Typography>{this.props.player.country.name}</Typography>
-            </FlexAlignCenter>
           </StyledCardContent>
         </StyledCardActionArea>
       </StyledCard>
