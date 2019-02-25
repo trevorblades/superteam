@@ -144,6 +144,10 @@ export const pageQuery = graphql`
             }
             statistics {
               rating
+              kdRatio
+              kills
+              headshots
+              damagePerRound
             }
             country {
               name

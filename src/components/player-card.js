@@ -1,13 +1,14 @@
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import Typography from '@material-ui/core/Typography';
 import amber from '@material-ui/core/colors/amber';
 import blue from '@material-ui/core/colors/blue';
 import deepPurple from '@material-ui/core/colors/deepPurple';
 import emojiFlags from 'emoji-flags';
 import green from '@material-ui/core/colors/green';
+import mapProps from 'recompose/mapProps';
 import styled from '@emotion/styled';
 import theme from '@trevorblades/mui-theme';
 import withProps from 'recompose/withProps';
@@ -45,6 +46,15 @@ const StatusBar = styled.div({
     transparentize(0.5, 'black')
   ]})`
 });
+
+const Statistics = styled.div({
+  padding: 16
+});
+
+const Statistic = mapProps(props => ({
+  variant: 'subtitle2',
+  children: `${props.title}: ${props.value}`
+}))(Typography);
 
 const PlayerImage = styled.img({
   height: '100%',
@@ -87,7 +97,7 @@ const Glow = styled.div({
   left: 0
 });
 
-export default class PlayerCard extends Component {
+export default class PlayerCard extends PureComponent {
   static propTypes = {
     disabled: PropTypes.bool.isRequired,
     player: PropTypes.object.isRequired,
@@ -140,7 +150,20 @@ export default class PlayerCard extends Component {
               {/* use toLocaleString to format cost */}
             </Typography>
           </StatusBar>
-          <Typography>{this.props.player.statistics.rating}</Typography>
+          <Statistics>
+            <Statistic
+              title="K/D"
+              value={this.props.player.statistics.kdRatio}
+            />
+            <Statistic
+              title="ADR"
+              value={this.props.player.statistics.damagePerRound}
+            />
+            <Statistic
+              title="HS%"
+              value={this.props.player.statistics.headshots}
+            />
+          </Statistics>
           <PlayerImage src={this.props.player.image} />
           <Glow
             style={{
