@@ -19,7 +19,8 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
-    "react-helmet": "^5.2.0"
+    "react-helmet": "^5.2.0",
+    "recompose": "^0.30.0"
   },
   "devDependencies": {
     "@trevorblades/eslint-config": "^6.21.0",

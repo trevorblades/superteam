@@ -76,11 +76,11 @@ export default class App extends Component {
     return (
       <Layout>
         <Container>
-          <Grid container spacing={24}>
+          <Grid container spacing={40}>
             {players.map(player => {
               const isSelected = this.state.selectedPlayers.includes(player);
               return (
-                <Grid item key={player.id} xs={3}>
+                <Grid item key={player.id} xs={12} sm={6} md={4} lg={3} xl={2}>
                   <PlayerCard
                     disabled={
                       !isSelected &&
