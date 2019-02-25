@@ -1,7 +1,7 @@
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import PropTypes from 'prop-types';
-import React, {PureComponent} from 'react';
+import React, {Fragment, PureComponent} from 'react';
 import Typography from '@material-ui/core/Typography';
 import amber from '@material-ui/core/colors/amber';
 import blue from '@material-ui/core/colors/blue';
@@ -18,9 +18,10 @@ function getGradient(color, direction) {
   return `linear-gradient(${[direction, color, transparentize(1, color)]})`;
 }
 
-const aspectRatio = 3 / 4;
+export const CARD_ASPECT_RATIO = 3 / 4;
+
 const StyledCard = styled(Card)({
-  paddingTop: `${(1 / aspectRatio) * 100}%`,
+  paddingTop: `${(1 / CARD_ASPECT_RATIO) * 100}%`,
   position: 'relative'
 });
 
@@ -37,7 +38,7 @@ const StyledCardActionArea = styled(CardActionArea)(cover(), {
   flexDirection: 'column'
 });
 
-const StatusBar = styled.div({
+const Status = styled.div({
   padding: `${12}px ${16}px`,
   color: 'white',
   backgroundImage: `linear-gradient(${[
@@ -45,6 +46,10 @@ const StatusBar = styled.div({
     transparentize(0.25, 'black'),
     transparentize(0.5, 'black')
   ]})`
+});
+
+const MiniStatus = styled(Typography)({
+  margin: 4
 });
 
 const Statistics = styled.div({
@@ -56,13 +61,14 @@ const Statistic = mapProps(props => ({
   children: `${props.title}: ${props.value}`
 }))(Typography);
 
-const PlayerImage = styled.img({
+const PlayerImage = styled.img(props => ({
   height: '100%',
   pointerEvents: 'none',
   position: 'absolute',
   top: 0,
-  left: 0
-});
+  left: props.centered ? '50%' : 0,
+  transform: props.centered ? 'translate(-50%)' : 'none'
+}));
 
 const PlayerName = styled.div({
   marginTop: 'auto',
@@ -88,6 +94,13 @@ const PlayerNameText = withProps({
   align: 'center'
 })(Typography);
 
+const MiniPlayerName = styled.div({
+  marginTop: 'auto',
+  padding: 4,
+  backgroundColor: 'white',
+  position: 'relative'
+});
+
 const Glow = styled.div({
   width: '100%',
   height: '50%',
@@ -99,12 +112,13 @@ const Glow = styled.div({
 
 export default class PlayerCard extends PureComponent {
   static propTypes = {
-    disabled: PropTypes.bool.isRequired,
+    disabled: PropTypes.bool,
     player: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
     range: PropTypes.number.isRequired,
     minRating: PropTypes.number.isRequired,
-    selected: PropTypes.bool.isRequired
+    selected: PropTypes.bool.isRequired,
+    mini: PropTypes.bool
   };
 
   onClick = () => {
@@ -144,46 +158,65 @@ export default class PlayerCard extends PureComponent {
           disabled={this.props.disabled}
           onClick={this.onClick}
         >
-          <StatusBar>
-            <Typography color="inherit" variant="h6">
-              {this.props.selected ? '✅ Acquired' : '$3,000'}
-              {/* use toLocaleString to format cost */}
-            </Typography>
-          </StatusBar>
-          <Statistics>
-            <Statistic
-              title="K/D"
-              value={this.props.player.statistics.kdRatio}
-            />
-            <Statistic
-              title="ADR"
-              value={this.props.player.statistics.damagePerRound}
-            />
-            <Statistic
-              title="HS%"
-              value={this.props.player.statistics.headshots}
-            />
-          </Statistics>
-          <PlayerImage src={this.props.player.image} />
+          {this.props.mini ? (
+            <MiniStatus variant="caption">
+              {this.props.selected ? '✅' : '❌'}
+            </MiniStatus>
+          ) : (
+            <Fragment>
+              <Status>
+                <Typography color="inherit" variant="h6">
+                  {this.props.selected ? '✅ Acquired' : '$3,000'}
+                  {/* use toLocaleString to format cost */}
+                </Typography>
+              </Status>
+              <Statistics>
+                <Statistic
+                  title="K/D"
+                  value={this.props.player.statistics.kdRatio}
+                />
+                <Statistic
+                  title="ADR"
+                  value={this.props.player.statistics.damagePerRound}
+                />
+                <Statistic
+                  title="HS%"
+                  value={this.props.player.statistics.headshots}
+                />
+              </Statistics>
+            </Fragment>
+          )}
+          <PlayerImage
+            src={this.props.player.image}
+            centered={this.props.mini}
+          />
           <Glow
             style={{
               backgroundImage: getGradient(this.color, 'to top')
             }}
           />
-          <PlayerName>
-            <PlayerNameCurve viewBox="0 0 100 48" preserveAspectRatio="none">
-              <path d="M 0,48 Q 50,0 100,48 Z" fill="white" />
-            </PlayerNameCurve>
-            <PlayerNameInner>
-              <PlayerNameText variant="h6">
+          {this.props.mini ? (
+            <MiniPlayerName>
+              <Typography align="center" noWrap variant="caption">
                 {this.props.player.ign}
-              </PlayerNameText>
-              <PlayerNameText>
-                {emojiFlags.countryCode(this.props.player.country.code).emoji}{' '}
-                {this.props.player.name}
-              </PlayerNameText>
-            </PlayerNameInner>
-          </PlayerName>
+              </Typography>
+            </MiniPlayerName>
+          ) : (
+            <PlayerName>
+              <PlayerNameCurve viewBox="0 0 100 48" preserveAspectRatio="none">
+                <path d="M 0,48 Q 50,0 100,48 Z" fill="white" />
+              </PlayerNameCurve>
+              <PlayerNameInner>
+                <PlayerNameText variant="h6">
+                  {this.props.player.ign}
+                </PlayerNameText>
+                <PlayerNameText>
+                  {emojiFlags.countryCode(this.props.player.country.code).emoji}{' '}
+                  {this.props.player.name}
+                </PlayerNameText>
+              </PlayerNameInner>
+            </PlayerName>
+          )}
         </StyledCardActionArea>
       </StyledCard>
     );
