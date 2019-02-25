@@ -73,6 +73,11 @@ export default class App extends Component {
 
     players.sort((a, b) => b.statistics.rating - a.statistics.rating);
 
+    const playerRatings = players.map(player => player.statistics.rating);
+    const maxRating = Math.max(...playerRatings);
+    const minRating = Math.min(...playerRatings);
+    const range = maxRating - minRating;
+
     return (
       <Layout>
         <Container>
@@ -89,6 +94,8 @@ export default class App extends Component {
                     player={player}
                     onClick={this.onPlayerClick}
                     selected={isSelected}
+                    range={range}
+                    minRating={minRating}
                   />
                 </Grid>
               );

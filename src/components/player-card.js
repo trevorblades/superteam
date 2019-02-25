@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
 import amber from '@material-ui/core/colors/amber';
+import blue from '@material-ui/core/colors/blue';
+import deepPurple from '@material-ui/core/colors/deepPurple';
 import emojiFlags from 'emoji-flags';
+import green from '@material-ui/core/colors/green';
 import styled from '@emotion/styled';
+import theme from '@trevorblades/mui-theme';
 import withProps from 'recompose/withProps';
 import {cover, transparentize} from 'polished';
-
-const gold = amber[500];
 
 function getGradient(color, direction) {
   return `linear-gradient(${[direction, color, transparentize(1, color)]})`;
@@ -18,7 +20,6 @@ function getGradient(color, direction) {
 const aspectRatio = 3 / 4;
 const StyledCard = styled(Card)({
   paddingTop: `${(1 / aspectRatio) * 100}%`,
-  backgroundImage: getGradient(gold, 'to bottom'),
   position: 'relative'
 });
 
@@ -47,7 +48,6 @@ const StatusBar = styled.div({
 
 const PlayerImage = styled.img({
   height: '100%',
-  userSelect: 'none',
   position: 'absolute',
   top: 0,
   left: 0
@@ -80,7 +80,6 @@ const PlayerNameText = withProps({
 const Glow = styled.div({
   width: '100%',
   height: '50%',
-  backgroundImage: getGradient(gold, 'to top'),
   mixBlendMode: 'overlay', // might be better without this
   position: 'absolute',
   bottom: 0,
@@ -92,6 +91,8 @@ export default class PlayerCard extends Component {
     disabled: PropTypes.bool.isRequired,
     player: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
+    range: PropTypes.number.isRequired,
+    minRating: PropTypes.number.isRequired,
     selected: PropTypes.bool.isRequired
   };
 
@@ -99,9 +100,30 @@ export default class PlayerCard extends Component {
     this.props.onClick(this.props.player);
   };
 
+  get color() {
+    const percentile =
+      (this.props.player.statistics.rating - this.props.minRating) /
+      this.props.range;
+    if (percentile >= 0.9) {
+      return amber[500];
+    } else if (percentile >= 0.8) {
+      return deepPurple[500];
+    } else if (percentile >= 0.5) {
+      return blue[500];
+    } else if (percentile >= 0.25) {
+      return green[500];
+    }
+
+    return theme.palette.grey[500];
+  }
+
   render() {
     return (
-      <StyledCard>
+      <StyledCard
+        style={{
+          backgroundImage: getGradient(this.color, 'to bottom')
+        }}
+      >
         <TeamLogo
           style={{
             backgroundImage: `url(${this.props.player.team.logo})`
@@ -119,7 +141,11 @@ export default class PlayerCard extends Component {
           </StatusBar>
           <Typography>{this.props.player.statistics.rating}</Typography>
           <PlayerImage src={this.props.player.image} />
-          <Glow />
+          <Glow
+            style={{
+              backgroundImage: getGradient(this.color, 'to top')
+            }}
+          />
           <PlayerName>
             <PlayerNameCurve viewBox="0 0 100 48" preserveAspectRatio="none">
               <path d="M 0,48 Q 50,0 100,48 Z" fill="white" />
