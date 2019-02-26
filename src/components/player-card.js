@@ -145,7 +145,7 @@ export default class PlayerCard extends PureComponent {
       <StyledCard
         style={{
           backgroundImage: getGradient(color, 'to bottom'),
-          filter: this.props.disabled ? 'grayscale(90%)' : 'none'
+          filter: this.props.disabled ? 'grayscale(85%)' : 'none'
         }}
       >
         <TeamLogo
