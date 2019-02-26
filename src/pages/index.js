@@ -4,9 +4,10 @@ import Paper from '@material-ui/core/Paper';
 import PlayerCard, {CARD_ASPECT_RATIO} from '../components/player-card';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
 import theme from '@trevorblades/mui-theme';
-import {TEAM_SIZE} from '../util';
+import {AVERATE_PLAYER_COST, TEAM_SIZE, TOTAL_BUDGET} from '../util';
 import {graphql} from 'gatsby';
 
 const Container = styled.div({
@@ -14,13 +15,16 @@ const Container = styled.div({
 });
 
 const Footer = styled(Paper)({
+  display: 'flex',
+  alignItems: 'center',
   padding: 16,
   position: 'sticky',
   bottom: 0
 });
 
 const Slots = styled.div({
-  display: 'flex'
+  display: 'flex',
+  marginRight: 40
 });
 
 const slotWidth = 90;
@@ -37,23 +41,32 @@ const Slot = styled.div(props => ({
 
 const emptySlots = Array(TEAM_SIZE).fill(null);
 
+function getCost(rating) {
+  return AVERATE_PLAYER_COST * rating;
+}
+
 export default class App extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired
   };
 
   state = {
+    budget: TOTAL_BUDGET,
     selectedPlayers: []
   };
 
-  onPlayerCardClick = player => {
-    this.setState(prevState => ({
-      selectedPlayers: prevState.selectedPlayers.includes(player)
-        ? prevState.selectedPlayers.filter(
-            selectedPlayer => selectedPlayer !== player
-          )
-        : [...prevState.selectedPlayers, player]
-    }));
+  onPlayerCardClick = (player, cost) => {
+    this.setState(prevState => {
+      const isSelected = prevState.selectedPlayers.includes(player);
+      return {
+        budget: prevState.budget + cost * (isSelected ? 1 : -1),
+        selectedPlayers: isSelected
+          ? prevState.selectedPlayers.filter(
+              selectedPlayer => selectedPlayer !== player
+            )
+          : [...prevState.selectedPlayers, player]
+      };
+    });
   };
 
   isPlayerSelected = player => this.getSelectedIndex(player) > -1;
@@ -66,21 +79,23 @@ export default class App extends Component {
     const minRating = Math.min(...ratings);
     const maxRating = Math.max(...ratings);
     const delta = maxRating - minRating;
+    const isTeamFull = this.state.selectedPlayers.length >= TEAM_SIZE;
     return (
       <Layout>
         <Container>
           <Grid container spacing={40}>
             {playerRanking.map(({player, rating}) => {
               const isSelected = this.isPlayerSelected(player);
+              const cost = getCost(rating);
               return (
                 <Grid item key={player.id} xs={12} sm={6} md={4} lg={3} xl={2}>
                   <PlayerCard
                     disabled={
-                      !isSelected &&
-                      this.state.selectedPlayers.length >= TEAM_SIZE
+                      !isSelected && (isTeamFull || this.state.budget < cost)
                     }
                     player={player}
                     rating={rating}
+                    cost={cost}
                     minRating={minRating}
                     delta={delta}
                     onClick={this.onPlayerCardClick}
@@ -110,6 +125,7 @@ export default class App extends Component {
                       <PlayerCard
                         selected
                         mini
+                        cost={getCost(rating)}
                         onClick={this.onPlayerCardClick}
                         player={player}
                         rating={rating}
@@ -123,6 +139,12 @@ export default class App extends Component {
                 return <Slot key={index} empty />;
               })}
           </Slots>
+          <div>
+            <Typography>Remaining budget</Typography>
+            <Typography variant="h4">
+              ${this.state.budget.toLocaleString()}
+            </Typography>
+          </div>
         </Footer>
       </Layout>
     );

@@ -13,7 +13,6 @@ import mapProps from 'recompose/mapProps';
 import styled from '@emotion/styled';
 import theme from '@trevorblades/mui-theme';
 import withProps from 'recompose/withProps';
-import {AVERATE_PLAYER_COST} from '../util';
 import {cover, transparentize} from 'polished';
 
 export const CARD_ASPECT_RATIO = 3 / 4;
@@ -127,6 +126,7 @@ const scale = chroma
 export default class PlayerCard extends PureComponent {
   static propTypes = {
     disabled: PropTypes.bool,
+    cost: PropTypes.number.isRequired,
     player: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
     delta: PropTypes.number.isRequired,
@@ -137,40 +137,8 @@ export default class PlayerCard extends PureComponent {
   };
 
   onClick = () => {
-    this.props.onClick(this.props.player.id);
+    this.props.onClick(this.props.player.id, this.props.cost);
   };
-
-  renderStatus(mini) {
-    if (mini) {
-      return (
-        <MiniStatus variant="caption">
-          {this.props.selected ? '✅' : '❌'}
-        </MiniStatus>
-      );
-    }
-
-    const cost = AVERATE_PLAYER_COST * this.props.rating;
-    return (
-      <Fragment>
-        <Status>
-          <Typography color="inherit" variant="h6">
-            {this.props.selected ? '✅ Acquired' : `$${cost.toLocaleString()}`}
-          </Typography>
-        </Status>
-        <Statistics>
-          <Statistic title="K/D" value={this.props.player.statistics.kdRatio} />
-          <Statistic
-            title="ADR"
-            value={this.props.player.statistics.damagePerRound}
-          />
-          <Statistic
-            title="HS%"
-            value={this.props.player.statistics.headshots}
-          />
-        </Statistics>
-      </Fragment>
-    );
-  }
 
   render() {
     const percentile =
@@ -192,7 +160,35 @@ export default class PlayerCard extends PureComponent {
           disabled={this.props.disabled}
           onClick={this.onClick}
         >
-          {this.renderStatus(this.props.mini)}
+          {this.props.mini ? (
+            <MiniStatus variant="caption">
+              {this.props.selected ? '✅' : '❌'}
+            </MiniStatus>
+          ) : (
+            <Fragment>
+              <Status>
+                <Typography color="inherit" variant="h6">
+                  {this.props.selected
+                    ? '✅ Acquired'
+                    : `$${this.props.cost.toLocaleString()}`}
+                </Typography>
+              </Status>
+              <Statistics>
+                <Statistic
+                  title="K/D"
+                  value={this.props.player.statistics.kdRatio}
+                />
+                <Statistic
+                  title="ADR"
+                  value={this.props.player.statistics.damagePerRound}
+                />
+                <Statistic
+                  title="HS%"
+                  value={this.props.player.statistics.headshots}
+                />
+              </Statistics>
+            </Fragment>
+          )}
           <PlayerImage
             src={this.props.player.image}
             centered={this.props.mini}
