@@ -129,9 +129,7 @@ export default class PlayerCard extends PureComponent {
     cost: PropTypes.number.isRequired,
     player: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
-    delta: PropTypes.number.isRequired,
-    rating: PropTypes.number.isRequired,
-    minRating: PropTypes.number.isRequired,
+    percentile: PropTypes.number.isRequired,
     selected: PropTypes.bool.isRequired,
     mini: PropTypes.bool
   };
@@ -141,13 +139,12 @@ export default class PlayerCard extends PureComponent {
   };
 
   render() {
-    const percentile =
-      (this.props.rating - this.props.minRating) / this.props.delta;
-    const color = scale(percentile).hex();
+    const color = scale(this.props.percentile).hex();
     return (
       <StyledCard
         style={{
-          backgroundImage: getGradient(color, 'to bottom')
+          backgroundImage: getGradient(color, 'to bottom'),
+          filter: this.props.disabled ? 'grayscale(90%)' : 'none'
         }}
       >
         <TeamLogo

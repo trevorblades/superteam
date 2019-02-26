@@ -41,8 +41,13 @@ const Slot = styled.div(props => ({
 
 const emptySlots = Array(TEAM_SIZE).fill(null);
 
-function getCost(rating) {
-  return AVERATE_PLAYER_COST * rating;
+function getPlayerCardProps(rating, minRating, delta) {
+  const percentile = (rating - minRating) / delta;
+  const cost = AVERATE_PLAYER_COST * (percentile + 0.5);
+  return {
+    percentile,
+    cost: Math.round(cost)
+  };
 }
 
 export default class App extends Component {
@@ -69,9 +74,13 @@ export default class App extends Component {
     });
   };
 
-  isPlayerSelected = player => this.getSelectedIndex(player) > -1;
+  isPlayerSelected(player) {
+    return this.getSelectedIndex(player) > -1;
+  }
 
-  getSelectedIndex = player => this.state.selectedPlayers.indexOf(player.id);
+  getSelectedIndex(player) {
+    return this.state.selectedPlayers.indexOf(player.id);
+  }
 
   render() {
     const {playerRanking} = this.props.data.hltv;
@@ -86,7 +95,12 @@ export default class App extends Component {
           <Grid container spacing={40}>
             {playerRanking.map(({player, rating}) => {
               const isSelected = this.isPlayerSelected(player);
-              const cost = getCost(rating);
+              const {cost, percentile} = getPlayerCardProps(
+                rating,
+                minRating,
+                delta
+              );
+
               return (
                 <Grid item key={player.id} xs={12} sm={6} md={4} lg={3} xl={2}>
                   <PlayerCard
@@ -94,10 +108,8 @@ export default class App extends Component {
                       !isSelected && (isTeamFull || this.state.budget < cost)
                     }
                     player={player}
-                    rating={rating}
+                    percentile={percentile}
                     cost={cost}
-                    minRating={minRating}
-                    delta={delta}
                     onClick={this.onPlayerCardClick}
                     selected={isSelected}
                   />
@@ -120,17 +132,21 @@ export default class App extends Component {
               .map((playerRanking, index) => {
                 if (playerRanking) {
                   const {player, rating} = playerRanking;
+                  const {cost, percentile} = getPlayerCardProps(
+                    rating,
+                    minRating,
+                    delta
+                  );
+
                   return (
                     <Slot key={player.id}>
                       <PlayerCard
                         selected
                         mini
-                        cost={getCost(rating)}
+                        percentile={percentile}
+                        cost={cost}
                         onClick={this.onPlayerCardClick}
                         player={player}
-                        rating={rating}
-                        minRating={minRating}
-                        delta={delta}
                       />
                     </Slot>
                   );
