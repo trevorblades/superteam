@@ -104,7 +104,7 @@ export const pageQuery = graphql`
       playerRanking(
         startDate: "2018-01-01"
         endDate: "2018-12-31"
-        matchType: BigEvents
+        matchType: Lan
         rankingFilter: Top50
       ) {
         rating
