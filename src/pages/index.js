@@ -1,54 +1,16 @@
+import Footer from '../components/footer';
 import Grid from '@material-ui/core/Grid';
 import Layout from '../components/layout';
-import Paper from '@material-ui/core/Paper';
-import PlayerCard, {CARD_ASPECT_RATIO} from '../components/player-card';
+import PlayerCard from '../components/player-card';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
-import theme from '@trevorblades/mui-theme';
-import {AVERATE_PLAYER_COST, TEAM_SIZE, TOTAL_BUDGET} from '../util';
+import {TEAM_SIZE, TOTAL_BUDGET, getPlayerCardProps} from '../util';
 import {graphql} from 'gatsby';
 
 const Container = styled.div({
   padding: 40
 });
-
-const Footer = styled(Paper)({
-  display: 'flex',
-  alignItems: 'center',
-  padding: 16,
-  position: 'sticky',
-  bottom: 0
-});
-
-const Slots = styled.div({
-  display: 'flex',
-  marginRight: 40
-});
-
-const slotWidth = 90;
-const Slot = styled.div(props => ({
-  width: slotWidth,
-  height: slotWidth / CARD_ASPECT_RATIO,
-  border: props.empty ? `1px solid ${theme.palette.grey[200]}` : 'none',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: theme.palette.background.default,
-  ':not(:last-child)': {
-    marginRight: 12
-  }
-}));
-
-const emptySlots = Array(TEAM_SIZE).fill(null);
-
-function getPlayerCardProps(rating, minRating, delta) {
-  const percentile = (rating - minRating) / delta;
-  const cost = AVERATE_PLAYER_COST * (percentile + 0.5);
-  return {
-    percentile,
-    cost: Math.round(cost)
-  };
-}
 
 export default class App extends Component {
   static propTypes = {
@@ -118,50 +80,19 @@ export default class App extends Component {
             })}
           </Grid>
         </Container>
-        <Footer component="footer" square elevation={10}>
-          <Slots>
-            {playerRanking
-              .filter(({player}) => this.isPlayerSelected(player))
-              .sort(
-                (a, b) =>
-                  this.getSelectedIndex(a.player) -
-                  this.getSelectedIndex(b.player)
-              )
-              .concat(emptySlots)
-              .slice(0, TEAM_SIZE)
-              .map((playerRanking, index) => {
-                if (playerRanking) {
-                  const {player, rating} = playerRanking;
-                  const {cost, percentile} = getPlayerCardProps(
-                    rating,
-                    minRating,
-                    delta
-                  );
-
-                  return (
-                    <Slot key={player.id}>
-                      <PlayerCard
-                        selected
-                        mini
-                        percentile={percentile}
-                        cost={cost}
-                        onClick={this.onPlayerCardClick}
-                        player={player}
-                      />
-                    </Slot>
-                  );
-                }
-
-                return <Slot key={index} empty />;
-              })}
-          </Slots>
-          <div>
-            <Typography>Remaining budget</Typography>
-            <Typography variant="h4">
-              ${this.state.budget.toLocaleString()}
-            </Typography>
-          </div>
-        </Footer>
+        <Footer
+          budget={this.state.budget}
+          onPlayerCardClick={this.onPlayerCardClick}
+          minRating={minRating}
+          delta={delta}
+          selectedPlayers={playerRanking
+            .filter(({player}) => this.isPlayerSelected(player))
+            .sort(
+              (a, b) =>
+                this.getSelectedIndex(a.player) -
+                this.getSelectedIndex(b.player)
+            )}
+        />
       </Layout>
     );
   }

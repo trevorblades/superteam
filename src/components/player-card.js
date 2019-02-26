@@ -1,6 +1,7 @@
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import EmojiFlag from './emoji-flag';
+import NumberText from './number-text';
 import PropTypes from 'prop-types';
 import React, {Fragment, PureComponent} from 'react';
 import Typography from '@material-ui/core/Typography';
@@ -164,11 +165,11 @@ export default class PlayerCard extends PureComponent {
           ) : (
             <Fragment>
               <Status>
-                <Typography color="inherit" variant="h6">
+                <NumberText color="inherit" variant="h6">
                   {this.props.selected
                     ? '✅ Acquired'
                     : `$${this.props.cost.toLocaleString()}`}
-                </Typography>
+                </NumberText>
               </Status>
               <Statistics>
                 <Statistic
