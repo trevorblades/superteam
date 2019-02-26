@@ -12,33 +12,34 @@ import {TEAM_SIZE, TOTAL_BUDGET, getPlayerCardProps} from '../util';
 const Container = styled(Paper)({
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'space-evenly',
   padding: 16,
   position: 'sticky',
   bottom: 0
 });
 
-const Slots = styled.div({
-  display: 'flex',
-  marginRight: 40
+const Players = styled.div({
+  display: 'flex'
 });
 
-const slotWidth = 90;
-const emptySlots = Array(TEAM_SIZE).fill(null);
-const Slot = styled.div(props => ({
-  width: slotWidth,
-  height: slotWidth / CARD_ASPECT_RATIO,
-  border: props.empty ? `1px solid ${theme.palette.grey[200]}` : 'none',
+const playerWidth = 90;
+const emptyPlayers = Array(TEAM_SIZE).fill(null);
+const Player = styled.div({
+  width: playerWidth,
+  height: playerWidth / CARD_ASPECT_RATIO,
   borderRadius: theme.shape.borderRadius,
   backgroundColor: theme.palette.background.default,
   ':not(:last-child)': {
     marginRight: 12
   }
-}));
+});
 
-const Finances = styled.div({
-  display: 'flex',
-  justifyContent: 'space-evenly',
-  flexGrow: 1
+const EmptyPlayer = styled(Player)({
+  border: `1px solid ${theme.palette.grey[200]}`
+});
+
+const Finance = styled.div({
+  textAlign: 'center'
 });
 
 const FinanceText = withProps({
@@ -53,9 +54,15 @@ const FinanceText = withProps({
 export default function Footer(props) {
   return (
     <Container component="footer" square elevation={10}>
-      <Slots>
+      <Finance>
+        <Typography>Amount spent</Typography>
+        <FinanceText color="error">
+          ${(TOTAL_BUDGET - props.budget).toLocaleString()}
+        </FinanceText>
+      </Finance>
+      <Players>
         {props.selectedPlayers
-          .concat(emptySlots)
+          .concat(emptyPlayers)
           .slice(0, TEAM_SIZE)
           .map((selectedPlayer, index) => {
             if (selectedPlayer) {
@@ -67,7 +74,7 @@ export default function Footer(props) {
               );
 
               return (
-                <Slot key={player.id}>
+                <Player key={player.id}>
                   <PlayerCard
                     selected
                     mini
@@ -76,25 +83,17 @@ export default function Footer(props) {
                     onClick={props.onPlayerCardClick}
                     player={player}
                   />
-                </Slot>
+                </Player>
               );
             }
 
-            return <Slot key={index} empty />;
+            return <EmptyPlayer key={index} />;
           })}
-      </Slots>
-      <Finances>
-        <div>
-          <Typography>Amount spent</Typography>
-          <FinanceText color="error">
-            ${(TOTAL_BUDGET - props.budget).toLocaleString()}
-          </FinanceText>
-        </div>
-        <div>
-          <Typography>Remaining budget</Typography>
-          <FinanceText>${props.budget.toLocaleString()}</FinanceText>
-        </div>
-      </Finances>
+      </Players>
+      <Finance>
+        <Typography>Remaining budget</Typography>
+        <FinanceText>${props.budget.toLocaleString()}</FinanceText>
+      </Finance>
     </Container>
   );
 }
