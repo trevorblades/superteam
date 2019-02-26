@@ -1,12 +1,12 @@
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
+import EmojiFlag from './emoji-flag';
 import PropTypes from 'prop-types';
 import React, {Fragment, PureComponent} from 'react';
 import Typography from '@material-ui/core/Typography';
 import amber from '@material-ui/core/colors/amber';
 import blue from '@material-ui/core/colors/blue';
 import deepPurple from '@material-ui/core/colors/deepPurple';
-import emojiFlags from 'emoji-flags';
 import green from '@material-ui/core/colors/green';
 import mapProps from 'recompose/mapProps';
 import styled from '@emotion/styled';
@@ -116,6 +116,7 @@ export default class PlayerCard extends PureComponent {
     player: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
     range: PropTypes.number.isRequired,
+    rating: PropTypes.number.isRequired,
     minRating: PropTypes.number.isRequired,
     selected: PropTypes.bool.isRequired,
     mini: PropTypes.bool
@@ -127,15 +128,14 @@ export default class PlayerCard extends PureComponent {
 
   get color() {
     const percentile =
-      (this.props.player.statistics.rating - this.props.minRating) /
-      this.props.range;
+      (this.props.rating - this.props.minRating) / this.props.range;
     if (percentile >= 0.9) {
       return amber[500];
-    } else if (percentile >= 0.8) {
+    } else if (percentile >= 0.7) {
       return deepPurple[500];
-    } else if (percentile >= 0.5) {
+    } else if (percentile >= 0.4) {
       return blue[500];
-    } else if (percentile >= 0.25) {
+    } else if (percentile >= 0.1) {
       return green[500];
     }
 
@@ -151,7 +151,8 @@ export default class PlayerCard extends PureComponent {
       >
         <TeamLogo
           style={{
-            backgroundImage: `url(${this.props.player.team.logo})`
+            backgroundImage:
+              this.props.player.team && `url(${this.props.player.team.logo})`
           }}
         />
         <StyledCardActionArea
@@ -211,7 +212,7 @@ export default class PlayerCard extends PureComponent {
                   {this.props.player.ign}
                 </PlayerNameText>
                 <PlayerNameText>
-                  {emojiFlags.countryCode(this.props.player.country.code).emoji}{' '}
+                  <EmojiFlag country={this.props.player.country} />{' '}
                   {this.props.player.name}
                 </PlayerNameText>
               </PlayerNameInner>
