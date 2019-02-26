@@ -10,6 +10,7 @@
     "@material-ui/core": "^3.9.2",
     "@trevorblades/mui-theme": "^4.0.1",
     "@wapps/gatsby-plugin-material-ui": "^1.2.1",
+    "chroma-js": "^2.0.3",
     "emoji-flags": "^1.2.0",
     "gatsby": "^2.1.17",
     "gatsby-plugin-emotion": "^4.0.4",

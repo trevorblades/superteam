@@ -6,6 +6,7 @@ import React, {Fragment, PureComponent} from 'react';
 import Typography from '@material-ui/core/Typography';
 import amber from '@material-ui/core/colors/amber';
 import blue from '@material-ui/core/colors/blue';
+import chroma from 'chroma-js';
 import deepPurple from '@material-ui/core/colors/deepPurple';
 import green from '@material-ui/core/colors/green';
 import mapProps from 'recompose/mapProps';
@@ -110,12 +111,24 @@ const Glow = styled.div({
   left: 0
 });
 
+const colors = {
+  [theme.palette.grey[500]]: 0,
+  [green[500]]: 0.1,
+  [blue[500]]: 0.4,
+  [deepPurple[500]]: 0.7,
+  [amber[500]]: 0.9
+};
+
+const scale = chroma
+  .scale(Object.keys(colors))
+  .classes([...Object.values(colors), 1]);
+
 export default class PlayerCard extends PureComponent {
   static propTypes = {
     disabled: PropTypes.bool,
     player: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
-    range: PropTypes.number.isRequired,
+    delta: PropTypes.number.isRequired,
     rating: PropTypes.number.isRequired,
     minRating: PropTypes.number.isRequired,
     selected: PropTypes.bool.isRequired,
@@ -126,27 +139,14 @@ export default class PlayerCard extends PureComponent {
     this.props.onClick(this.props.player);
   };
 
-  get color() {
-    const percentile =
-      (this.props.rating - this.props.minRating) / this.props.range;
-    if (percentile >= 0.9) {
-      return amber[500];
-    } else if (percentile >= 0.7) {
-      return deepPurple[500];
-    } else if (percentile >= 0.4) {
-      return blue[500];
-    } else if (percentile >= 0.1) {
-      return green[500];
-    }
-
-    return theme.palette.grey[500];
-  }
-
   render() {
+    const percentile =
+      (this.props.rating - this.props.minRating) / this.props.delta;
+    const color = scale(percentile).hex();
     return (
       <StyledCard
         style={{
-          backgroundImage: getGradient(this.color, 'to bottom')
+          backgroundImage: getGradient(color, 'to bottom')
         }}
       >
         <TeamLogo
@@ -193,7 +193,7 @@ export default class PlayerCard extends PureComponent {
           />
           <Glow
             style={{
-              backgroundImage: getGradient(this.color, 'to top')
+              backgroundImage: getGradient(color, 'to top')
             }}
           />
           {this.props.mini ? (

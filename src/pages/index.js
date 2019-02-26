@@ -55,19 +55,20 @@ export default class App extends Component {
     }));
   };
 
+  isPlayerSelected = player => this.state.selectedPlayers.includes(player);
+
   render() {
     const {playerRanking: players} = this.props.data.hltv;
     const ratings = players.map(player => player.rating);
-    const maxRating = Math.max(...ratings);
     const minRating = Math.min(...ratings);
-    const range = maxRating - minRating;
-
+    const maxRating = Math.max(...ratings);
+    const delta = maxRating - minRating;
     return (
       <Layout>
         <Container>
           <Grid container spacing={40}>
             {players.map(({player, rating}) => {
-              const isSelected = this.state.selectedPlayers.includes(player);
+              const isSelected = this.isPlayerSelected(player);
               return (
                 <Grid item key={player.id} xs={12} sm={6} md={4} lg={3} xl={2}>
                   <PlayerCard
@@ -77,10 +78,10 @@ export default class App extends Component {
                     }
                     player={player}
                     rating={rating}
+                    minRating={minRating}
+                    delta={delta}
                     onClick={this.onPlayerClick}
                     selected={isSelected}
-                    range={range}
-                    minRating={minRating}
                   />
                 </Grid>
               );
@@ -89,23 +90,30 @@ export default class App extends Component {
         </Container>
         <Footer component="footer" square elevation={10}>
           <Slots>
-            {this.state.selectedPlayers
+            {players
+              .filter(({player}) => this.isPlayerSelected(player))
               .concat(Array(MAX_TEAM_SIZE).fill(null))
               .slice(0, MAX_TEAM_SIZE)
-              .map((player, index) => (
-                <Slot key={player ? player.id : index} empty={!player}>
-                  {player && (
-                    <PlayerCard
-                      selected
-                      mini
-                      onClick={this.onPlayerClick}
-                      player={player}
-                      range={range}
-                      minRating={minRating}
-                    />
-                  )}
-                </Slot>
-              ))}
+              .map((playerRanking, index) => {
+                if (playerRanking) {
+                  const {player, rating} = playerRanking;
+                  return (
+                    <Slot key={player.id}>
+                      <PlayerCard
+                        selected
+                        mini
+                        onClick={this.onPlayerClick}
+                        player={player}
+                        rating={rating}
+                        minRating={minRating}
+                        delta={delta}
+                      />
+                    </Slot>
+                  );
+                }
+
+                return <Slot key={index} empty />;
+              })}
           </Slots>
         </Footer>
       </Layout>
