@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import styled from '@emotion/styled';
 import theme from '@trevorblades/mui-theme';
+import {TEAM_SIZE} from '../util';
 import {graphql} from 'gatsby';
 
 const Container = styled.div({
@@ -26,7 +27,7 @@ const slotWidth = 90;
 const Slot = styled.div(props => ({
   width: slotWidth,
   height: slotWidth / CARD_ASPECT_RATIO,
-  border: props.empty ? `1px solid ${theme.palette.grey[100]}` : 'none',
+  border: props.empty ? `1px solid ${theme.palette.grey[200]}` : 'none',
   borderRadius: theme.shape.borderRadius,
   backgroundColor: theme.palette.background.default,
   ':not(:last-child)': {
@@ -34,8 +35,7 @@ const Slot = styled.div(props => ({
   }
 }));
 
-const MAX_TEAM_SIZE = 5;
-const emptySlots = Array(MAX_TEAM_SIZE).fill(null);
+const emptySlots = Array(TEAM_SIZE).fill(null);
 
 export default class App extends Component {
   static propTypes = {
@@ -46,7 +46,7 @@ export default class App extends Component {
     selectedPlayers: []
   };
 
-  onPlayerClick = player => {
+  onPlayerCardClick = player => {
     this.setState(prevState => ({
       selectedPlayers: prevState.selectedPlayers.includes(player)
         ? prevState.selectedPlayers.filter(
@@ -77,13 +77,13 @@ export default class App extends Component {
                   <PlayerCard
                     disabled={
                       !isSelected &&
-                      this.state.selectedPlayers.length >= MAX_TEAM_SIZE
+                      this.state.selectedPlayers.length >= TEAM_SIZE
                     }
                     player={player}
                     rating={rating}
                     minRating={minRating}
                     delta={delta}
-                    onClick={this.onPlayerClick}
+                    onClick={this.onPlayerCardClick}
                     selected={isSelected}
                   />
                 </Grid>
@@ -101,7 +101,7 @@ export default class App extends Component {
                   this.getSelectedIndex(b.player)
               )
               .concat(emptySlots)
-              .slice(0, MAX_TEAM_SIZE)
+              .slice(0, TEAM_SIZE)
               .map((playerRanking, index) => {
                 if (playerRanking) {
                   const {player, rating} = playerRanking;
@@ -110,7 +110,7 @@ export default class App extends Component {
                       <PlayerCard
                         selected
                         mini
-                        onClick={this.onPlayerClick}
+                        onClick={this.onPlayerCardClick}
                         player={player}
                         rating={rating}
                         minRating={minRating}
