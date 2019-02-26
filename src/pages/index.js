@@ -49,17 +49,19 @@ export default class App extends Component {
     this.setState(prevState => ({
       selectedPlayers: prevState.selectedPlayers.includes(player)
         ? prevState.selectedPlayers.filter(
-            selectedPlayer => selectedPlayer.id !== player.id
+            selectedPlayer => selectedPlayer !== player
           )
         : [...prevState.selectedPlayers, player]
     }));
   };
 
-  isPlayerSelected = player => this.state.selectedPlayers.includes(player);
+  isPlayerSelected = player => this.getSelectedIndex(player) > -1;
+
+  getSelectedIndex = player => this.state.selectedPlayers.indexOf(player.id);
 
   render() {
-    const {playerRanking: players} = this.props.data.hltv;
-    const ratings = players.map(player => player.rating);
+    const {playerRanking} = this.props.data.hltv;
+    const ratings = playerRanking.map(player => player.rating);
     const minRating = Math.min(...ratings);
     const maxRating = Math.max(...ratings);
     const delta = maxRating - minRating;
@@ -67,7 +69,7 @@ export default class App extends Component {
       <Layout>
         <Container>
           <Grid container spacing={40}>
-            {players.map(({player, rating}) => {
+            {playerRanking.map(({player, rating}) => {
               const isSelected = this.isPlayerSelected(player);
               return (
                 <Grid item key={player.id} xs={12} sm={6} md={4} lg={3} xl={2}>
@@ -90,8 +92,13 @@ export default class App extends Component {
         </Container>
         <Footer component="footer" square elevation={10}>
           <Slots>
-            {players
+            {playerRanking
               .filter(({player}) => this.isPlayerSelected(player))
+              .sort(
+                (a, b) =>
+                  this.getSelectedIndex(a.player) -
+                  this.getSelectedIndex(b.player)
+              )
               .concat(Array(MAX_TEAM_SIZE).fill(null))
               .slice(0, MAX_TEAM_SIZE)
               .map((playerRanking, index) => {

@@ -136,7 +136,7 @@ export default class PlayerCard extends PureComponent {
   };
 
   onClick = () => {
-    this.props.onClick(this.props.player);
+    this.props.onClick(this.props.player.id);
   };
 
   render() {
