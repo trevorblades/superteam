@@ -35,6 +35,7 @@ const Slot = styled.div(props => ({
 }));
 
 const MAX_TEAM_SIZE = 5;
+const emptySlots = Array(MAX_TEAM_SIZE).fill(null);
 
 export default class App extends Component {
   static propTypes = {
@@ -99,7 +100,7 @@ export default class App extends Component {
                   this.getSelectedIndex(a.player) -
                   this.getSelectedIndex(b.player)
               )
-              .concat(Array(MAX_TEAM_SIZE).fill(null))
+              .concat(emptySlots)
               .slice(0, MAX_TEAM_SIZE)
               .map((playerRanking, index) => {
                 if (playerRanking) {
