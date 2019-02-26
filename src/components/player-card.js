@@ -22,15 +22,17 @@ function getGradient(color, direction) {
   return `linear-gradient(${[direction, color, transparentize(1, color)]})`;
 }
 
-const StyledCard = styled(Card)({
+const StyledCard = styled(Card)(props => ({
   paddingTop: `${(1 / CARD_ASPECT_RATIO) * 100}%`,
   position: 'relative',
+  cursor: props.disabled ? 'not-allowed' : 'auto',
+  filter: props.disabled ? 'grayscale(85%)' : 'none',
   transition: 'filter 100ms ease-in-out',
   // fixes jitter and flickering issues
   // https://greensock.com/forums/topic/16385-chrome-bug-when-i-scale-an-element-with-background-image-the-image-flickers/?tab=comments#comment-72139
   WebkitBackfaceVisibility: 'hidden',
   WebkitTransform: 'perspective(1000px)'
-});
+}));
 
 const TeamLogo = styled.div(cover(), {
   backgroundSize: '150%',
@@ -148,9 +150,9 @@ export default class PlayerCard extends PureComponent {
     const color = scale(this.props.percentile).hex();
     return (
       <StyledCard
+        disabled={this.props.disabled}
         style={{
-          backgroundImage: getGradient(color, 'to bottom'),
-          filter: this.props.disabled ? 'grayscale(85%)' : 'none'
+          backgroundImage: getGradient(color, 'to bottom')
         }}
       >
         <TeamLogo
