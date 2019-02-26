@@ -24,7 +24,12 @@ function getGradient(color, direction) {
 
 const StyledCard = styled(Card)({
   paddingTop: `${(1 / CARD_ASPECT_RATIO) * 100}%`,
-  position: 'relative'
+  position: 'relative',
+  transition: 'filter 100ms ease-in-out',
+  // fixes jitter and flickering issues
+  // https://greensock.com/forums/topic/16385-chrome-bug-when-i-scale-an-element-with-background-image-the-image-flickers/?tab=comments#comment-72139
+  WebkitBackfaceVisibility: 'hidden',
+  WebkitTransform: 'perspective(1000px)'
 });
 
 const TeamLogo = styled.div(cover(), {
