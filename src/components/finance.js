@@ -5,22 +5,19 @@ import Typography from '@material-ui/core/Typography';
 import chroma from 'chroma-js';
 import styled from '@emotion/styled';
 import theme from '@trevorblades/mui-theme';
-import withProps from 'recompose/withProps';
-import {Spring} from 'react-spring/renderprops';
+import {Spring, animated} from 'react-spring/renderprops';
 import {TOTAL_BUDGET} from '../util';
 
 const Container = styled.div({
   textAlign: 'center'
 });
 
-const FinanceText = withProps({
-  variant: 'h4'
-})(
-  styled(NumberText)({
-    // 2 is the number of other characters ($ and , or .)
-    width: `${TOTAL_BUDGET.toString().length + 2}ch`
-  })
-);
+const StyledNumberText = styled(NumberText)({
+  // 2 is the number of other characters ($ and , or .)
+  width: `${TOTAL_BUDGET.toString().length + 2}ch`
+});
+
+const FinanceText = animated(StyledNumberText);
 
 const scale = chroma.scale([
   theme.palette.error.main,
@@ -34,6 +31,7 @@ export default function Finance(props) {
       <Spring from={{number: props.from}} to={{number: props.to}}>
         {({number}) => (
           <FinanceText
+            variant="h4"
             color={props.colored ? 'inherit' : 'default'}
             style={{
               color: props.colored ? scale(number / TOTAL_BUDGET).hex() : null

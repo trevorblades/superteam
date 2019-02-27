@@ -3,7 +3,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import EmojiFlag from './emoji-flag';
 import NumberText from './number-text';
 import PropTypes from 'prop-types';
-import React, {Fragment, PureComponent} from 'react';
+import React, {Component, Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
 import amber from '@material-ui/core/colors/amber';
 import blue from '@material-ui/core/colors/blue';
@@ -14,6 +14,7 @@ import mapProps from 'recompose/mapProps';
 import styled from '@emotion/styled';
 import theme from '@trevorblades/mui-theme';
 import withProps from 'recompose/withProps';
+import {Transition, animated} from 'react-spring/renderprops';
 import {cover, transparentize} from 'polished';
 
 export const CARD_ASPECT_RATIO = 3 / 4;
@@ -56,6 +57,11 @@ const Status = styled.div({
     transparentize(0.5, 'black')
   ]})`
 });
+
+const StatusText = withProps({
+  variant: 'h6',
+  color: 'inherit'
+})(NumberText);
 
 const MiniStatus = styled(Typography)({
   margin: 4
@@ -131,7 +137,7 @@ const scale = chroma
   .scale(Object.keys(colors))
   .classes([...Object.values(colors), 1]);
 
-export default class PlayerCard extends PureComponent {
+export default class PlayerCard extends Component {
   static propTypes = {
     disabled: PropTypes.bool,
     cost: PropTypes.number.isRequired,
@@ -172,11 +178,45 @@ export default class PlayerCard extends PureComponent {
           ) : (
             <Fragment>
               <Status>
-                <NumberText color="inherit" variant="h6">
-                  {this.props.selected
-                    ? '✅ Acquired'
-                    : `$${this.props.cost.toLocaleString()}`}
-                </NumberText>
+                <StatusText>
+                  <Transition
+                    native
+                    items={this.props.selected}
+                    initial={{
+                      position: 'absolute',
+                      transform: 'translateY(0%)'
+                    }}
+                    from={{
+                      opacity: 0,
+                      position: 'absolute',
+                      transform: 'translateY(0%)'
+                    }}
+                    enter={{
+                      opacity: 1,
+                      transform: 'translateY(0%)'
+                    }}
+                    leave={{
+                      opacity: 0,
+                      transform: 'translateY(-100%)'
+                    }}
+                  >
+                    {selected =>
+                      selected
+                        ? style => (
+                            <animated.span style={style}>
+                              ✅ Acquired
+                            </animated.span>
+                          )
+                        : style => (
+                            <animated.span style={style}>
+                              ${this.props.cost.toLocaleString()}
+                            </animated.span>
+                          )
+                    }
+                  </Transition>
+                  {/* this is needed because the two statuses are position: absolute */}
+                  &nbsp;{' '}
+                </StatusText>
               </Status>
               <Statistics>
                 <Statistic
