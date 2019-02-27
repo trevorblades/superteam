@@ -1,12 +1,10 @@
-import NumberText from './number-text';
+import Finance from './finance';
 import Paper from '@material-ui/core/Paper';
 import PlayerCard, {CARD_ASPECT_RATIO} from './player-card';
 import PropTypes from 'prop-types';
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import React, {Component} from 'react';
 import styled from '@emotion/styled';
 import theme from '@trevorblades/mui-theme';
-import withProps from 'recompose/withProps';
 import {TEAM_SIZE, TOTAL_BUDGET, getPlayerCardProps} from '../util';
 
 const Container = styled(Paper)({
@@ -38,70 +36,75 @@ const EmptyPlayer = styled(Player)({
   border: `1px solid ${theme.palette.grey[200]}`
 });
 
-const Finance = styled.div({
-  textAlign: 'center'
-});
+export default class Footer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      prevBudget: props.budget
+    };
+  }
 
-const FinanceText = withProps({
-  variant: 'h4'
-})(
-  styled(NumberText)({
-    // 2 is the number of other characters ($ and , or .)
-    width: `${TOTAL_BUDGET.toString().length + 2}ch`
-  })
-);
+  static propTypes = {
+    budget: PropTypes.number.isRequired,
+    selectedPlayers: PropTypes.array.isRequired,
+    minRating: PropTypes.number.isRequired,
+    delta: PropTypes.number.isRequired,
+    onPlayerCardClick: PropTypes.func.isRequired
+  };
 
-export default function Footer(props) {
-  return (
-    <Container component="footer" square elevation={10}>
-      <Finance>
-        <Typography>Amount spent</Typography>
-        <FinanceText color="error">
-          ${(TOTAL_BUDGET - props.budget).toLocaleString()}
-        </FinanceText>
-      </Finance>
-      <Players>
-        {props.selectedPlayers
-          .concat(emptyPlayers)
-          .slice(0, TEAM_SIZE)
-          .map((selectedPlayer, index) => {
-            if (selectedPlayer) {
-              const {player, rating} = selectedPlayer;
-              const {cost, percentile} = getPlayerCardProps(
-                rating,
-                props.minRating,
-                props.delta
-              );
+  componentDidUpdate(prevProps) {
+    if (prevProps.budget !== this.props.budget) {
+      this.setState({
+        prevBudget: prevProps.budget
+      });
+    }
+  }
 
-              return (
-                <Player key={player.id}>
-                  <PlayerCard
-                    selected
-                    mini
-                    percentile={percentile}
-                    cost={cost}
-                    onClick={props.onPlayerCardClick}
-                    player={player}
-                  />
-                </Player>
-              );
-            }
+  render() {
+    return (
+      <Container component="footer" square elevation={10}>
+        <Finance
+          title="Amount spent"
+          from={TOTAL_BUDGET - this.state.prevBudget}
+          to={TOTAL_BUDGET - this.props.budget}
+        />
+        <Players>
+          {this.props.selectedPlayers
+            .concat(emptyPlayers)
+            .slice(0, TEAM_SIZE)
+            .map((selectedPlayer, index) => {
+              if (selectedPlayer) {
+                const {player, rating} = selectedPlayer;
+                const {cost, percentile} = getPlayerCardProps(
+                  rating,
+                  this.props.minRating,
+                  this.props.delta
+                );
 
-            return <EmptyPlayer key={index} />;
-          })}
-      </Players>
-      <Finance>
-        <Typography>Remaining budget</Typography>
-        <FinanceText>${props.budget.toLocaleString()}</FinanceText>
-      </Finance>
-    </Container>
-  );
+                return (
+                  <Player key={player.id}>
+                    <PlayerCard
+                      selected
+                      mini
+                      percentile={percentile}
+                      cost={cost}
+                      onClick={this.props.onPlayerCardClick}
+                      player={player}
+                    />
+                  </Player>
+                );
+              }
+
+              return <EmptyPlayer key={index} />;
+            })}
+        </Players>
+        <Finance
+          colored
+          title="Remaining budget"
+          from={this.state.prevBudget}
+          to={this.props.budget}
+        />
+      </Container>
+    );
+  }
 }
-
-Footer.propTypes = {
-  budget: PropTypes.number.isRequired,
-  selectedPlayers: PropTypes.array.isRequired,
-  minRating: PropTypes.number.isRequired,
-  delta: PropTypes.number.isRequired,
-  onPlayerCardClick: PropTypes.func.isRequired
-};
