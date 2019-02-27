@@ -26,14 +26,11 @@ const Player = styled.div({
   width: playerWidth,
   height: playerWidth / CARD_ASPECT_RATIO,
   borderRadius: theme.shape.borderRadius,
+  boxShadow: `inset 0 0 0 1px ${theme.palette.grey[200]}`,
   backgroundColor: theme.palette.background.default,
   ':not(:last-child)': {
     marginRight: 12
   }
-});
-
-const EmptyPlayer = styled(Player)({
-  border: `1px solid ${theme.palette.grey[200]}`
 });
 
 export default class Footer extends Component {
@@ -95,7 +92,7 @@ export default class Footer extends Component {
                 );
               }
 
-              return <EmptyPlayer key={index} />;
+              return <Player key={index} />;
             })}
         </Players>
         <Finance
