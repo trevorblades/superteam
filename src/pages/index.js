@@ -196,8 +196,6 @@ export const pageQuery = graphql`
         name
         countries {
           code
-          name
-          emoji
         }
       }
     }
