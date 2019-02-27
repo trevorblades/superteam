@@ -17,7 +17,7 @@ const StyledText = styled(Typography)({
     }
   },
   ':not(:last-child)': {
-    marginRight: theme.spacing.unit * 4
+    marginRight: theme.spacing.unit * 3
   }
 });
 
@@ -35,7 +35,7 @@ export default class HeaderItem extends Component {
     return (
       <StyledText
         component="button"
-        variant="h5"
+        variant="h6"
         disabled={this.props.selected}
         color={this.props.selected ? 'default' : 'textSecondary'}
         onClick={this.onClick}
