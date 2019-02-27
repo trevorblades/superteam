@@ -11,7 +11,7 @@ const Container = styled(Paper)({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-evenly',
-  padding: 16,
+  padding: theme.spacing.unit * 2,
   position: 'sticky',
   bottom: 0
 });
@@ -29,7 +29,7 @@ const Player = styled.div({
   boxShadow: `inset 0 0 0 1px ${theme.palette.grey[200]}`,
   backgroundColor: theme.palette.background.default,
   ':not(:last-child)': {
-    marginRight: 12
+    marginRight: theme.spacing.unit * 1.5
   }
 });
 

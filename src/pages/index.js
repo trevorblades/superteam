@@ -36,15 +36,29 @@ const HeaderItem = withProps({
     border: 'none',
     outline: 'none',
     background: 'none',
-    cursor: 'pointer',
-    ':hover': {
-      color: theme.palette.text.hint
+    ':not([disabled])': {
+      cursor: 'pointer',
+      transition: 'opacity 100ms ease-in-out',
+      ':hover': {
+        opacity: 0.7
+      }
     },
     ':not(:last-child)': {
-      marginRight: 32
+      marginRight: theme.spacing.unit * 4
     }
   })
 );
+
+const REGION_ALL = 'ALL';
+const REGION_NA = 'NA';
+const REGION_EU = 'EU';
+const REGION_AS = 'AS';
+const regions = {
+  [REGION_ALL]: 'All players',
+  [REGION_NA]: 'North America',
+  [REGION_EU]: 'Europe',
+  [REGION_AS]: 'Asia'
+};
 
 export default class App extends Component {
   static propTypes = {
@@ -53,8 +67,13 @@ export default class App extends Component {
 
   state = {
     budget: TOTAL_BUDGET,
+    region: REGION_ALL,
     selectedPlayers: []
   };
+
+  onRegionClick(region) {
+    this.setState({region});
+  }
 
   onPlayerCardClick = (player, cost) => {
     this.setState(prevState => {
@@ -88,36 +107,66 @@ export default class App extends Component {
     return (
       <Layout>
         <Header>
-          <HeaderItem>All players</HeaderItem>
-          <HeaderItem color="textSecondary">North America</HeaderItem>
-          <HeaderItem color="textSecondary">Europe</HeaderItem>
-          <HeaderItem color="textSecondary">Asia</HeaderItem>
+          {Object.keys(regions).map(key => {
+            const isSelected = this.state.region === key;
+            return (
+              <HeaderItem
+                key={key}
+                disabled={isSelected}
+                color={isSelected ? 'default' : 'textSecondary'}
+                onClick={() => this.onRegionClick(key)}
+              >
+                {regions[key]}
+              </HeaderItem>
+            );
+          })}
         </Header>
         <Container>
           <Grid container spacing={spacing}>
-            {playerRanking.map(({player, rating}) => {
-              const isSelected = this.isPlayerSelected(player);
-              const {cost, percentile} = getPlayerCardProps(
-                rating,
-                minRating,
-                delta
-              );
+            {playerRanking
+              .filter(({player}) => {
+                if (this.state.region === REGION_ALL) {
+                  return true;
+                }
 
-              return (
-                <Grid item key={player.id} xs={12} sm={6} md={4} lg={3} xl={2}>
-                  <PlayerCard
-                    disabled={
-                      !isSelected && (isTeamFull || this.state.budget < cost)
-                    }
-                    player={player}
-                    percentile={percentile}
-                    cost={cost}
-                    onClick={this.onPlayerCardClick}
-                    selected={isSelected}
-                  />
-                </Grid>
-              );
-            })}
+                switch (this.state.region) {
+                  case REGION_EU:
+                    return player.country.code === 'US';
+                  default:
+                    return false;
+                }
+              })
+              .map(({player, rating}) => {
+                const isSelected = this.isPlayerSelected(player);
+                const {cost, percentile} = getPlayerCardProps(
+                  rating,
+                  minRating,
+                  delta
+                );
+
+                return (
+                  <Grid
+                    item
+                    key={player.id}
+                    xs={12}
+                    sm={6}
+                    md={4}
+                    lg={3}
+                    xl={2}
+                  >
+                    <PlayerCard
+                      disabled={
+                        !isSelected && (isTeamFull || this.state.budget < cost)
+                      }
+                      player={player}
+                      percentile={percentile}
+                      cost={cost}
+                      onClick={this.onPlayerCardClick}
+                      selected={isSelected}
+                    />
+                  </Grid>
+                );
+              })}
           </Grid>
         </Container>
         <Footer

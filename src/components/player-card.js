@@ -64,11 +64,11 @@ const StatusText = withProps({
 })(NumberText);
 
 const MiniStatus = styled(Typography)({
-  margin: 4
+  margin: theme.spacing.unit / 2
 });
 
 const Statistics = styled.div({
-  padding: 16
+  padding: theme.spacing.unit * 2
 });
 
 const Statistic = mapProps(props => ({
@@ -90,18 +90,19 @@ const PlayerName = styled.div({
   position: 'relative'
 });
 
+const playerNamePadding = theme.spacing.unit * 3;
 const playerNameBackground = 'white';
+const PlayerNameInner = styled.div({
+  padding: playerNamePadding,
+  paddingTop: 0,
+  backgroundColor: playerNameBackground
+});
+
 const PlayerNameCurve = styled.svg({
   display: 'block',
   width: '100%',
-  height: 48,
+  height: playerNamePadding * 2,
   fill: playerNameBackground
-});
-
-const PlayerNameInner = styled.div({
-  padding: 24,
-  paddingTop: 0,
-  backgroundColor: playerNameBackground
 });
 
 const PlayerNameText = withProps({
