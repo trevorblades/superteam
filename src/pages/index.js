@@ -1,13 +1,12 @@
 import Footer from '../components/footer';
 import Grid from '@material-ui/core/Grid';
+import HeaderItem from '../components/header-item';
 import Layout from '../components/layout';
 import PlayerCard from '../components/player-card';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
 import theme from '@trevorblades/mui-theme';
-import withProps from 'recompose/withProps';
 import {TEAM_SIZE, TOTAL_BUDGET, getPlayerCardProps} from '../util';
 import {graphql} from 'gatsby';
 
@@ -27,39 +26,6 @@ const Header = styled.header({
   zIndex: 1
 });
 
-const HeaderItem = withProps({
-  component: 'button',
-  variant: 'h5'
-})(
-  styled(Typography)({
-    padding: 0,
-    border: 'none',
-    outline: 'none',
-    background: 'none',
-    ':not([disabled])': {
-      cursor: 'pointer',
-      transition: 'opacity 100ms ease-in-out',
-      ':hover': {
-        opacity: 0.7
-      }
-    },
-    ':not(:last-child)': {
-      marginRight: theme.spacing.unit * 4
-    }
-  })
-);
-
-const REGION_ALL = 'ALL';
-const REGION_NA = 'NA';
-const REGION_EU = 'EU';
-const REGION_AS = 'AS';
-const regions = {
-  [REGION_ALL]: 'All players',
-  [REGION_NA]: 'North America',
-  [REGION_EU]: 'Europe',
-  [REGION_AS]: 'Asia'
-};
-
 export default class App extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired
@@ -67,13 +33,13 @@ export default class App extends Component {
 
   state = {
     budget: TOTAL_BUDGET,
-    region: REGION_ALL,
+    region: null,
     selectedPlayers: []
   };
 
-  onRegionClick(region) {
+  onRegionClick = region => {
     this.setState({region});
-  }
+  };
 
   onPlayerCardClick = (player, cost) => {
     this.setState(prevState => {
@@ -99,42 +65,62 @@ export default class App extends Component {
 
   render() {
     const {playerRanking} = this.props.data.hltv;
+
+    const {continents} = this.props.data.countries;
+
+    const countries = Array.from(
+      new Set(playerRanking.map(({player}) => player.country.code))
+    );
+
+    const filteredContinents = continents.filter(continent =>
+      continent.countries.some(country => countries.includes(country.code))
+    );
+
+    const regions = filteredContinents.reduce(
+      (acc, continent) => ({
+        ...acc,
+        [continent.code]: continent.countries.map(country => country.code)
+      }),
+      {}
+    );
+
     const ratings = playerRanking.map(player => player.rating);
     const minRating = Math.min(...ratings);
     const maxRating = Math.max(...ratings);
     const delta = maxRating - minRating;
+
     const isTeamFull = this.state.selectedPlayers.length >= TEAM_SIZE;
+
     return (
       <Layout>
         <Header>
-          {Object.keys(regions).map(key => {
-            const isSelected = this.state.region === key;
-            return (
-              <HeaderItem
-                key={key}
-                disabled={isSelected}
-                color={isSelected ? 'default' : 'textSecondary'}
-                onClick={() => this.onRegionClick(key)}
-              >
-                {regions[key]}
-              </HeaderItem>
-            );
-          })}
+          <HeaderItem
+            selected={!this.state.region}
+            value={null}
+            onClick={this.onRegionClick}
+          >
+            All players
+          </HeaderItem>
+          {filteredContinents.map(continent => (
+            <HeaderItem
+              key={continent.code}
+              selected={this.state.region === continent.code}
+              value={continent.code}
+              onClick={this.onRegionClick}
+            >
+              {continent.name}
+            </HeaderItem>
+          ))}
         </Header>
         <Container>
           <Grid container spacing={spacing}>
             {playerRanking
               .filter(({player}) => {
-                if (this.state.region === REGION_ALL) {
+                if (!this.state.region) {
                   return true;
                 }
 
-                switch (this.state.region) {
-                  case REGION_EU:
-                    return player.country.code === 'US';
-                  default:
-                    return false;
-                }
+                return regions[this.state.region].includes(player.country.code);
               })
               .map(({player, rating}) => {
                 const isSelected = this.isPlayerSelected(player);
@@ -189,6 +175,17 @@ export default class App extends Component {
 
 export const pageQuery = graphql`
   {
+    countries {
+      continents {
+        code
+        name
+        countries {
+          code
+          name
+          emoji
+        }
+      }
+    }
     hltv {
       playerRanking(
         startDate: "2018-01-01"

@@ -17,6 +17,14 @@ module.exports = {
       }
     },
     {
+      resolve: 'gatsby-source-graphql',
+      options: {
+        typeName: 'Countries',
+        fieldName: 'countries',
+        url: 'https://countries.trevorblades.com'
+      }
+    },
+    {
       resolve: '@wapps/gatsby-plugin-material-ui',
       options: {
         theme
