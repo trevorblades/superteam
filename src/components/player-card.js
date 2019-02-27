@@ -3,7 +3,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import EmojiFlag from './emoji-flag';
 import NumberText from './number-text';
 import PropTypes from 'prop-types';
-import React, {Component, Fragment} from 'react';
+import React, {Fragment, PureComponent} from 'react';
 import Typography from '@material-ui/core/Typography';
 import amber from '@material-ui/core/colors/amber';
 import blue from '@material-ui/core/colors/blue';
@@ -137,7 +137,7 @@ const scale = chroma
   .scale(Object.keys(colors))
   .classes([...Object.values(colors), 1]);
 
-export default class PlayerCard extends Component {
+export default class PlayerCard extends PureComponent {
   static propTypes = {
     disabled: PropTypes.bool,
     cost: PropTypes.number.isRequired,
