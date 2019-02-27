@@ -11,6 +11,8 @@ const Container = styled(Paper)({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-evenly',
+  flexShrink: 0,
+  marginTop: 'auto',
   padding: theme.spacing.unit * 2,
   position: 'sticky',
   bottom: 0
