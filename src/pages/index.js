@@ -66,17 +66,22 @@ export default class App extends Component {
   render() {
     const {playerRanking} = this.props.data.hltv;
 
-    const {continents} = this.props.data.countries;
+    const ratings = [];
+    const countries = [];
+    playerRanking.forEach(({player, rating}) => {
+      ratings.push(rating);
 
-    const countries = Array.from(
-      new Set(playerRanking.map(({player}) => player.country.code))
-    );
+      const {code} = player.country;
+      if (!countries.includes(code)) {
+        countries.push(code);
+      }
+    });
 
-    const filteredContinents = continents.filter(continent =>
+    const continents = this.props.data.countries.continents.filter(continent =>
       continent.countries.some(country => countries.includes(country.code))
     );
 
-    const regions = filteredContinents.reduce(
+    const regions = continents.reduce(
       (acc, continent) => ({
         ...acc,
         [continent.code]: continent.countries.map(country => country.code)
@@ -84,13 +89,10 @@ export default class App extends Component {
       {}
     );
 
-    const ratings = playerRanking.map(player => player.rating);
     const minRating = Math.min(...ratings);
     const maxRating = Math.max(...ratings);
     const delta = maxRating - minRating;
-
     const isTeamFull = this.state.selectedPlayers.length >= TEAM_SIZE;
-
     return (
       <Layout>
         <Header>
@@ -101,7 +103,7 @@ export default class App extends Component {
           >
             All players
           </HeaderItem>
-          {filteredContinents.map(continent => (
+          {continents.map(continent => (
             <HeaderItem
               key={continent.code}
               selected={this.state.region === continent.code}
