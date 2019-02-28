@@ -1,4 +1,7 @@
+const dotenv = require('dotenv');
 const theme = require('@trevorblades/mui-theme').default;
+
+dotenv.config();
 
 module.exports = {
   siteMetadata: {
@@ -8,14 +11,6 @@ module.exports = {
   plugins: [
     'gatsby-plugin-emotion',
     'gatsby-plugin-react-helmet',
-    {
-      resolve: 'gatsby-source-graphql',
-      options: {
-        typeName: 'HLTV',
-        fieldName: 'hltv',
-        url: 'http://localhost:4000'
-      }
-    },
     {
       resolve: 'gatsby-source-graphql',
       options: {

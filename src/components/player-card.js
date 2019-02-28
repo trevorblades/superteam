@@ -141,20 +141,28 @@ const scale = chroma
 export default class PlayerCard extends PureComponent {
   static propTypes = {
     disabled: PropTypes.bool,
-    cost: PropTypes.number.isRequired,
     player: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
-    percentile: PropTypes.number.isRequired,
     selected: PropTypes.bool.isRequired,
     mini: PropTypes.bool
   };
 
   onClick = () => {
-    this.props.onClick(this.props.player.id, this.props.cost);
+    this.props.onClick(this.props.player.id, this.props.player.cost);
   };
 
   render() {
-    const color = scale(this.props.percentile).hex();
+    const {
+      percentile,
+      cost,
+      team,
+      statistics,
+      country,
+      ign,
+      name,
+      image
+    } = this.props.player;
+    const color = scale(percentile).hex();
     return (
       <StyledCard
         disabled={this.props.disabled}
@@ -164,8 +172,7 @@ export default class PlayerCard extends PureComponent {
       >
         <TeamLogo
           style={{
-            backgroundImage:
-              this.props.player.team && `url(${this.props.player.team.logo})`
+            backgroundImage: team && `url(${team.logo})`
           }}
         />
         <StyledCardActionArea
@@ -210,7 +217,7 @@ export default class PlayerCard extends PureComponent {
                           )
                         : style => (
                             <animated.span style={style}>
-                              ${this.props.cost.toLocaleString()}
+                              ${cost.toLocaleString()}
                             </animated.span>
                           )
                     }
@@ -220,25 +227,13 @@ export default class PlayerCard extends PureComponent {
                 </StatusText>
               </Status>
               <Statistics>
-                <Statistic
-                  title="K/D"
-                  value={this.props.player.statistics.kdRatio}
-                />
-                <Statistic
-                  title="ADR"
-                  value={this.props.player.statistics.damagePerRound}
-                />
-                <Statistic
-                  title="HS%"
-                  value={this.props.player.statistics.headshots}
-                />
+                <Statistic title="K/D" value={statistics.kdRatio} />
+                <Statistic title="ADR" value={statistics.damagePerRound} />
+                <Statistic title="HS%" value={statistics.headshots} />
               </Statistics>
             </Fragment>
           )}
-          <PlayerImage
-            src={this.props.player.image}
-            centered={this.props.mini}
-          />
+          <PlayerImage src={image} centered={this.props.mini} />
           <Glow
             style={{
               backgroundImage: getGradient(color, 'to top')
@@ -247,7 +242,7 @@ export default class PlayerCard extends PureComponent {
           {this.props.mini ? (
             <MiniPlayerName>
               <Typography align="center" noWrap variant="caption">
-                {this.props.player.ign}
+                {ign}
               </Typography>
             </MiniPlayerName>
           ) : (
@@ -256,12 +251,9 @@ export default class PlayerCard extends PureComponent {
                 <path d="M 0,48 Q 50,0 100,48 Z" fill="white" />
               </PlayerNameCurve>
               <PlayerNameInner>
-                <PlayerNameText variant="h6">
-                  {this.props.player.ign}
-                </PlayerNameText>
+                <PlayerNameText variant="h6">{ign}</PlayerNameText>
                 <PlayerNameText>
-                  <EmojiFlag country={this.props.player.country} />{' '}
-                  {this.props.player.name}
+                  <EmojiFlag country={country} /> {name}
                 </PlayerNameText>
               </PlayerNameInner>
             </PlayerName>

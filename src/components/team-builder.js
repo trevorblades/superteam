@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import styled from '@emotion/styled';
 import theme from '@trevorblades/mui-theme';
-import {TEAM_SIZE, TOTAL_BUDGET, getPlayerCardProps} from '../util';
+import {TEAM_SIZE, TOTAL_BUDGET} from '../util';
 import {cover} from 'polished';
 
 const Container = styled.div(cover(), {
@@ -35,11 +35,10 @@ const Header = styled.header({
 
 export default class TeamBuilder extends Component {
   static propTypes = {
-    delta: PropTypes.number.isRequired,
-    minRating: PropTypes.number.isRequired,
-    playerRanking: PropTypes.array.isRequired,
-    filteredContinents: PropTypes.array.isRequired,
-    regions: PropTypes.object.isRequired
+    pageContext: PropTypes.shape({
+      players: PropTypes.array.isRequired,
+      continents: PropTypes.array.isRequired
+    }).isRequired
   };
 
   state = {
@@ -66,15 +65,14 @@ export default class TeamBuilder extends Component {
     });
   };
 
-  isPlayerSelected(player) {
-    return this.getSelectedIndex(player) > -1;
-  }
+  isPlayerSelected = player => this.getSelectedIndex(player) > -1;
 
   getSelectedIndex(player) {
     return this.state.selectedPlayers.indexOf(player.id);
   }
 
   render() {
+    const {continents, players} = this.props.pageContext;
     const isTeamFull = this.state.selectedPlayers.length >= TEAM_SIZE;
     return (
       <Layout>
@@ -87,7 +85,7 @@ export default class TeamBuilder extends Component {
             >
               All players
             </HeaderItem>
-            {this.props.filteredContinents.map(continent => (
+            {continents.map(continent => (
               <HeaderItem
                 key={continent.code}
                 selected={this.state.region === continent.code}
@@ -100,24 +98,12 @@ export default class TeamBuilder extends Component {
           </Header>
           <GridWrapper>
             <Grid container spacing={spacing}>
-              {this.props.playerRanking
-                .filter(({player}) => {
-                  if (!this.state.region) {
-                    return true;
-                  }
-
-                  return this.props.regions[this.state.region].includes(
-                    player.country.code
-                  );
-                })
-                .map(({player, rating}) => {
+              {players
+                .filter(player =>
+                  this.state.region ? this.state.region === player.region : true
+                )
+                .map(player => {
                   const isSelected = this.isPlayerSelected(player);
-                  const {cost, percentile} = getPlayerCardProps(
-                    rating,
-                    this.props.minRating,
-                    this.props.delta
-                  );
-
                   return (
                     <Grid
                       item
@@ -131,11 +117,9 @@ export default class TeamBuilder extends Component {
                       <PlayerCard
                         disabled={
                           !isSelected &&
-                          (isTeamFull || this.state.budget < cost)
+                          (isTeamFull || this.state.budget < player.cost)
                         }
                         player={player}
-                        percentile={percentile}
-                        cost={cost}
                         onClick={this.onPlayerCardClick}
                         selected={isSelected}
                       />
@@ -147,14 +131,10 @@ export default class TeamBuilder extends Component {
           <Footer
             budget={this.state.budget}
             onPlayerCardClick={this.onPlayerCardClick}
-            minRating={this.props.minRating}
-            delta={this.props.delta}
-            selectedPlayers={this.props.playerRanking
-              .filter(({player}) => this.isPlayerSelected(player))
+            players={players
+              .filter(this.isPlayerSelected)
               .sort(
-                (a, b) =>
-                  this.getSelectedIndex(a.player) -
-                  this.getSelectedIndex(b.player)
+                (a, b) => this.getSelectedIndex(a) - this.getSelectedIndex(b)
               )}
           />
         </Container>

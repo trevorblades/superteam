@@ -24,7 +24,7 @@ const StyledText = styled(Typography)({
 export default class HeaderItem extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.string,
     onClick: PropTypes.func.isRequired,
     selected: PropTypes.bool.isRequired
   };

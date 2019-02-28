@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import styled from '@emotion/styled';
 import theme from '@trevorblades/mui-theme';
-import {TEAM_SIZE, TOTAL_BUDGET, getPlayerCardProps} from '../util';
+import {TEAM_SIZE, TOTAL_BUDGET} from '../util';
 
 const Container = styled(Paper)({
   display: 'flex',
@@ -45,9 +45,7 @@ export default class Footer extends Component {
 
   static propTypes = {
     budget: PropTypes.number.isRequired,
-    selectedPlayers: PropTypes.array.isRequired,
-    minRating: PropTypes.number.isRequired,
-    delta: PropTypes.number.isRequired,
+    players: PropTypes.array.isRequired,
     onPlayerCardClick: PropTypes.func.isRequired
   };
 
@@ -68,25 +66,16 @@ export default class Footer extends Component {
           to={TOTAL_BUDGET - this.props.budget}
         />
         <Players>
-          {this.props.selectedPlayers
+          {this.props.players
             .concat(emptyPlayers)
             .slice(0, TEAM_SIZE)
-            .map((selectedPlayer, index) => {
-              if (selectedPlayer) {
-                const {player, rating} = selectedPlayer;
-                const {cost, percentile} = getPlayerCardProps(
-                  rating,
-                  this.props.minRating,
-                  this.props.delta
-                );
-
+            .map((player, index) => {
+              if (player) {
                 return (
                   <Player key={player.id}>
                     <PlayerCard
                       selected
                       mini
-                      percentile={percentile}
-                      cost={cost}
                       onClick={this.props.onPlayerCardClick}
                       player={player}
                     />
