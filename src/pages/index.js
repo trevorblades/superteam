@@ -1,7 +1,7 @@
-import Game from '../components/game';
 import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
+import TeamBuilder from '../components/team-builder';
 import {graphql} from 'gatsby';
 
 export default function App(props) {
@@ -21,7 +21,7 @@ export default function App(props) {
   const maxRating = Math.max(...ratings);
   return (
     <Layout>
-      <Game
+      <TeamBuilder
         delta={maxRating - minRating}
         minRating={minRating}
         filteredContinents={filteredContinents}

@@ -33,7 +33,7 @@ const Header = styled.header({
   zIndex: 1
 });
 
-export default class Game extends Component {
+export default class TeamBuilder extends Component {
   static propTypes = {
     delta: PropTypes.number.isRequired,
     minRating: PropTypes.number.isRequired,
