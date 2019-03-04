@@ -38,9 +38,7 @@ async function update() {
       await Statistics.upsert({
         ...statistics,
         headshots,
-        playerId: id,
-        // TODO: remove this after https://github.com/gigobyte/HLTV/pull/138
-        grenadeDamagePerRound: statistics.granadeDamagePerRound
+        playerId: id
       });
 
       if (playerTeam) {
