@@ -8,7 +8,8 @@ export const Player = sequelize.define('player', {
   name: Sequelize.STRING,
   ign: Sequelize.STRING,
   country: Sequelize.STRING,
-  image: Sequelize.STRING
+  image: Sequelize.STRING,
+  rating: Sequelize.FLOAT
 });
 
 export const Statistics = sequelize.define(
@@ -23,7 +24,7 @@ export const Statistics = sequelize.define(
     killsPerRound: Sequelize.FLOAT,
     assistsPerRound: Sequelize.FLOAT,
     deathsPerRound: Sequelize.FLOAT,
-    granadeDamagePerRound: Sequelize.FLOAT
+    grenadeDamagePerRound: Sequelize.FLOAT
   },
   {
     name: {

@@ -28,15 +28,19 @@ async function update() {
         });
       }
 
-      await player.update({image});
+      await player.update({
+        image,
+        rating
+      });
 
       const {statistics} = await HLTV.getPlayerStats({id});
       const headshots = parseFloat(statistics.headshots).toPrecision(3) / 100;
       await Statistics.upsert({
         ...statistics,
         headshots,
-        rating,
-        playerId: id
+        playerId: id,
+        // TODO: remove this after https://github.com/gigobyte/HLTV/pull/138
+        grenadeDamagePerRound: statistics.granadeDamagePerRound
       });
 
       if (playerTeam) {
