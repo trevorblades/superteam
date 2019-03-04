@@ -8,13 +8,21 @@ export const typeDefs = gql`
     ign: String
     country: String
     image: String
+    team: Team
+    statistics: Statistics
+  }
+
+  type Statistics {
     rating: Float
     kills: Int
-    headshots: Float
     deaths: Int
     kdRatio: Float
+    headshots: Float
     damagePerRound: Float
-    team: Team
+    killsPerRound: Float
+    assistsPerRound: Float
+    deathsPerRound: Float
+    granadeDamagePerRound: Float
   }
 
   type Team {
@@ -33,6 +41,10 @@ export const typeDefs = gql`
 `;
 
 export const resolvers = {
+  Player: {
+    team: parent => parent.getTeam(),
+    statistics: parent => parent.getStatistics()
+  },
   Query: {
     team: (parent, args) => Team.findByPk(args.id),
     teams: () => Team.findAll(),

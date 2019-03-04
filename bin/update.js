@@ -1,6 +1,6 @@
 #!/usr/bin/env node -r esm -r dotenv/config
 import {HLTV} from 'hltv';
-import {Player, Team, sequelize} from '../db';
+import {Player, Statistics, Team, sequelize} from '../db';
 
 async function update() {
   const playerRanking = await HLTV.getPlayerRanking({
@@ -28,13 +28,15 @@ async function update() {
         });
       }
 
+      await player.update({image});
+
       const {statistics} = await HLTV.getPlayerStats({id});
-      const headshots = parseFloat(statistics.headshots) / 100;
-      await player.update({
+      const headshots = parseFloat(statistics.headshots).toPrecision(3) / 100;
+      await Statistics.upsert({
         ...statistics,
         headshots,
-        image,
-        rating
+        rating,
+        playerId: id
       });
 
       if (playerTeam) {
