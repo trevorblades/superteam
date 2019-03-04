@@ -1,7 +1,6 @@
 import Footer from './footer';
 import Grid from '@material-ui/core/Grid';
 import HeaderItem from './header-item';
-import Layout from './layout';
 import PlayerCard from './player-card';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
@@ -35,10 +34,8 @@ const Header = styled.header({
 
 export default class TeamBuilder extends Component {
   static propTypes = {
-    pageContext: PropTypes.shape({
-      players: PropTypes.array.isRequired,
-      continents: PropTypes.array.isRequired
-    }).isRequired
+    players: PropTypes.array.isRequired,
+    continents: PropTypes.array.isRequired
   };
 
   state = {
@@ -72,73 +69,70 @@ export default class TeamBuilder extends Component {
   }
 
   render() {
-    const {continents, players} = this.props.pageContext;
     const isTeamFull = this.state.selectedPlayers.length >= TEAM_SIZE;
     return (
-      <Layout>
-        <Container>
-          <Header>
+      <Container>
+        <Header>
+          <HeaderItem
+            selected={!this.state.region}
+            value={null}
+            onClick={this.onRegionClick}
+          >
+            All players
+          </HeaderItem>
+          {this.props.continents.map(continent => (
             <HeaderItem
-              selected={!this.state.region}
-              value={null}
+              key={continent.code}
+              selected={this.state.region === continent.code}
+              value={continent.code}
               onClick={this.onRegionClick}
             >
-              All players
+              {continent.name}
             </HeaderItem>
-            {continents.map(continent => (
-              <HeaderItem
-                key={continent.code}
-                selected={this.state.region === continent.code}
-                value={continent.code}
-                onClick={this.onRegionClick}
-              >
-                {continent.name}
-              </HeaderItem>
-            ))}
-          </Header>
-          <GridWrapper>
-            <Grid container spacing={spacing}>
-              {players
-                .filter(player =>
-                  this.state.region ? this.state.region === player.region : true
-                )
-                .map(player => {
-                  const isSelected = this.isPlayerSelected(player);
-                  return (
-                    <Grid
-                      item
-                      key={player.id}
-                      xs={12}
-                      sm={6}
-                      md={4}
-                      lg={3}
-                      xl={2}
-                    >
-                      <PlayerCard
-                        disabled={
-                          !isSelected &&
-                          (isTeamFull || this.state.budget < player.cost)
-                        }
-                        player={player}
-                        onClick={this.onPlayerCardClick}
-                        selected={isSelected}
-                      />
-                    </Grid>
-                  );
-                })}
-            </Grid>
-          </GridWrapper>
-          <Footer
-            budget={this.state.budget}
-            onPlayerCardClick={this.onPlayerCardClick}
-            players={players
-              .filter(this.isPlayerSelected)
-              .sort(
-                (a, b) => this.getSelectedIndex(a) - this.getSelectedIndex(b)
-              )}
-          />
-        </Container>
-      </Layout>
+          ))}
+        </Header>
+        <GridWrapper>
+          <Grid container spacing={spacing}>
+            {this.props.players
+              .filter(player =>
+                this.state.region ? this.state.region === player.region : true
+              )
+              .map(player => {
+                const isSelected = this.isPlayerSelected(player);
+                return (
+                  <Grid
+                    item
+                    key={player.id}
+                    xs={12}
+                    sm={6}
+                    md={4}
+                    lg={3}
+                    xl={2}
+                  >
+                    <PlayerCard
+                      disabled={
+                        !isSelected &&
+                        (isTeamFull || this.state.budget < player.cost)
+                      }
+                      player={player}
+                      onClick={this.onPlayerCardClick}
+                      selected={isSelected}
+                    />
+                  </Grid>
+                );
+              })}
+          </Grid>
+        </GridWrapper>
+        <Footer
+          budget={this.state.budget}
+          onPlayerCardClick={this.onPlayerCardClick}
+          players={this.props.players
+            .filter(this.isPlayerSelected)
+            .sort(
+              (a, b) => this.getSelectedIndex(a) - this.getSelectedIndex(b)
+            )}
+        />
+      </Container>
     );
   }
 }

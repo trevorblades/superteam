@@ -1,6 +1,5 @@
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import EmojiFlag from './emoji-flag';
 import NumberText from './number-text';
 import PropTypes from 'prop-types';
 import React, {Fragment, PureComponent} from 'react';
@@ -9,6 +8,7 @@ import amber from '@material-ui/core/colors/amber';
 import blue from '@material-ui/core/colors/blue';
 import chroma from 'chroma-js';
 import deepPurple from '@material-ui/core/colors/deepPurple';
+import emojiFlags from 'emoji-flags';
 import green from '@material-ui/core/colors/green';
 import mapProps from 'recompose/mapProps';
 import styled from '@emotion/styled';
@@ -151,6 +151,22 @@ export default class PlayerCard extends PureComponent {
     this.props.onClick(this.props.player.id, this.props.player.cost);
   };
 
+  renderStatistics(statistics) {
+    const headshots = statistics.headshots * 100;
+    return (
+      <Statistics>
+        <Statistic title="K/D" value={statistics.kdRatio} />
+        <Statistic title="ADR" value={statistics.damagePerRound} />
+        <Statistic
+          title="HS%"
+          value={headshots.toLocaleString({
+            style: 'percent'
+          })}
+        />
+      </Statistics>
+    );
+  }
+
   render() {
     const {
       percentile,
@@ -226,11 +242,7 @@ export default class PlayerCard extends PureComponent {
                   &nbsp;{' '}
                 </StatusText>
               </Status>
-              <Statistics>
-                <Statistic title="K/D" value={statistics.kdRatio} />
-                <Statistic title="ADR" value={statistics.damagePerRound} />
-                <Statistic title="HS%" value={statistics.headshots} />
-              </Statistics>
+              {this.renderStatistics(statistics)}
             </Fragment>
           )}
           <PlayerImage src={image} centered={this.props.mini} />
@@ -253,7 +265,7 @@ export default class PlayerCard extends PureComponent {
               <PlayerNameInner>
                 <PlayerNameText variant="h6">{ign}</PlayerNameText>
                 <PlayerNameText>
-                  <EmojiFlag country={country} /> {name}
+                  {emojiFlags.countryCode(country).emoji} {name}
                 </PlayerNameText>
               </PlayerNameInner>
             </PlayerName>

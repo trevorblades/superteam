@@ -20,6 +20,14 @@ module.exports = {
       }
     },
     {
+      resolve: 'gatsby-source-graphql',
+      options: {
+        typeName: 'CSGO',
+        fieldName: 'csgo',
+        url: 'http://localhost:4000'
+      }
+    },
+    {
       resolve: '@wapps/gatsby-plugin-material-ui',
       options: {
         theme
