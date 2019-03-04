@@ -6,16 +6,13 @@ import {AVERATE_PLAYER_COST} from '../util';
 import {graphql} from 'gatsby';
 
 export default function Home(props) {
-  const ratings = props.data.csgo.players.map(
-    player => player.statistics.rating
-  );
-
+  const ratings = props.data.csgo.players.map(player => player.rating);
   const minRating = Math.min(...ratings);
   const maxRating = Math.max(...ratings);
   const delta = maxRating - minRating;
 
   const players = props.data.csgo.players.map(player => {
-    const percentile = (player.statistics.rating - minRating) / delta;
+    const percentile = (player.rating - minRating) / delta;
     const cost = AVERATE_PLAYER_COST * (percentile + 0.5);
     const continent = props.data.countries.continents.find(({countries}) =>
       countries.some(country => country.code === player.country)
@@ -66,6 +63,7 @@ export const pageQuery = graphql`
         ign
         image
         country
+        rating
         team {
           id
           name
