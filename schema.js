@@ -9,6 +9,11 @@ export const typeDefs = gql`
     country: String
     image: String
     rating: Float
+    kills: Int
+    headshots: Float
+    deaths: Int
+    kdRatio: Float
+    damagePerRound: Float
     team: Team
   }
 

@@ -10,16 +10,14 @@ async function update() {
     rankingFilter: 'Top50'
   });
 
-  return Promise.all(
-    playerRanking.map(async ({id, rating}) => {
-      const {
-        name,
-        ign,
-        country,
-        image,
-        team: playerTeam
-      } = await HLTV.getPlayer({id});
+  let updated = 0;
+  for (let i = 0; i < playerRanking.length; i++) {
+    const {id, rating} = playerRanking[i];
+    const {name, ign, country, image, team: playerTeam} = await HLTV.getPlayer({
+      id
+    });
 
+    try {
       let player = await Player.findByPk(id);
       if (!player) {
         player = await Player.create({
@@ -30,18 +28,19 @@ async function update() {
         });
       }
 
+      const {statistics} = await HLTV.getPlayerStats({id});
+      const headshots = parseFloat(statistics.headshots) / 100;
       await player.update({
+        ...statistics,
+        headshots,
         image,
         rating
       });
 
-      // const {statistics} = await HLTV.getPlayerStats({id});
-
       if (playerTeam) {
-        const {name, logo} = await HLTV.getTeam({id: playerTeam.id});
-
         let team = await Team.findByPk(playerTeam.id);
         if (!team) {
+          const {name, logo} = await HLTV.getTeam({id: playerTeam.id});
           team = await Team.create({
             id: playerTeam.id,
             name,
@@ -52,12 +51,16 @@ async function update() {
         await player.setTeam(team);
       }
 
-      return player;
-    })
-  );
+      updated += 1;
+    } catch (error) {
+      console.log(ign, error.message);
+    }
+  }
+
+  return updated;
 }
 
-update().then(async players => {
+update().then(async updated => {
   await sequelize.close();
-  console.log(`${players.length} players updated`);
+  console.log(`${updated} players updated`);
 });
