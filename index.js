@@ -1,22 +1,13 @@
-import {ApolloServer, gql} from 'apollo-server';
-
-const typeDefs = gql`
-  type Query {
-    foo: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    foo: () => 'bar'
-  }
-};
+import {ApolloServer} from 'apollo-server';
+import {resolvers, typeDefs} from './schema';
+import {sequelize} from './db';
 
 const server = new ApolloServer({
   typeDefs,
   resolvers
 });
 
-server.listen(process.env.PORT).then(({url}) => {
+sequelize.sync().then(async () => {
+  const {url} = await server.listen(process.env.PORT);
   console.log(`🚀 Server ready at ${url}`);
 });

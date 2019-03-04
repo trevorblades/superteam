@@ -1,0 +1,63 @@
+#!/usr/bin/env node -r esm -r dotenv/config
+import {HLTV} from 'hltv';
+import {Player, Team, sequelize} from '../db';
+
+async function update() {
+  const playerRanking = await HLTV.getPlayerRanking({
+    startDate: '2018-01-01',
+    endDate: '2018-12-31',
+    matchType: 'Lan',
+    rankingFilter: 'Top50'
+  });
+
+  return Promise.all(
+    playerRanking.map(async ({id, rating}) => {
+      const {
+        name,
+        ign,
+        country,
+        image,
+        team: playerTeam
+      } = await HLTV.getPlayer({id});
+
+      let player = await Player.findByPk(id);
+      if (!player) {
+        player = await Player.create({
+          id,
+          name,
+          ign,
+          country: country.code
+        });
+      }
+
+      await player.update({
+        image,
+        rating
+      });
+
+      // const {statistics} = await HLTV.getPlayerStats({id});
+
+      if (playerTeam) {
+        const {name, logo} = await HLTV.getTeam({id: playerTeam.id});
+
+        let team = await Team.findByPk(playerTeam.id);
+        if (!team) {
+          team = await Team.create({
+            id: playerTeam.id,
+            name,
+            logo
+          });
+        }
+
+        await player.setTeam(team);
+      }
+
+      return player;
+    })
+  );
+}
+
+update().then(async players => {
+  await sequelize.close();
+  console.log(`${players.length} players updated`);
+});
