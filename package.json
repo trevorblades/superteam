@@ -1,0 +1,23 @@
+{
+  "engines": {
+    "node": "10"
+  },
+  "scripts": {
+    "pretest": "estlint index.js",
+    "test": "echo \"Error: no test specified\" && exit",
+    "start": "nodemon -r esm -r dotenv/config index.js"
+  },
+  "dependencies": {
+    "apollo-server": "^2.4.8",
+    "esm": "^3.2.10",
+    "graphql": "^14.1.1",
+    "pg": "^7.8.1",
+    "sequelize": "^4.43.0"
+  },
+  "devDependencies": {
+    "@trevorblades/eslint-config": "^6.21.0",
+    "dotenv": "^6.2.0",
+    "eslint": "^5.15.0",
+    "nodemon": "^1.18.10"
+  }
+}
