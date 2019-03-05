@@ -19,7 +19,10 @@ export default function CheckoutDialog(props) {
     <Fragment>
       <DialogTitle>Finalize your team</DialogTitle>
       <DialogContent>
-        <DialogContentText gutterBottom>blah blah</DialogContentText>
+        <DialogContentText gutterBottom>
+          Here&apos;s your team! If this looks right to you, sign in with
+          Twitter and hit &quot;save&quot;.
+        </DialogContentText>
         <Table padding="none">
           <TableHead>
             <TableRow>

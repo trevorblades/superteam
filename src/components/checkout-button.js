@@ -46,6 +46,7 @@ export default class CheckoutButton extends Component {
         </StyledButton>
         <Dialog
           fullWidth
+          scroll="body"
           open={this.state.dialogOpen}
           onClose={this.closeDialog}
         >
