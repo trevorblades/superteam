@@ -17,10 +17,10 @@ const Container = styled.div(cover(), {
   overflow: 'auto'
 });
 
-const spacing = 40;
-const halfSpacing = spacing / 2;
+const gridSpacing = 40;
+const halfGridSpacing = gridSpacing / 2;
 const GridWrapper = styled.div({
-  padding: spacing
+  padding: gridSpacing
 });
 
 const Regions = withTheme()(
@@ -39,8 +39,8 @@ const Regions = withTheme()(
     return {
       display: 'flex',
       flexShrink: 0,
-      margin: `${halfSpacing}px 0 ${-halfSpacing}px`,
-      padding: `${halfSpacing}px ${spacing}px`,
+      margin: `${halfGridSpacing}px 0 ${-halfGridSpacing}px`,
+      padding: `${halfGridSpacing}px ${gridSpacing}px`,
       position: 'sticky',
       backgroundColor: theme.palette.background.default,
       top: minHeight,
@@ -116,7 +116,7 @@ export default class App extends Component {
           ))}
         </Regions>
         <GridWrapper>
-          <Grid container spacing={spacing}>
+          <Grid container spacing={gridSpacing}>
             {this.props.players
               .filter(player =>
                 this.state.region ? this.state.region === player.region : true
