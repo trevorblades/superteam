@@ -1,6 +1,6 @@
 #!/usr/bin/env node -r esm -r dotenv/config
 import {HLTV} from 'hltv';
-import {Player, Statistics, Team, sequelize} from '../db';
+import {Player, Statistics, Team, sequelize} from '../src/db';
 
 async function update() {
   const playerRanking = await HLTV.getPlayerRanking({
