@@ -38,7 +38,7 @@ const GridWrapper = styled.div({
 
 const Regions = withTheme()(
   styled.header(({theme}) => {
-    const {minWidth, ...toolbar} = theme.mixins.toolbar;
+    const {minHeight, ...toolbar} = theme.mixins.toolbar;
     const styles = Object.keys(toolbar).reduce((acc, key) => {
       const {minHeight} = toolbar[key];
       return {
@@ -56,7 +56,7 @@ const Regions = withTheme()(
       padding: `${halfSpacing}px ${spacing}px`,
       position: 'sticky',
       backgroundColor: theme.palette.background.default,
-      top: minWidth,
+      top: minHeight,
       zIndex: 1,
       ...styles
     };
