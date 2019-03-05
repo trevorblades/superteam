@@ -22,9 +22,9 @@ module.exports = {
     {
       resolve: 'gatsby-source-graphql',
       options: {
-        typeName: 'CSGO',
-        fieldName: 'csgo',
-        url: 'http://localhost:4000'
+        typeName: 'Superteam',
+        fieldName: 'superteam',
+        url: 'https://superteamgg.herokuapp.com'
       }
     },
     {

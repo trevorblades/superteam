@@ -6,12 +6,13 @@ import {AVERATE_PLAYER_COST} from '../utils/constants';
 import {graphql} from 'gatsby';
 
 export default function CSGO(props) {
-  const ratings = props.data.csgo.players.map(player => player.rating);
+  const ratings = props.data.superteam.players.map(player => player.rating);
   const minRating = Math.min(...ratings);
   const maxRating = Math.max(...ratings);
   const delta = maxRating - minRating;
 
-  const players = props.data.csgo.players.map(player => {
+  // TODO: move continent/region attribute to the database
+  const players = props.data.superteam.players.map(player => {
     const percentile = (player.rating - minRating) / delta;
     const cost = AVERATE_PLAYER_COST * (percentile + 0.5);
     const continent = props.data.countries.continents.find(({countries}) =>
@@ -56,7 +57,7 @@ export const pageQuery = graphql`
         }
       }
     }
-    csgo {
+    superteam {
       players {
         id
         name

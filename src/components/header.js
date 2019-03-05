@@ -36,7 +36,8 @@ const NavItem = withProps({
   styled(Typography)({
     display: 'flex',
     alignItems: 'center',
-    padding: `0 ${16}px`,
+    margin: `0 ${8}px`,
+    padding: `0 ${8}px`,
     borderBottom: '2px solid transparent',
     textDecoration: 'none'
   })
