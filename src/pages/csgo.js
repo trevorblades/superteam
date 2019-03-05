@@ -5,7 +5,7 @@ import React from 'react';
 import {AVERATE_PLAYER_COST} from '../utils/constants';
 import {graphql} from 'gatsby';
 
-export default function CSGO(props) {
+export default function Csgo(props) {
   const ratings = props.data.superteam.players.map(player => player.rating);
   const minRating = Math.min(...ratings);
   const maxRating = Math.max(...ratings);
@@ -42,7 +42,7 @@ export default function CSGO(props) {
   );
 }
 
-CSGO.propTypes = {
+Csgo.propTypes = {
   data: PropTypes.object.isRequired
 };
 
