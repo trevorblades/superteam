@@ -9,7 +9,8 @@ module.exports = {
       main: '#0000ff'
     },
     secondary: {
-      main: '#ff0000'
+      main: '#00be00',
+      contrastText: '#fff'
     }
   },
   typography: {

@@ -1,13 +1,11 @@
-import AppBar from '@material-ui/core/AppBar';
+import CheckoutButton from './checkout-button';
 import Footer from './footer';
 import Grid from '@material-ui/core/Grid';
+import Header from './header';
 import PlayerCard from './player-card';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Region from './region';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import logo from '../assets/logo.png';
 import styled from '@emotion/styled';
 import {TEAM_SIZE, TOTAL_BUDGET} from '../utils/constants';
 import {cover} from 'polished';
@@ -17,17 +15,6 @@ const Container = styled.div(cover(), {
   display: 'flex',
   flexDirection: 'column',
   overflow: 'auto'
-});
-
-const Logo = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  margin: '0 auto'
-});
-
-const StyledImage = styled.img({
-  width: 48,
-  marginRight: 8
 });
 
 const spacing = 40;
@@ -100,16 +87,15 @@ export default class App extends Component {
   }
 
   render() {
+    const isTeamFull = this.state.selectedPlayers.length >= TEAM_SIZE;
+    const selectedPlayers = this.props.players
+      .filter(this.isPlayerSelected)
+      .sort((a, b) => this.getSelectedIndex(a) - this.getSelectedIndex(b));
     return (
       <Container>
-        <AppBar position="sticky" color="inherit" elevation={0}>
-          <Toolbar>
-            <Logo>
-              <StyledImage src={logo} />
-              <Typography variant="h6">Superteam</Typography>
-            </Logo>
-          </Toolbar>
-        </AppBar>
+        <Header>
+          <CheckoutButton players={selectedPlayers} />
+        </Header>
         <Regions>
           <Region
             selected={!this.state.region}
@@ -150,8 +136,7 @@ export default class App extends Component {
                     <PlayerCard
                       disabled={
                         !isSelected &&
-                        (this.state.selectedPlayers.length >= TEAM_SIZE ||
-                          this.state.budget < player.cost)
+                        (isTeamFull || this.state.budget < player.cost)
                       }
                       player={player}
                       onClick={this.onPlayerCardClick}
@@ -165,11 +150,7 @@ export default class App extends Component {
         <Footer
           budget={this.state.budget}
           onPlayerCardClick={this.onPlayerCardClick}
-          players={this.props.players
-            .filter(this.isPlayerSelected)
-            .sort(
-              (a, b) => this.getSelectedIndex(a) - this.getSelectedIndex(b)
-            )}
+          players={selectedPlayers}
         />
       </Container>
     );
