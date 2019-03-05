@@ -5,7 +5,7 @@ dotenv.config();
 
 module.exports = {
   siteMetadata: {
-    title: 'CS:GO App',
+    title: 'Superteam',
     description: 'Testing HLTV data'
   },
   plugins: [
