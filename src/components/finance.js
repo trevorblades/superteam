@@ -4,9 +4,8 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import chroma from 'chroma-js';
 import styled from '@emotion/styled';
-import theme from '@trevorblades/mui-theme';
 import {Spring, animated} from 'react-spring/renderprops';
-import {TOTAL_BUDGET} from '../util';
+import {TOTAL_BUDGET} from '../utils/constants';
 
 const Container = styled.div({
   textAlign: 'center'
@@ -19,10 +18,7 @@ const StyledNumberText = styled(NumberText)({
 
 const FinanceText = animated(StyledNumberText);
 
-const scale = chroma.scale([
-  theme.palette.error.main,
-  theme.palette.common.black
-]);
+const scale = chroma.scale(['red', 'black']);
 
 export default function Finance(props) {
   return (

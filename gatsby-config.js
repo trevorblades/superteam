@@ -1,5 +1,5 @@
 const dotenv = require('dotenv');
-const theme = require('@trevorblades/mui-theme').default;
+const theme = require('./src/utils/theme');
 
 dotenv.config();
 
@@ -28,7 +28,7 @@ module.exports = {
       }
     },
     {
-      resolve: '@wapps/gatsby-plugin-material-ui',
+      resolve: 'gatsby-plugin-material-ui',
       options: {
         theme
       }

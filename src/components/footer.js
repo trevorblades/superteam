@@ -4,8 +4,8 @@ import PlayerCard, {CARD_ASPECT_RATIO} from './player-card';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import styled from '@emotion/styled';
-import theme from '@trevorblades/mui-theme';
-import {TEAM_SIZE, TOTAL_BUDGET} from '../util';
+import {TEAM_SIZE, TOTAL_BUDGET} from '../utils/constants';
+import {withTheme} from '@material-ui/core/styles';
 
 const Container = styled(Paper)({
   display: 'flex',
@@ -13,7 +13,7 @@ const Container = styled(Paper)({
   justifyContent: 'space-evenly',
   flexShrink: 0,
   marginTop: 'auto',
-  padding: theme.spacing.unit * 2,
+  padding: 16,
   position: 'sticky',
   bottom: 0
 });
@@ -24,16 +24,18 @@ const Players = styled.div({
 
 const playerWidth = 90;
 const emptyPlayers = Array(TEAM_SIZE).fill(null);
-const Player = styled.div({
-  width: playerWidth,
-  height: playerWidth / CARD_ASPECT_RATIO,
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: `inset 0 0 0 1px ${theme.palette.grey[200]}`,
-  backgroundColor: theme.palette.background.default,
-  ':not(:last-child)': {
-    marginRight: theme.spacing.unit * 1.5
-  }
-});
+const Player = withTheme()(
+  styled.div(({theme}) => ({
+    width: playerWidth,
+    height: playerWidth / CARD_ASPECT_RATIO,
+    borderRadius: theme.shape.borderRadius,
+    boxShadow: `inset 0 0 0 1px ${theme.palette.divider}`,
+    backgroundColor: theme.palette.background.default,
+    ':not(:last-child)': {
+      marginRight: 12
+    }
+  }))
+);
 
 export default class Footer extends Component {
   constructor(props) {

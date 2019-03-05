@@ -1,8 +1,8 @@
+import App from '../components/app';
 import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
-import TeamBuilder from '../components/team-builder';
-import {AVERATE_PLAYER_COST} from '../util';
+import {AVERATE_PLAYER_COST} from '../utils/constants';
 import {graphql} from 'gatsby';
 
 export default function Home(props) {
@@ -36,7 +36,7 @@ export default function Home(props) {
 
   return (
     <Layout>
-      <TeamBuilder players={players} continents={continents} />
+      <App players={players} continents={continents} />
     </Layout>
   );
 }

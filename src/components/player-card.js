@@ -6,13 +6,13 @@ import React, {Fragment, PureComponent} from 'react';
 import Typography from '@material-ui/core/Typography';
 import amber from '@material-ui/core/colors/amber';
 import blue from '@material-ui/core/colors/blue';
+import blueGrey from '@material-ui/core/colors/blueGrey';
 import chroma from 'chroma-js';
 import deepPurple from '@material-ui/core/colors/deepPurple';
 import emojiFlags from 'emoji-flags';
 import green from '@material-ui/core/colors/green';
 import mapProps from 'recompose/mapProps';
 import styled from '@emotion/styled';
-import theme from '@trevorblades/mui-theme';
 import withProps from 'recompose/withProps';
 import {Transition, animated} from 'react-spring/renderprops';
 import {cover, transparentize} from 'polished';
@@ -64,11 +64,11 @@ const StatusText = withProps({
 })(NumberText);
 
 const MiniStatus = styled(Typography)({
-  margin: theme.spacing.unit / 2
+  margin: 4
 });
 
 const Statistics = styled.div({
-  padding: theme.spacing.unit * 2
+  padding: 16
 });
 
 const Statistic = mapProps(props => ({
@@ -90,7 +90,7 @@ const PlayerName = styled.div({
   position: 'relative'
 });
 
-const playerNamePadding = theme.spacing.unit * 3;
+const playerNamePadding = 24;
 const playerNameBackground = 'white';
 const PlayerNameInner = styled.div({
   padding: playerNamePadding,
@@ -127,7 +127,7 @@ const Glow = styled.div({
 });
 
 const colors = {
-  [theme.palette.grey[500]]: 0,
+  [blueGrey[500]]: 0,
   [green[500]]: 0.1,
   [blue[500]]: 0.4,
   [deepPurple[500]]: 0.7,

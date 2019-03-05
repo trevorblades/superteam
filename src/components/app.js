@@ -1,18 +1,33 @@
+import AppBar from '@material-ui/core/AppBar';
 import Footer from './footer';
 import Grid from '@material-ui/core/Grid';
-import HeaderItem from './header-item';
 import PlayerCard from './player-card';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import Region from './region';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import logo from '../assets/logo.png';
 import styled from '@emotion/styled';
-import theme from '@trevorblades/mui-theme';
-import {TEAM_SIZE, TOTAL_BUDGET} from '../util';
+import {TEAM_SIZE, TOTAL_BUDGET} from '../utils/constants';
 import {cover} from 'polished';
+import {withTheme} from '@material-ui/core/styles';
 
 const Container = styled.div(cover(), {
   display: 'flex',
   flexDirection: 'column',
   overflow: 'auto'
+});
+
+const Logo = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  margin: '0 auto'
+});
+
+const StyledImage = styled.img({
+  width: 48,
+  marginRight: 8
 });
 
 const spacing = 40;
@@ -21,18 +36,34 @@ const GridWrapper = styled.div({
   padding: spacing
 });
 
-const Header = styled.header({
-  display: 'flex',
-  flexShrink: 0,
-  margin: `${halfSpacing}px 0 ${-halfSpacing}px`,
-  padding: `${halfSpacing}px ${spacing}px`,
-  position: 'sticky',
-  backgroundColor: theme.palette.background.default,
-  top: 0,
-  zIndex: 1
-});
+const Regions = withTheme()(
+  styled.header(({theme}) => {
+    const {minWidth, ...toolbar} = theme.mixins.toolbar;
+    const styles = Object.keys(toolbar).reduce((acc, key) => {
+      const {minHeight} = toolbar[key];
+      return {
+        ...acc,
+        [key]: {
+          top: minHeight
+        }
+      };
+    }, {});
 
-export default class TeamBuilder extends Component {
+    return {
+      display: 'flex',
+      flexShrink: 0,
+      margin: `${halfSpacing}px 0 ${-halfSpacing}px`,
+      padding: `${halfSpacing}px ${spacing}px`,
+      position: 'sticky',
+      backgroundColor: theme.palette.background.default,
+      top: minWidth,
+      zIndex: 1,
+      ...styles
+    };
+  })
+);
+
+export default class App extends Component {
   static propTypes = {
     players: PropTypes.array.isRequired,
     continents: PropTypes.array.isRequired
@@ -69,28 +100,35 @@ export default class TeamBuilder extends Component {
   }
 
   render() {
-    const isTeamFull = this.state.selectedPlayers.length >= TEAM_SIZE;
     return (
       <Container>
-        <Header>
-          <HeaderItem
+        <AppBar position="sticky" color="inherit" elevation={0}>
+          <Toolbar>
+            <Logo>
+              <StyledImage src={logo} />
+              <Typography variant="h6">Superteam</Typography>
+            </Logo>
+          </Toolbar>
+        </AppBar>
+        <Regions>
+          <Region
             selected={!this.state.region}
             value={null}
             onClick={this.onRegionClick}
           >
             All players
-          </HeaderItem>
+          </Region>
           {this.props.continents.map(continent => (
-            <HeaderItem
+            <Region
               key={continent.code}
               selected={this.state.region === continent.code}
               value={continent.code}
               onClick={this.onRegionClick}
             >
               {continent.name}
-            </HeaderItem>
+            </Region>
           ))}
-        </Header>
+        </Regions>
         <GridWrapper>
           <Grid container spacing={spacing}>
             {this.props.players
@@ -112,7 +150,8 @@ export default class TeamBuilder extends Component {
                     <PlayerCard
                       disabled={
                         !isSelected &&
-                        (isTeamFull || this.state.budget < player.cost)
+                        (this.state.selectedPlayers.length >= TEAM_SIZE ||
+                          this.state.budget < player.cost)
                       }
                       player={player}
                       onClick={this.onPlayerCardClick}

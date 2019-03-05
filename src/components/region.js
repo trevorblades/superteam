@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
-import theme from '@trevorblades/mui-theme';
 
 const StyledText = styled(Typography)({
   padding: 0,
@@ -17,11 +16,11 @@ const StyledText = styled(Typography)({
     }
   },
   ':not(:last-child)': {
-    marginRight: theme.spacing.unit * 3
+    marginRight: 24
   }
 });
 
-export default class HeaderItem extends Component {
+export default class Region extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
     value: PropTypes.string,
