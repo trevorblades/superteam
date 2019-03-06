@@ -5,7 +5,6 @@ import {stringify} from 'querystring';
 import {userFromToken} from '../utils/user-from-storage';
 import {withApollo} from 'react-apollo';
 
-const socket = io(process.env.GATSBY_API_URL);
 class TwitterLogin extends Component {
   static propTypes = {
     client: PropTypes.object.isRequired,
@@ -19,7 +18,8 @@ class TwitterLogin extends Component {
   dialog = null;
 
   componentDidMount() {
-    socket.on('token', token => {
+    this.socket = io(process.env.GATSBY_API_URL);
+    this.socket.on('token', token => {
       this.dialog.close();
       localStorage.setItem('token', token);
       this.props.client.writeData({
@@ -51,7 +51,7 @@ class TwitterLogin extends Component {
     const width = 600;
     const height = 600;
     return window.open(
-      `${process.env.GATSBY_API_URL}/twitter?socketId=${socket.id}`,
+      `${process.env.GATSBY_API_URL}/twitter?socketId=${this.socket.id}`,
       '',
       stringify(
         {

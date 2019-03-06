@@ -11,6 +11,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TextField from '@material-ui/core/TextField';
 import TwitterLogin from './twitter-login';
 import styled from '@emotion/styled';
 import withUser from './with-user';
@@ -39,9 +40,16 @@ function CheckoutDialog(props) {
       <DialogTitle>Finalize your team</DialogTitle>
       <DialogContent>
         <DialogContentText gutterBottom>
-          Here&apos;s your team! If this looks right to you, sign in with
-          Twitter and hit &quot;save&quot;.
+          That&apos;s a nice looking team! Now give it a name and save it to
+          enter the competition.
         </DialogContentText>
+        <TextField
+          autoFocus
+          margin="normal"
+          fullWidth
+          label="Your team name"
+          variant="outlined"
+        />
         <Table padding="none">
           <TableHead>
             <TableRow>
@@ -82,7 +90,7 @@ function CheckoutDialog(props) {
                 onClick={startAuth}
               >
                 <FaTwitter size={20} style={{marginRight: 8}} />
-                Log in with Twitter
+                Log in to save
               </TwitterButton>
             )}
           </DialogActions>

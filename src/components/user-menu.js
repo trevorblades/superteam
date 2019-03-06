@@ -36,7 +36,6 @@ class UserMenu extends Component {
         user: null
       }
     });
-    this.props.client.clearStore();
   };
 
   render() {
