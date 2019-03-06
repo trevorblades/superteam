@@ -8,7 +8,7 @@ import {MdShoppingCart} from 'react-icons/md';
 import {TEAM_SIZE} from '../utils/constants';
 
 const StyledButton = styled(Button)({
-  marginLeft: 'auto'
+  marginLeft: 16
 });
 
 export default class CheckoutButton extends Component {
