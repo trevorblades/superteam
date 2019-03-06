@@ -1,19 +1,23 @@
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import NoSsr from '@material-ui/core/NoSsr';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import TwitterLogin from './twitter-login';
 import Typography from '@material-ui/core/Typography';
+import UserMenu from './user-menu';
 import compose from 'recompose/compose';
 import logo from '../assets/logo.png';
 import mapProps from 'recompose/mapProps';
 import styled from '@emotion/styled';
 import withProps from 'recompose/withProps';
+import withUser from './with-user';
 import {FaTwitter} from 'react-icons/fa';
 import {Link, StaticQuery, graphql} from 'gatsby';
+import {TWITTER_BLUE} from '../utils/constants';
 import {withTheme} from '@material-ui/core/styles';
 
 const Logo = styled.div({
@@ -70,10 +74,10 @@ const RightActions = styled.div({
 
 const StyledAvatar = styled(Avatar)({
   color: 'white',
-  backgroundColor: '#38a1f3'
+  backgroundColor: TWITTER_BLUE
 });
 
-export default function Header(props) {
+function Header(props) {
   return (
     <AppBar position="sticky" color="inherit" elevation={0}>
       <Toolbar>
@@ -103,19 +107,25 @@ export default function Header(props) {
           />
         </Logo>
         <RightActions>
-          <TwitterLogin>
-            {({pending, startAuth}) => (
-              <Tooltip title="Log in with Twitter">
-                <StyledAvatar
-                  component={ButtonBase}
-                  onClick={startAuth}
-                  disabled={pending}
-                >
-                  <FaTwitter size={20} />
-                </StyledAvatar>
-              </Tooltip>
+          <NoSsr>
+            {props.user ? (
+              <UserMenu user={props.user} />
+            ) : (
+              <TwitterLogin>
+                {({pending, startAuth}) => (
+                  <Tooltip title="Log in with Twitter">
+                    <StyledAvatar
+                      component={ButtonBase}
+                      onClick={startAuth}
+                      disabled={pending}
+                    >
+                      <FaTwitter size={20} />
+                    </StyledAvatar>
+                  </Tooltip>
+                )}
+              </TwitterLogin>
             )}
-          </TwitterLogin>
+          </NoSsr>
           {props.children}
         </RightActions>
       </Toolbar>
@@ -124,5 +134,8 @@ export default function Header(props) {
 }
 
 Header.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
+  user: PropTypes.object
 };
+
+export default withUser(Header);

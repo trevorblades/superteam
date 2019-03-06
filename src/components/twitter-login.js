@@ -2,10 +2,13 @@ import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 import {Component} from 'react';
 import {stringify} from 'querystring';
+import {userFromToken} from '../utils/user-from-storage';
+import {withApollo} from 'react-apollo';
 
 const socket = io(process.env.GATSBY_API_URL);
-export default class TwitterLogin extends Component {
+class TwitterLogin extends Component {
   static propTypes = {
+    client: PropTypes.object.isRequired,
     children: PropTypes.func.isRequired
   };
 
@@ -16,9 +19,14 @@ export default class TwitterLogin extends Component {
   dialog = null;
 
   componentDidMount() {
-    socket.on('user', user => {
+    socket.on('token', token => {
       this.dialog.close();
-      console.log(user);
+      localStorage.setItem('token', token);
+      this.props.client.writeData({
+        data: {
+          user: userFromToken(token)
+        }
+      });
     });
   }
 
@@ -80,3 +88,5 @@ export default class TwitterLogin extends Component {
     });
   }
 }
+
+export default withApollo(TwitterLogin);

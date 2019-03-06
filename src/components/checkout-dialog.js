@@ -13,13 +13,15 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TwitterLogin from './twitter-login';
 import styled from '@emotion/styled';
+import withUser from './with-user';
 import {FaChevronLeft, FaTwitter} from 'react-icons/fa';
-import {TOTAL_BUDGET} from '../utils/constants';
+import {MdCheck} from 'react-icons/md';
+import {TOTAL_BUDGET, TWITTER_BLUE} from '../utils/constants';
 import {withTheme} from '@material-ui/core/styles';
 
 const TwitterButton = withTheme()(
   styled(Button)(({theme}) => {
-    const {main, dark} = theme.palette.augmentColor({main: '#38a1f3'});
+    const {main, dark} = theme.palette.augmentColor({main: TWITTER_BLUE});
     return {
       color: 'white',
       backgroundColor: main,
@@ -30,7 +32,7 @@ const TwitterButton = withTheme()(
   })
 );
 
-export default function CheckoutDialog(props) {
+function CheckoutDialog(props) {
   const totalCost = props.players.reduce((acc, player) => acc + player.cost, 0);
   return (
     <Fragment>
@@ -68,14 +70,21 @@ export default function CheckoutDialog(props) {
               <FaChevronLeft style={{marginRight: 8}} />
               Go back
             </Button>
-            <TwitterButton
-              variant="contained"
-              disabled={pending}
-              onClick={startAuth}
-            >
-              <FaTwitter size={20} style={{marginRight: 8}} />
-              Log in with Twitter
-            </TwitterButton>
+            {props.user ? (
+              <Button variant="contained" color="primary">
+                <MdCheck size={20} style={{marginRight: 8}} />
+                Save team
+              </Button>
+            ) : (
+              <TwitterButton
+                variant="contained"
+                disabled={pending}
+                onClick={startAuth}
+              >
+                <FaTwitter size={20} style={{marginRight: 8}} />
+                Log in with Twitter
+              </TwitterButton>
+            )}
           </DialogActions>
         )}
       </TwitterLogin>
@@ -85,5 +94,8 @@ export default function CheckoutDialog(props) {
 
 CheckoutDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
-  players: PropTypes.array.isRequired
+  players: PropTypes.array.isRequired,
+  user: PropTypes.object
 };
+
+export default withUser(CheckoutDialog);
