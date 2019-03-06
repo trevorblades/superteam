@@ -43,3 +43,9 @@ export const Team = sequelize.define('team', {
 
 Player.belongsTo(Team);
 Team.hasMany(Player);
+
+export const User = sequelize.define('user', {
+  username: Sequelize.STRING,
+  displayName: Sequelize.STRING,
+  profileImage: Sequelize.STRING
+});

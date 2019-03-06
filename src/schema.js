@@ -1,5 +1,5 @@
 import {Player, Team} from './db';
-import {gql} from 'apollo-server';
+import {gql} from 'apollo-server-express';
 
 export const typeDefs = gql`
   type Player {
