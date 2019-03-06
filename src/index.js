@@ -1,6 +1,7 @@
 import cors from 'cors';
 import express from 'express';
 import http from 'http';
+import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import session from 'express-session';
 import socketio from 'socket.io';
@@ -44,13 +45,14 @@ passport.use(
       const {id, username, displayName, photos} = profile;
       let user = await User.findByPk(id);
       if (!user) {
-        user = await User.create({
-          id,
-          username,
-          displayName,
-          profileImage: photos[0].value.replace(/_normal/, '')
-        });
+        user = await User.create({id});
       }
+
+      await user.update({
+        username,
+        displayName,
+        profileImage: photos[0].value.replace(/_normal/, '')
+      });
 
       cb(null, user);
     }
@@ -65,7 +67,8 @@ function addSocketIdToSession(req, res, next) {
 const twitterAuth = passport.authenticate('twitter');
 app.get('/twitter', addSocketIdToSession, twitterAuth);
 app.get('/twitter/callback', twitterAuth, (req, res) => {
-  io.in(req.session.socketId).emit('user', req.user.get());
+  const token = jwt.sign(req.user.get(), process.env.TOKEN_SECRET);
+  io.in(req.session.socketId).emit('token', token);
   res.end();
 });
 
