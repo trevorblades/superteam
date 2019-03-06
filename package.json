@@ -23,7 +23,8 @@
     "react-helmet": "^5.2.0",
     "react-icons": "^3.4.0",
     "react-spring": "^8.0.8",
-    "recompose": "^0.30.0"
+    "recompose": "^0.30.0",
+    "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
     "@trevorblades/eslint-config": "^6.21.0",

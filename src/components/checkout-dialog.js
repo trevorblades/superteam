@@ -11,6 +11,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TwitterButton from './twitter-button';
 import {TOTAL_BUDGET} from '../utils/constants';
 
 export default function CheckoutDialog(props) {
@@ -46,7 +47,8 @@ export default function CheckoutDialog(props) {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.onClose}>Go back</Button>
-        <Button color="primary">Save team</Button>
+        {/* <Button color="primary">Save team</Button> */}
+        <TwitterButton />
       </DialogActions>
     </Fragment>
   );

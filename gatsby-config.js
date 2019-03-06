@@ -24,7 +24,7 @@ module.exports = {
       options: {
         typeName: 'Superteam',
         fieldName: 'superteam',
-        url: 'https://superteamgg.herokuapp.com'
+        url: `${process.env.GATSBY_API_URL}/graphql`
       }
     },
     {
