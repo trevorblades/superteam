@@ -13,17 +13,20 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
 import TwitterLogin from './twitter-login';
+import gql from 'graphql-tag';
 import styled from '@emotion/styled';
 import withUser from './with-user';
 import {FaChevronLeft, FaTwitter} from 'react-icons/fa';
 import {MdCheck} from 'react-icons/md';
+import {Mutation} from 'react-apollo';
 import {TOTAL_BUDGET, TWITTER_BLUE} from '../utils/constants';
 import {withTheme} from '@material-ui/core/styles';
 
-const TwitterButton = withTheme()(
+const StyledButton = withTheme()(
   styled(Button)(({theme}) => {
     const {main, dark} = theme.palette.augmentColor({main: TWITTER_BLUE});
     return {
+      marginRight: 4,
       color: 'white',
       backgroundColor: main,
       ':hover': {
@@ -44,9 +47,12 @@ function CheckoutDialog(props) {
           enter the competition.
         </DialogContentText>
         <TextField
-          autoFocus
-          margin="normal"
+          required
           fullWidth
+          autoFocus
+          spellCheck={false}
+          autoComplete="off"
+          margin="normal"
           label="Your team name"
           variant="outlined"
         />
@@ -71,31 +77,54 @@ function CheckoutDialog(props) {
           </TableBody>
         </Table>
       </DialogContent>
-      <TwitterLogin>
-        {({pending, startAuth}) => (
-          <DialogActions>
-            <Button onClick={props.onClose} style={{marginRight: 'auto'}}>
-              <FaChevronLeft style={{marginRight: 8}} />
-              Go back
-            </Button>
-            {props.user ? (
-              <Button variant="contained" color="primary">
+      <DialogActions>
+        <Button onClick={props.onClose} style={{marginRight: 'auto'}}>
+          <FaChevronLeft style={{marginRight: 8}} />
+          Go back
+        </Button>
+        {props.user ? (
+          <Mutation
+            mutation={gql`
+              mutation CreateTeam($name: String, $players: [String]!) {
+                createTeam(name: $name, players: $players) {
+                  id
+                  name
+                  players {
+                    id
+                    name
+                    ign
+                  }
+                }
+              }
+            `}
+          >
+            {(createTeam, {loading}) => (
+              <Button
+                variant="contained"
+                color="primary"
+                disabled={loading}
+                onClick={createTeam}
+              >
                 <MdCheck size={20} style={{marginRight: 8}} />
                 Save team
               </Button>
-            ) : (
-              <TwitterButton
+            )}
+          </Mutation>
+        ) : (
+          <TwitterLogin>
+            {({pending, startAuth}) => (
+              <StyledButton
                 variant="contained"
                 disabled={pending}
                 onClick={startAuth}
               >
                 <FaTwitter size={20} style={{marginRight: 8}} />
                 Log in to save
-              </TwitterButton>
+              </StyledButton>
             )}
-          </DialogActions>
+          </TwitterLogin>
         )}
-      </TwitterLogin>
+      </DialogActions>
     </Fragment>
   );
 }
