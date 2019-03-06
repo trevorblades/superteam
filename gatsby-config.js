@@ -6,7 +6,8 @@ dotenv.config();
 module.exports = {
   siteMetadata: {
     title: 'Superteam',
-    description: 'Testing HLTV data'
+    description:
+      'Assemble a dream team of your favourite esports stars and compete against others to see who makes the best picks.'
   },
   plugins: [
     'gatsby-plugin-emotion',
