@@ -50,7 +50,7 @@ class UserMenu extends Component {
           />
         </Tooltip>
         <Menu
-          disableAutoFocusItem
+          disableRestoreFocus
           anchorEl={this.state.anchorEl}
           open={Boolean(this.state.anchorEl)}
           onClose={this.closeMenu}
@@ -63,6 +63,8 @@ class UserMenu extends Component {
             horizontal: 'right'
           }}
         >
+          <MenuItem>Your teams</MenuItem>
+          <MenuItem>Settings</MenuItem>
           <MenuItem onClick={this.logout}>Log out</MenuItem>
         </Menu>
       </Fragment>
