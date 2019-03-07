@@ -20,6 +20,7 @@ import {CREATE_ENTRY} from '../utils/queries';
 import {FaChevronLeft} from 'react-icons/fa';
 import {Mutation} from 'react-apollo';
 import {TOTAL_BUDGET} from '../utils/constants';
+import {css} from '@emotion/core';
 import {navigate} from 'gatsby';
 import {scale} from '../utils/scale';
 import {size} from 'polished';
@@ -34,7 +35,9 @@ const PlayerCell = styled.div({
 const StyledAvatar = styled(Avatar)(size(32), {
   alignItems: 'flex-start',
   marginRight: 12,
-  img: size('150%')
+  img: css(size('150%'), {
+    objectPosition: 'top'
+  })
 });
 
 function CheckoutDialog(props) {
@@ -45,7 +48,7 @@ function CheckoutDialog(props) {
       variables={{
         playerIds: props.players.map(player => player.id)
       }}
-      onCompleted={data => navigate(`/entries/${data.createEntry.id}`)}
+      onCompleted={data => navigate(`/teams/${data.createEntry.slug}`)}
     >
       {(createTeam, {loading, error}) => (
         <form

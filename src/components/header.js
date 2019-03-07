@@ -1,6 +1,6 @@
 import AppBar from '@material-ui/core/AppBar';
-import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import Avatar from '@material-ui/core/Avatar'; // eslint-disable-line sort-imports-es6-autofix/sort-imports-es6
 import NoSsr from 'react-no-ssr';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -40,33 +40,38 @@ const Nav = styled.nav({
   alignSelf: 'stretch'
 });
 
-const NavItem = withProps({
-  variant: 'subtitle1'
-})(
-  styled(Typography)({
-    display: 'flex',
-    alignItems: 'center',
-    margin: `0 ${8}px`,
-    padding: `0 ${8}px`,
-    borderBottom: '2px solid transparent',
-    textDecoration: 'none'
-  })
-);
-
-const NavLink = compose(
+const NavItem = compose(
   withTheme(),
-  mapProps(({theme, ...props}) => {
+  withProps({variant: 'subtitle1'})
+)(
+  styled(Typography)(({theme}) => {
     const {main} = theme.palette.primary;
     return {
-      ...props,
-      component: Link,
-      activeStyle: {
+      display: 'flex',
+      alignItems: 'center',
+      margin: `0 ${8}px`,
+      padding: `0 ${8}px`,
+      borderBottom: '2px solid transparent',
+      textDecoration: 'none',
+      '&.active': {
         color: main,
         borderColor: main
       }
     };
   })
-)(NavItem);
+);
+
+const NavLink = withProps({
+  activeClassName: 'active'
+})(Link);
+
+const PartialNavLink = mapProps(({className, ...props}) => ({
+  ...props,
+  getProps: ({isPartiallyCurrent}) =>
+    isPartiallyCurrent
+      ? {className: [className, 'active'].join(' ')}
+      : {className}
+}))(Link);
 
 const RightActions = styled.div({
   display: 'flex',
@@ -83,10 +88,13 @@ function Header(props) {
     <AppBar position="sticky" color="inherit" elevation={0}>
       <Toolbar>
         <Nav>
-          <NavLink to="/">Home</NavLink>
-          <NavLink to="/csgo">CS:GO</NavLink>
+          <NavItem component={NavLink} to="/">
+            Home
+          </NavItem>
+          <NavItem component={PartialNavLink} to="/csgo">
+            CS:GO
+          </NavItem>
           <NavItem color="textSecondary">DOTA 2</NavItem>
-          <NavItem color="textSecondary">NBA</NavItem>
         </Nav>
         <Logo>
           <StyledImage src={logo} />

@@ -5,6 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
+import {Link} from 'gatsby';
 import {withApollo} from 'react-apollo';
 
 class UserMenu extends Component {
@@ -51,6 +52,7 @@ class UserMenu extends Component {
         </Tooltip>
         <Menu
           disableRestoreFocus
+          disableAutoFocusItem
           anchorEl={this.state.anchorEl}
           open={Boolean(this.state.anchorEl)}
           onClose={this.closeMenu}
@@ -63,7 +65,9 @@ class UserMenu extends Component {
             horizontal: 'center'
           }}
         >
-          <MenuItem>Your teams</MenuItem>
+          <MenuItem component={Link} to="/entries">
+            My entries
+          </MenuItem>
           <MenuItem>Settings</MenuItem>
           <MenuItem onClick={this.logout}>Log out</MenuItem>
         </Menu>
