@@ -28,7 +28,7 @@ function CheckoutDialog(props) {
         playerIds: props.players.map(player => player.id)
       }}
     >
-      {(createTeam, {loading}) => (
+      {(createTeam, {loading, error}) => (
         <form
           onSubmit={event => {
             event.preventDefault();
@@ -59,6 +59,8 @@ function CheckoutDialog(props) {
               label="Your team name"
               variant="outlined"
               name="name"
+              error={Boolean(error)}
+              helperText={error && error.message}
             />
             <Table padding="none">
               <TableHead>
