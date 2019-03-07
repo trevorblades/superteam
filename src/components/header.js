@@ -23,6 +23,7 @@ import {withTheme} from '@material-ui/core/styles';
 const Logo = styled.div({
   display: 'flex',
   alignItems: 'center',
+  pointerEvents: 'none',
   position: 'absolute',
   top: '50%',
   left: '50%',

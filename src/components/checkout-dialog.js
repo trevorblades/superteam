@@ -14,7 +14,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
 import withUser from './with-user';
-import {CREATE_TEAM} from '../utils/queries';
+import {CREATE_ENTRY} from '../utils/queries';
 import {FaChevronLeft} from 'react-icons/fa';
 import {Mutation} from 'react-apollo';
 import {TOTAL_BUDGET} from '../utils/constants';
@@ -23,7 +23,7 @@ function CheckoutDialog(props) {
   const totalCost = props.players.reduce((acc, player) => acc + player.cost, 0);
   return (
     <Mutation
-      mutation={CREATE_TEAM}
+      mutation={CREATE_ENTRY}
       variables={{
         playerIds: props.players.map(player => player.id)
       }}

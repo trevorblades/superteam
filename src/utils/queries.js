@@ -11,9 +11,9 @@ export const GET_USER = gql`
   }
 `;
 
-export const CREATE_TEAM = gql`
-  mutation CreateTeam($name: String, $playerIds: [String]!) {
-    createTeam(name: $name, playerIds: $playerIds) {
+export const CREATE_ENTRY = gql`
+  mutation CreateEntry($name: String!, $playerIds: [String]!) {
+    createEntry(name: $name, playerIds: $playerIds) {
       id
       name
       players {
