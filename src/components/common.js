@@ -5,5 +5,5 @@ export const Hero = styled.section({
 });
 
 export const Section = styled.section({
-  padding: `${64}px ${48}px`
+  padding: `${56}px ${48}px`
 });
