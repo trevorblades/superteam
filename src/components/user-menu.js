@@ -56,11 +56,11 @@ class UserMenu extends Component {
           onClose={this.closeMenu}
           anchorOrigin={{
             vertical: 'top',
-            horizontal: 'right'
+            horizontal: 'center'
           }}
           transformOrigin={{
             vertical: 'top',
-            horizontal: 'right'
+            horizontal: 'center'
           }}
         >
           <MenuItem>Your teams</MenuItem>

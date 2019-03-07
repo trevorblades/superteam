@@ -13,8 +13,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
-import gql from 'graphql-tag';
 import withUser from './with-user';
+import {CREATE_TEAM} from '../utils/queries';
 import {FaChevronLeft} from 'react-icons/fa';
 import {Mutation} from 'react-apollo';
 import {TOTAL_BUDGET} from '../utils/constants';
@@ -23,19 +23,7 @@ function CheckoutDialog(props) {
   const totalCost = props.players.reduce((acc, player) => acc + player.cost, 0);
   return (
     <Mutation
-      mutation={gql`
-        mutation CreateTeam($name: String, $playerIds: [String]!) {
-          createTeam(name: $name, playerIds: $playerIds) {
-            id
-            name
-            players {
-              id
-              name
-              ign
-            }
-          }
-        }
-      `}
+      mutation={CREATE_TEAM}
       variables={{
         playerIds: props.players.map(player => player.id)
       }}

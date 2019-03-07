@@ -1,7 +1,7 @@
-import App from '../components/app';
 import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
+import TeamBuilder from '../components/team-builder';
 import {AVERATE_PLAYER_COST} from '../utils/constants';
 import {graphql} from 'gatsby';
 
@@ -12,10 +12,11 @@ export default function Csgo(props) {
   const delta = maxRating - minRating;
 
   // TODO: move continent/region attribute to the database
+  const {continents} = props.data.countries;
   const players = props.data.superteam.players.map(player => {
     const percentile = (player.rating - minRating) / delta;
     const cost = AVERATE_PLAYER_COST * (percentile + 0.5);
-    const continent = props.data.countries.continents.find(({countries}) =>
+    const continent = continents.find(({countries}) =>
       countries.some(country => country.code === player.country)
     );
 
@@ -31,13 +32,13 @@ export default function Csgo(props) {
   const countries = Array.from(new Set(players.map(player => player.country)));
 
   // filter out continents with no players
-  const continents = props.data.countries.continents.filter(continent =>
+  const regions = continents.filter(continent =>
     continent.countries.some(country => countries.includes(country.code))
   );
 
   return (
     <Layout>
-      <App players={players} continents={continents} />
+      <TeamBuilder players={players} regions={regions} />
     </Layout>
   );
 }

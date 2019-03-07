@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Region from './region';
 import styled from '@emotion/styled';
+import withUser from './with-user';
 import {TEAM_SIZE, TOTAL_BUDGET} from '../utils/constants';
 import {cover} from 'polished';
 import {withTheme} from '@material-ui/core/styles';
@@ -50,10 +51,10 @@ const Regions = withTheme()(
   })
 );
 
-export default class App extends Component {
+class TeamBuilder extends Component {
   static propTypes = {
     players: PropTypes.array.isRequired,
-    continents: PropTypes.array.isRequired
+    regions: PropTypes.array.isRequired
   };
 
   state = {
@@ -104,14 +105,14 @@ export default class App extends Component {
           >
             All players
           </Region>
-          {this.props.continents.map(continent => (
+          {this.props.regions.map(region => (
             <Region
-              key={continent.code}
-              selected={this.state.region === continent.code}
-              value={continent.code}
+              key={region.code}
+              selected={this.state.region === region.code}
+              value={region.code}
               onClick={this.onRegionClick}
             >
-              {continent.name}
+              {region.name}
             </Region>
           ))}
         </Regions>
@@ -156,3 +157,5 @@ export default class App extends Component {
     );
   }
 }
+
+export default withUser(TeamBuilder);
