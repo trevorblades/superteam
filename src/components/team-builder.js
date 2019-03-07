@@ -158,4 +158,5 @@ class TeamBuilder extends Component {
   }
 }
 
+// withUser is needed for user updates to bubble all the way down to the header
 export default withUser(TeamBuilder);
