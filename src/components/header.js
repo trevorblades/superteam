@@ -61,16 +61,20 @@ const NavItem = compose(
   })
 );
 
-const NavLink = withProps({
-  activeClassName: 'active'
-})(Link);
+function isActive(className) {
+  return ({href, location}) => {
+    const isCurrent =
+      href === location.pathname ||
+      href === location.pathname.replace(/\/$/, '');
+    return {
+      className: className + (isCurrent ? ' active' : '')
+    };
+  };
+}
 
-const PartialNavLink = mapProps(({className, ...props}) => ({
+const NavLink = mapProps(({className, ...props}) => ({
   ...props,
-  getProps: ({isPartiallyCurrent}) =>
-    isPartiallyCurrent
-      ? {className: [className, 'active'].join(' ')}
-      : {className}
+  getProps: isActive(className)
 }))(Link);
 
 const RightActions = styled.div({
@@ -91,7 +95,7 @@ function Header(props) {
           <NavItem component={NavLink} to="/">
             Home
           </NavItem>
-          <NavItem component={PartialNavLink} to="/csgo">
+          <NavItem component={NavLink} to="/csgo">
             CS:GO
           </NavItem>
           <NavItem color="textSecondary">DOTA 2</NavItem>
