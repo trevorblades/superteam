@@ -1,3 +1,4 @@
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -13,11 +14,28 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
+import styled from '@emotion/styled';
 import withUser from './with-user';
 import {CREATE_ENTRY} from '../utils/queries';
 import {FaChevronLeft} from 'react-icons/fa';
 import {Mutation} from 'react-apollo';
 import {TOTAL_BUDGET} from '../utils/constants';
+import {navigate} from 'gatsby';
+import {scale} from '../utils/scale';
+import {size} from 'polished';
+
+const PlayerCell = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  height: 48,
+  overflow: 'hidden'
+});
+
+const StyledAvatar = styled(Avatar)(size(32), {
+  alignItems: 'flex-start',
+  marginRight: 12,
+  img: size('150%')
+});
 
 function CheckoutDialog(props) {
   const totalCost = props.players.reduce((acc, player) => acc + player.cost, 0);
@@ -27,6 +45,7 @@ function CheckoutDialog(props) {
       variables={{
         playerIds: props.players.map(player => player.id)
       }}
+      onCompleted={data => navigate(`/entries/${data.createEntry.id}`)}
     >
       {(createTeam, {loading, error}) => (
         <form
@@ -72,7 +91,17 @@ function CheckoutDialog(props) {
               <TableBody>
                 {props.players.map(player => (
                   <TableRow key={player.id}>
-                    <TableCell>{player.ign}</TableCell>
+                    <TableCell>
+                      <PlayerCell>
+                        <StyledAvatar
+                          src={player.image}
+                          style={{
+                            backgroundColor: scale(player.percentile).hex()
+                          }}
+                        />
+                        {player.ign}
+                      </PlayerCell>
+                    </TableCell>
                     <TableCell align="right">
                       ${player.cost.toLocaleString()}
                     </TableCell>

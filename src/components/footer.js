@@ -1,10 +1,10 @@
 import Finance from './finance';
 import Paper from '@material-ui/core/Paper';
-import PlayerCard, {CARD_ASPECT_RATIO} from './player-card';
+import PlayerCard from './player-card';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import styled from '@emotion/styled';
-import {TEAM_SIZE, TOTAL_BUDGET} from '../utils/constants';
+import {CARD_ASPECT_RATIO, TEAM_SIZE, TOTAL_BUDGET} from '../utils/constants';
 import {withTheme} from '@material-ui/core/styles';
 
 const Container = styled(Paper)({

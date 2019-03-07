@@ -4,24 +4,14 @@ import NumberText from './number-text';
 import PropTypes from 'prop-types';
 import React, {Fragment, PureComponent} from 'react';
 import Typography from '@material-ui/core/Typography';
-import amber from '@material-ui/core/colors/amber';
-import blue from '@material-ui/core/colors/blue';
-import blueGrey from '@material-ui/core/colors/blueGrey';
-import chroma from 'chroma-js';
-import deepPurple from '@material-ui/core/colors/deepPurple';
 import emojiFlags from 'emoji-flags';
-import green from '@material-ui/core/colors/green';
 import mapProps from 'recompose/mapProps';
 import styled from '@emotion/styled';
 import withProps from 'recompose/withProps';
+import {CARD_ASPECT_RATIO} from '../utils/constants';
 import {Transition, animated} from 'react-spring/renderprops';
 import {cover, transparentize} from 'polished';
-
-export const CARD_ASPECT_RATIO = 3 / 4;
-
-function getGradient(color, direction) {
-  return `linear-gradient(${[direction, color, transparentize(1, color)]})`;
-}
+import {scale} from '../utils/scale';
 
 const StyledCard = styled(Card)(props => ({
   paddingTop: `${(1 / CARD_ASPECT_RATIO) * 100}%`,
@@ -126,17 +116,9 @@ const Glow = styled.div({
   left: 0
 });
 
-const colors = {
-  [blueGrey[500]]: 0,
-  [green[500]]: 0.1,
-  [blue[500]]: 0.4,
-  [deepPurple[500]]: 0.7,
-  [amber[500]]: 0.9
-};
-
-const scale = chroma
-  .scale(Object.keys(colors))
-  .classes([...Object.values(colors), 1]);
+function linearGradient(color, direction) {
+  return `linear-gradient(${[direction, color, transparentize(1, color)]})`;
+}
 
 export default class PlayerCard extends PureComponent {
   static propTypes = {
@@ -183,7 +165,7 @@ export default class PlayerCard extends PureComponent {
       <StyledCard
         disabled={this.props.disabled}
         style={{
-          backgroundImage: getGradient(color, 'to bottom')
+          backgroundImage: linearGradient(color, 'to bottom')
         }}
       >
         <TeamLogo
@@ -248,7 +230,7 @@ export default class PlayerCard extends PureComponent {
           <PlayerImage src={image} centered={this.props.mini} />
           <Glow
             style={{
-              backgroundImage: getGradient(color, 'to top')
+              backgroundImage: linearGradient(color, 'to top')
             }}
           />
           {this.props.mini ? (
