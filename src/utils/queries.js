@@ -11,16 +11,33 @@ export const GET_USER = gql`
   }
 `;
 
+const EntryFragment = gql`
+  fragment EntryFragment on Entry {
+    id
+    slug
+    name
+    players {
+      id
+      name
+      ign
+    }
+  }
+`;
+
 export const CREATE_ENTRY = gql`
   mutation CreateEntry($name: String!, $playerIds: [String]!) {
     createEntry(name: $name, playerIds: $playerIds) {
-      slug
-      name
-      players {
-        id
-        name
-        ign
-      }
+      ...EntryFragment
     }
   }
+  ${EntryFragment}
+`;
+
+export const LIST_ENTRIES = gql`
+  {
+    entries {
+      ...EntryFragment
+    }
+  }
+  ${EntryFragment}
 `;

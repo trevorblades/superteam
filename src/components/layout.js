@@ -20,7 +20,7 @@ export default function Layout(props) {
         const {title, description} = data.site.siteMetadata;
         return (
           <Fragment>
-            <Helmet defaultTitle={title} titleTemplate={`${title} - %s`}>
+            <Helmet defaultTitle={title} titleTemplate={`%s - ${title}`}>
               <meta name="description" content={description} />
               <link
                 rel="stylesheet"
