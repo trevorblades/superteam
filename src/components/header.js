@@ -95,10 +95,13 @@ function Header(props) {
           <NavItem component={NavLink} to="/">
             Home
           </NavItem>
-          <NavItem component={NavLink} to="/csgo">
-            CS:GO
+          <NavItem component={NavLink} to="/create">
+            Create team
           </NavItem>
-          <NavItem color="textSecondary">DOTA 2</NavItem>
+          <NavItem component={NavLink} to="/standings">
+            Standings
+          </NavItem>
+          {/* <NavItem color="textSecondary">DOTA 2</NavItem> */}
         </Nav>
         <Logo>
           <StyledImage src={logo} />

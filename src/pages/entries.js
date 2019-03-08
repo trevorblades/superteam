@@ -10,6 +10,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
+import ViewTeamButton from '../components/view-team-button';
+import formatDiff from '../utils/format-diff';
 import withUser from '../components/with-user';
 import {LIST_ENTRIES} from '../utils/queries';
 import {Query} from 'react-apollo';
@@ -26,7 +28,7 @@ function Entries(props) {
       <NoSsr>
         {props.user ? (
           <Section>
-            <Typography variant="h2" gutterBottom>
+            <Typography variant="h3" gutterBottom>
               My entries
             </Typography>
             <Query query={LIST_ENTRIES}>
@@ -42,18 +44,26 @@ function Entries(props) {
                     <TableHead>
                       <TableRow>
                         <TableCell>Team name</TableCell>
-                        <TableCell align="right">Rating</TableCell>
-                        <TableCell align="right">Kills</TableCell>
-                        <TableCell align="right">Deaths</TableCell>
+                        <TableCell align="right">Avg. rating</TableCell>
+                        <TableCell align="right">Rating diff.</TableCell>
+                        <TableCell align="right">Actions</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {data.entries.map(entry => (
-                        <TableRow key={entry.id} button>
+                        <TableRow key={entry.id}>
                           <TableCell>{entry.name}</TableCell>
-                          <TableCell align="right">1.14</TableCell>
-                          <TableCell align="right">4</TableCell>
-                          <TableCell align="right">12</TableCell>
+                          <TableCell align="right">
+                            {entry.currentRating}
+                          </TableCell>
+                          <TableCell align="right">
+                            {formatDiff(
+                              entry.initialRating - entry.currentRating
+                            )}
+                          </TableCell>
+                          <TableCell align="right">
+                            <ViewTeamButton />
+                          </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>

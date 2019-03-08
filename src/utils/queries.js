@@ -11,16 +11,13 @@ export const GET_USER = gql`
   }
 `;
 
-const EntryFragment = gql`
+export const EntryFragment = gql`
   fragment EntryFragment on Entry {
     id
-    slug
     name
-    players {
-      id
-      name
-      ign
-    }
+    initialRating
+    currentRating
+    createdAt
   }
 `;
 

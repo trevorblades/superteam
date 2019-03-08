@@ -1,3 +1,4 @@
+import Helmet from 'react-helmet';
 import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -5,7 +6,7 @@ import TeamBuilder from '../components/team-builder';
 import {AVERATE_PLAYER_COST} from '../utils/constants';
 import {graphql} from 'gatsby';
 
-export default function Csgo(props) {
+export default function Create(props) {
   const ratings = props.data.superteam.players.map(player => player.rating);
   const minRating = Math.min(...ratings);
   const maxRating = Math.max(...ratings);
@@ -38,12 +39,15 @@ export default function Csgo(props) {
 
   return (
     <Layout>
+      <Helmet>
+        <title>Create a team</title>
+      </Helmet>
       <TeamBuilder players={players} regions={regions} />
     </Layout>
   );
 }
 
-Csgo.propTypes = {
+Create.propTypes = {
   data: PropTypes.object.isRequired
 };
 
@@ -72,7 +76,6 @@ export const pageQuery = graphql`
           logo
         }
         statistics {
-          rating
           kdRatio
           damagePerRound
           headshots

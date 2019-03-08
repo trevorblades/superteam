@@ -16,7 +16,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
 import styled from '@emotion/styled';
 import withUser from './with-user';
-import {CREATE_ENTRY} from '../utils/queries';
+import {CREATE_ENTRY, LIST_ENTRIES} from '../utils/queries';
 import {FaChevronLeft} from 'react-icons/fa';
 import {Mutation} from 'react-apollo';
 import {TOTAL_BUDGET} from '../utils/constants';
@@ -40,6 +40,20 @@ const StyledAvatar = styled(Avatar)(size(32), {
   })
 });
 
+function updateEntries(cache, {data}) {
+  try {
+    const {entries} = cache.readQuery({query: LIST_ENTRIES});
+    cache.writeQuery({
+      query: LIST_ENTRIES,
+      data: {
+        entries: [data.createEntry, ...entries]
+      }
+    });
+  } catch (error) {
+    // nothing happens
+  }
+}
+
 function CheckoutDialog(props) {
   const totalCost = props.players.reduce((acc, player) => acc + player.cost, 0);
   return (
@@ -48,7 +62,8 @@ function CheckoutDialog(props) {
       variables={{
         playerIds: props.players.map(player => player.id)
       }}
-      onCompleted={data => navigate(`/teams/${data.createEntry.slug}`)}
+      onCompleted={data => navigate(`/entries?id=${data.createEntry.id}`)}
+      update={updateEntries}
     >
       {(createTeam, {loading, error}) => (
         <form

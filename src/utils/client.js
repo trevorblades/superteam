@@ -29,7 +29,8 @@ export default new ApolloClient({
   link: authLink.concat(httpLink),
   resolvers: {
     Query: {
-      user: userFromStorage
+      user: userFromStorage,
+      selectedPlayers: []
     }
   }
 });
