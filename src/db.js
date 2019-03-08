@@ -1,4 +1,5 @@
 import Sequelize from 'sequelize';
+import SequelizeSlugify from 'sequelize-slugify';
 
 export const sequelize = new Sequelize(process.env.DATABASE_URL, {
   logging: false
@@ -49,3 +50,28 @@ export const User = sequelize.define('user', {
   displayName: Sequelize.STRING,
   profileImage: Sequelize.STRING
 });
+
+export const Entry = sequelize.define('entry', {
+  slug: {
+    type: Sequelize.STRING,
+    unique: true
+  },
+  name: Sequelize.STRING
+});
+
+SequelizeSlugify.slugifyModel(Entry, {
+  source: ['name']
+});
+
+const Selection = sequelize.define('selection', {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  }
+});
+
+User.hasMany(Entry);
+Entry.belongsTo(User);
+Entry.belongsToMany(Player, {through: Selection});
+Player.belongsToMany(Entry, {through: Selection});

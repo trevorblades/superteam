@@ -1,5 +1,6 @@
-import {Player, Team} from './db';
-import {gql} from 'apollo-server-express';
+import {AuthenticationError, gql} from 'apollo-server-express';
+import {Entry, Player, Team} from './db';
+import {Op} from 'sequelize';
 
 export const typeDefs = gql`
   type Player {
@@ -33,11 +34,30 @@ export const typeDefs = gql`
     players: [Player]
   }
 
+  type User {
+    username: String
+    displayName: String
+    profileImage: String
+  }
+
+  type Entry {
+    id: ID
+    slug: String
+    name: String
+    user: User
+    players: [Player]
+  }
+
   type Query {
     team(id: ID!): Team
     teams: [Team]
     player(id: ID!): Player
     players: [Player]
+    entries: [Entry]
+  }
+
+  type Mutation {
+    createEntry(name: String!, playerIds: [String]!): Entry
   }
 `;
 
@@ -46,6 +66,9 @@ export const resolvers = {
     team: parent => parent.getTeam(),
     statistics: parent => parent.getStatistics()
   },
+  Entry: {
+    players: parent => parent.getPlayers()
+  },
   Query: {
     team: (parent, args) => Team.findByPk(args.id),
     teams: () => Team.findAll(),
@@ -53,6 +76,36 @@ export const resolvers = {
     players: () =>
       Player.findAll({
         order: [['rating', 'desc']]
-      })
+      }),
+    entries: (parent, args, {user}) => {
+      if (!user) {
+        throw new AuthenticationError('Unauthorized');
+      }
+
+      return user.getEntries();
+    }
+  },
+  Mutation: {
+    async createEntry(parent, args, {user}) {
+      if (!user) {
+        throw new AuthenticationError('Unauthorized');
+      }
+
+      const entry = await Entry.create({
+        name: args.name,
+        userId: user.id
+      });
+
+      const players = await Player.findAll({
+        where: {
+          id: {
+            [Op.in]: args.playerIds
+          }
+        }
+      });
+
+      await entry.setPlayers(players);
+      return entry;
+    }
   }
 };

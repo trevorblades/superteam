@@ -75,7 +75,20 @@ app.get('/twitter/callback', twitterAuth, (req, res) => {
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
-  introspection: true
+  introspection: true,
+  async context({req}) {
+    try {
+      const matches = req.headers.authorization.match(/bearer (\S+)/i);
+      const token = matches[1];
+      const {id} = jwt.verify(token, process.env.TOKEN_SECRET);
+      const user = await User.findByPk(id);
+      return {user};
+    } catch (error) {
+      return {
+        user: null
+      };
+    }
+  }
 });
 
 apolloServer.applyMiddleware({app});
