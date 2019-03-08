@@ -16,8 +16,10 @@ import withUser from '../components/with-user';
 import {LIST_ENTRIES} from '../utils/queries';
 import {Query} from 'react-apollo';
 import {Section} from '../components/common';
+import {parse} from 'querystring';
 
 function Entries(props) {
+  const {id} = parse(props.location.search.slice(1));
   return (
     <Layout>
       <Helmet>
@@ -51,7 +53,7 @@ function Entries(props) {
                     </TableHead>
                     <TableBody>
                       {data.entries.map(entry => (
-                        <TableRow key={entry.id}>
+                        <TableRow key={entry.id} selected={entry.id === id}>
                           <TableCell>{entry.name}</TableCell>
                           <TableCell align="right">
                             {entry.currentRating}
@@ -83,7 +85,8 @@ function Entries(props) {
 }
 
 Entries.propTypes = {
-  user: PropTypes.object
+  user: PropTypes.object,
+  location: PropTypes.object.isRequired
 };
 
 export default withUser(Entries);
