@@ -1,5 +1,4 @@
 import Sequelize from 'sequelize';
-import SequelizeSlugify from 'sequelize-slugify';
 
 export const sequelize = new Sequelize(process.env.DATABASE_URL, {
   logging: false
@@ -16,7 +15,6 @@ export const Player = sequelize.define('player', {
 export const Statistics = sequelize.define(
   'statistics',
   {
-    rating: Sequelize.FLOAT,
     kills: Sequelize.INTEGER,
     deaths: Sequelize.INTEGER,
     kdRatio: Sequelize.FLOAT,
@@ -52,15 +50,9 @@ export const User = sequelize.define('user', {
 });
 
 export const Entry = sequelize.define('entry', {
-  slug: {
-    type: Sequelize.STRING,
-    unique: true
-  },
-  name: Sequelize.STRING
-});
-
-SequelizeSlugify.slugifyModel(Entry, {
-  source: ['name']
+  name: Sequelize.STRING,
+  initialRating: Sequelize.FLOAT,
+  currentRating: Sequelize.FLOAT
 });
 
 const Selection = sequelize.define('selection', {

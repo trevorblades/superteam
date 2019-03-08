@@ -1,6 +1,7 @@
 import {AuthenticationError, gql} from 'apollo-server-express';
 import {Entry, Player, Team} from './db';
 import {Op} from 'sequelize';
+import {sumRating} from './utils';
 
 export const typeDefs = gql`
   type Player {
@@ -15,7 +16,6 @@ export const typeDefs = gql`
   }
 
   type Statistics {
-    rating: Float
     kills: Int
     deaths: Int
     kdRatio: Float
@@ -42,8 +42,9 @@ export const typeDefs = gql`
 
   type Entry {
     id: ID
-    slug: String
     name: String
+    initialRating: Float
+    currentRating: Float
     user: User
     players: [Player]
   }
@@ -82,7 +83,9 @@ export const resolvers = {
         throw new AuthenticationError('Unauthorized');
       }
 
-      return user.getEntries();
+      return user.getEntries({
+        order: [['createdAt', 'desc']]
+      });
     }
   },
   Mutation: {
@@ -91,17 +94,22 @@ export const resolvers = {
         throw new AuthenticationError('Unauthorized');
       }
 
-      const entry = await Entry.create({
-        name: args.name,
-        userId: user.id
-      });
-
       const players = await Player.findAll({
         where: {
           id: {
             [Op.in]: args.playerIds
           }
         }
+      });
+
+      const totalRating = players.reduce(sumRating, 0);
+      const averageRating = totalRating / players.length;
+      const initialRating = averageRating.toPrecision(3);
+      const entry = await Entry.create({
+        name: args.name,
+        initialRating,
+        currentRating: initialRating,
+        userId: user.id
       });
 
       await entry.setPlayers(players);

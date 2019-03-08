@@ -1,44 +1,78 @@
 #!/usr/bin/env node -r esm -r dotenv/config
+import {Entry, Player, Statistics, Team, sequelize} from '../src/db';
 import {HLTV} from 'hltv';
-import {Player, Statistics, Team, sequelize} from '../src/db';
+import {format} from 'date-fns/fp';
+import {sumRating} from '../src/utils';
+
+const formatDate = format('yyyy-MM-dd');
 
 async function update() {
-  const playerRanking = await HLTV.getPlayerRanking({
-    startDate: '2018-01-01',
-    endDate: '2018-12-31',
-    matchType: 'Lan',
-    rankingFilter: 'Top50'
-  });
+  const end = new Date(); // pass a date in here to adjust time window (e.g. '2019-01-01')
+  const start = new Date(end);
+  start.setFullYear(start.getFullYear() - 1);
 
-  let updated = 0;
+  const queryOptions = {
+    matchType: 'Lan',
+    rankingFilter: 'Top50',
+    startDate: formatDate(start),
+    endDate: formatDate(end)
+  };
+
+  const playerRanking = await HLTV.getPlayerRanking(queryOptions);
+
+  // first, we loop through the most recent ranking and add any newcomers to the
+  // players table
+  let newPlayers = 0;
   for (let i = 0; i < playerRanking.length; i++) {
-    const {id, rating} = playerRanking[i];
-    const {name, ign, country, image, team: playerTeam} = await HLTV.getPlayer({
-      id
+    const {id, name} = playerRanking[i];
+    const exists = await Player.count({
+      where: {
+        id
+      }
     });
 
-    try {
-      let player = await Player.findByPk(id);
-      if (!player) {
-        player = await Player.create({
-          id,
-          name,
-          ign,
-          country: country.code
-        });
-      }
+    if (!exists) {
+      await Player.create({id});
+      newPlayers += 1;
+      console.log(`Player "${name}" added`);
+    }
+  }
 
-      await player.update({
-        image,
-        rating
+  // next, we loop through all the players in the players table and retrieve
+  // up-to-date information and statistics
+  let updatedPlayers = 0;
+  const players = await Player.findAll();
+  for (let i = 0; i < players.length; i++) {
+    const player = players[i];
+    try {
+      const {statistics} = await HLTV.getPlayerStats({
+        ...queryOptions,
+        id: player.id
       });
 
-      const {statistics} = await HLTV.getPlayerStats({id});
       const headshots = parseFloat(statistics.headshots).toPrecision(3) / 100;
       await Statistics.upsert({
         ...statistics,
         headshots,
-        playerId: id
+        playerId: player.id
+      });
+
+      const {
+        ign,
+        name,
+        country,
+        image,
+        team: playerTeam
+      } = await HLTV.getPlayer({
+        id: player.id
+      });
+
+      await player.update({
+        ign,
+        name,
+        image,
+        country: country.code,
+        rating: statistics.rating
       });
 
       if (playerTeam) {
@@ -50,21 +84,48 @@ async function update() {
             name,
             logo
           });
+
+          console.log(`Team "${name}" added`);
         }
 
         await player.setTeam(team);
       }
 
-      updated += 1;
+      updatedPlayers += 1;
+      console.log(`Player "${ign}" updated`);
     } catch (error) {
-      console.log(ign, error.message);
+      console.error(error);
     }
   }
 
-  return updated;
+  const entries = await Entry.findAll({
+    include: [Player]
+  });
+
+  // update all entries with newest player stats
+  let updatedEntries = 0;
+  for (let i = 0; i < entries.length; i++) {
+    const entry = entries[i];
+    const totalRating = entry.players.reduce(sumRating, 0);
+    const averageRating = totalRating / entry.players.length;
+    await entry.update({
+      currentRating: averageRating.toPrecision(3)
+    });
+
+    updatedEntries += 1;
+  }
+
+  // return the updated and new counts to display in the console output
+  return {
+    newPlayers,
+    updatedPlayers,
+    updatedEntries
+  };
 }
 
-update().then(async updated => {
+update().then(async ({newPlayers, updatedPlayers, updatedEntries}) => {
   await sequelize.close();
-  console.log(`${updated} players updated`);
+  console.log(`${newPlayers} players added`);
+  console.log(`${updatedPlayers} players updated`);
+  console.log(`${updatedEntries} entries updated`);
 });
