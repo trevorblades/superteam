@@ -1,6 +1,7 @@
 #!/usr/bin/env node -r esm -r dotenv/config
-import {Entry, Player, Statistics, Team, sequelize} from '../src/db';
+import {Entry, Player, Statistic, Team, sequelize} from '../src/db';
 import {HLTV} from 'hltv';
+import {Op} from 'sequelize';
 import {format} from 'date-fns/fp';
 import {sumRating} from '../src/utils';
 
@@ -11,11 +12,12 @@ async function update() {
   const start = new Date(end);
   start.setFullYear(start.getFullYear() - 1);
 
+  const endDate = formatDate(end);
   const queryOptions = {
     matchType: 'Lan',
     rankingFilter: 'Top50',
     startDate: formatDate(start),
-    endDate: formatDate(end)
+    endDate
   };
 
   const playerRanking = await HLTV.getPlayerRanking(queryOptions);
@@ -40,6 +42,7 @@ async function update() {
 
   // next, we loop through all the players in the players table and retrieve
   // up-to-date information and statistics
+  let updatedStats = 0;
   let updatedPlayers = 0;
   const players = await Player.findAll();
   for (let i = 0; i < players.length; i++) {
@@ -51,11 +54,25 @@ async function update() {
       });
 
       const headshots = parseFloat(statistics.headshots).toPrecision(3) / 100;
-      await Statistics.upsert({
-        ...statistics,
-        headshots,
-        playerId: player.id
+      const statExists = await Statistic.count({
+        where: {
+          periodEndsAt: {
+            [Op.gt]: new Date(end - 7 * 24 * 60 * 60 * 1000)
+          },
+          playerId: player.id
+        }
       });
+
+      if (!statExists) {
+        await Statistic.create({
+          ...statistics,
+          headshots,
+          periodEndsAt: endDate,
+          playerId: player.id
+        });
+
+        updatedStats += 1;
+      }
 
       const {
         ign,
@@ -98,6 +115,21 @@ async function update() {
     }
   }
 
+  // calculate and save player percentiles
+  const ratings = players.map(player => player.rating);
+  const minRating = Math.min(...ratings);
+  const maxRating = Math.max(...ratings);
+  const delta = maxRating - minRating;
+  await Promise.all(
+    players.map(player => {
+      const percentile = (player.rating - minRating) / delta;
+      return player.update({
+        percentile
+      });
+    })
+  );
+
+  // get all entries
   const entries = await Entry.findAll({
     include: [Player]
   });
@@ -118,14 +150,18 @@ async function update() {
   // return the updated and new counts to display in the console output
   return {
     newPlayers,
+    updatedStats,
     updatedPlayers,
     updatedEntries
   };
 }
 
-update().then(async ({newPlayers, updatedPlayers, updatedEntries}) => {
-  await sequelize.close();
-  console.log(`${newPlayers} players added`);
-  console.log(`${updatedPlayers} players updated`);
-  console.log(`${updatedEntries} entries updated`);
-});
+update().then(
+  async ({newPlayers, updatedStats, updatedPlayers, updatedEntries}) => {
+    await sequelize.close();
+    console.log(`${newPlayers} players added`);
+    console.log(`${updatedStats} stats updated`);
+    console.log(`${updatedPlayers} players updated`);
+    console.log(`${updatedEntries} entries updated`);
+  }
+);

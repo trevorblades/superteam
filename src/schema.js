@@ -1,4 +1,4 @@
-import {AuthenticationError, gql} from 'apollo-server-express';
+import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
 import {Entry, Player, Team} from './db';
 import {Op} from 'sequelize';
 import {sumRating} from './utils';
@@ -11,11 +11,13 @@ export const typeDefs = gql`
     country: String
     image: String
     rating: Float
+    percentile: Float
     team: Team
-    statistics: Statistics
+    statistics: [Statistic]
   }
 
-  type Statistics {
+  type Statistic {
+    rating: Float
     kills: Int
     deaths: Int
     kdRatio: Float
@@ -45,6 +47,7 @@ export const typeDefs = gql`
     name: String
     initialRating: Float
     currentRating: Float
+    createdAt: String
     user: User
     players: [Player]
   }
@@ -54,7 +57,9 @@ export const typeDefs = gql`
     teams: [Team]
     player(id: ID!): Player
     players: [Player]
+    entry(id: ID!): Entry
     entries: [Entry]
+    standings: [Entry]
   }
 
   type Mutation {
@@ -78,6 +83,23 @@ export const resolvers = {
       Player.findAll({
         order: [['rating', 'desc']]
       }),
+    entry: async (parent, args, {user}) => {
+      if (!user) {
+        throw new AuthenticationError('Unauthorized');
+      }
+
+      const [entry] = await user.getEntries({
+        where: {
+          id: args.id
+        }
+      });
+
+      if (!entry) {
+        throw new UserInputError('Entry not found');
+      }
+
+      return entry;
+    },
     entries: (parent, args, {user}) => {
       if (!user) {
         throw new AuthenticationError('Unauthorized');
@@ -86,7 +108,12 @@ export const resolvers = {
       return user.getEntries({
         order: [['createdAt', 'desc']]
       });
-    }
+    },
+    standings: () =>
+      Entry.findAll({
+        order: [['currentRating', 'desc']],
+        limit: 24
+      })
   },
   Mutation: {
     async createEntry(parent, args, {user}) {

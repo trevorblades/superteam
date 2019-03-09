@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';
 
 export const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  logging: false
+  // logging: false
 });
 
 export const Player = sequelize.define('player', {
@@ -9,31 +9,26 @@ export const Player = sequelize.define('player', {
   ign: Sequelize.STRING,
   country: Sequelize.STRING,
   image: Sequelize.STRING,
-  rating: Sequelize.FLOAT
+  rating: Sequelize.FLOAT,
+  percentile: Sequelize.FLOAT
 });
 
-export const Statistics = sequelize.define(
-  'statistics',
-  {
-    kills: Sequelize.INTEGER,
-    deaths: Sequelize.INTEGER,
-    kdRatio: Sequelize.FLOAT,
-    headshots: Sequelize.FLOAT,
-    damagePerRound: Sequelize.FLOAT,
-    killsPerRound: Sequelize.FLOAT,
-    assistsPerRound: Sequelize.FLOAT,
-    deathsPerRound: Sequelize.FLOAT,
-    grenadeDamagePerRound: Sequelize.FLOAT
-  },
-  {
-    name: {
-      singular: 'statistics'
-    }
-  }
-);
+export const Statistic = sequelize.define('statistic', {
+  rating: Sequelize.FLOAT,
+  kills: Sequelize.INTEGER,
+  deaths: Sequelize.INTEGER,
+  kdRatio: Sequelize.FLOAT,
+  headshots: Sequelize.FLOAT,
+  damagePerRound: Sequelize.FLOAT,
+  killsPerRound: Sequelize.FLOAT,
+  assistsPerRound: Sequelize.FLOAT,
+  deathsPerRound: Sequelize.FLOAT,
+  grenadeDamagePerRound: Sequelize.FLOAT,
+  periodEndsAt: Sequelize.DATE
+});
 
-Player.hasOne(Statistics);
-Statistics.belongsTo(Player);
+Player.hasMany(Statistic);
+Statistic.belongsTo(Player);
 
 export const Team = sequelize.define('team', {
   name: Sequelize.STRING,
