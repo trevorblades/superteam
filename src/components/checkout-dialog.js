@@ -1,4 +1,3 @@
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -19,11 +18,9 @@ import withUser from './with-user';
 import {CREATE_ENTRY, LIST_ENTRIES} from '../utils/queries';
 import {FaChevronLeft} from 'react-icons/fa';
 import {Mutation} from 'react-apollo';
+import {PlayerAvatar} from './common';
 import {TOTAL_BUDGET} from '../utils/constants';
-import {css} from '@emotion/core';
 import {navigate} from 'gatsby';
-import {scale} from '../utils/scale';
-import {size} from 'polished';
 
 const PlayerCell = styled.div({
   display: 'flex',
@@ -32,12 +29,8 @@ const PlayerCell = styled.div({
   overflow: 'hidden'
 });
 
-const StyledAvatar = styled(Avatar)(size(32), {
-  alignItems: 'flex-start',
-  marginRight: 12,
-  img: css(size('150%'), {
-    objectPosition: 'top'
-  })
+const PlayerName = styled.span({
+  marginLeft: 12
 });
 
 function updateEntries(cache, {data}) {
@@ -111,13 +104,8 @@ function CheckoutDialog(props) {
                   <TableRow key={player.id}>
                     <TableCell>
                       <PlayerCell>
-                        <StyledAvatar
-                          src={player.image}
-                          style={{
-                            backgroundColor: scale(player.percentile).hex()
-                          }}
-                        />
-                        {player.ign}
+                        <PlayerAvatar player={player} size={32} />
+                        <PlayerName>{player.ign}</PlayerName>
                       </PlayerCell>
                     </TableCell>
                     <TableCell align="right">

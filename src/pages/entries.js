@@ -1,6 +1,6 @@
 import AuthRequired from '../components/auth-required';
 import Button from '@material-ui/core/Button';
-import Drawer from '@material-ui/core/Drawer';
+import EntryDrawer from '../components/entry-drawer';
 import Header from '../components/header';
 import Helmet from 'react-helmet';
 import Layout from '../components/layout';
@@ -13,13 +13,12 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import formatDiff from '../utils/format-diff';
-import {GET_ENTRY, LIST_ENTRIES} from '../utils/queries';
-import {Link, navigate} from 'gatsby';
+import {LIST_ENTRIES} from '../utils/queries';
+import {Link} from 'gatsby';
 import {Query} from 'react-apollo';
 import {Section} from '../components/common';
 
-function Entries(props) {
-  const match = props.location.pathname.match(/^\/entries\/(\d+)\/?$/);
+export default function Entries(props) {
   return (
     <Layout>
       <Header />
@@ -80,28 +79,9 @@ function Entries(props) {
               );
             }}
           </Query>
-          <Drawer
-            anchor="right"
-            open={Boolean(match)}
-            onClose={() => navigate('/entries')}
-          >
-            <Query
-              query={GET_ENTRY}
-              variables={{
-                id: 1
-              }}
-            >
-              {({data, loading, error}) => {
-                if (loading) {
-                  return <Typography>Loading</Typography>;
-                } else if (error) {
-                  return <Typography color="error">{error.message}</Typography>;
-                }
-
-                return <Typography>{data.entry.name}</Typography>;
-              }}
-            </Query>
-          </Drawer>
+          <EntryDrawer
+            match={props.location.pathname.match(/^\/entries\/(\d+)\/?$/)}
+          />
         </Section>
       </AuthRequired>
     </Layout>

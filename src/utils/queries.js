@@ -40,15 +40,16 @@ export const LIST_ENTRIES = gql`
 `;
 
 export const GET_ENTRY = gql`
-  {
-    entry {
+  query GetQuery($id: ID!) {
+    entry(id: $id) {
       ...EntryFragment
       players {
         id
         ign
         name
-        rating
         image
+        rating
+        percentile
         team {
           name
           logo
@@ -56,4 +57,5 @@ export const GET_ENTRY = gql`
       }
     }
   }
+  ${EntryFragment}
 `;

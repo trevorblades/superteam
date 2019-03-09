@@ -224,7 +224,7 @@ export default class PlayerCard extends PureComponent {
                   &nbsp;{' '}
                 </StatusText>
               </Status>
-              {this.renderStatistics(statistics)}
+              {this.renderStatistics(statistics[0])}
             </Fragment>
           )}
           <PlayerImage src={image} centered={this.props.mini} />

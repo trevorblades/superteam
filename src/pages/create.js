@@ -7,23 +7,16 @@ import {AVERATE_PLAYER_COST} from '../utils/constants';
 import {graphql} from 'gatsby';
 
 export default function Create(props) {
-  const ratings = props.data.superteam.players.map(player => player.rating);
-  const minRating = Math.min(...ratings);
-  const maxRating = Math.max(...ratings);
-  const delta = maxRating - minRating;
-
   // TODO: move continent/region attribute to the database
   const {continents} = props.data.countries;
   const players = props.data.superteam.players.map(player => {
-    const percentile = (player.rating - minRating) / delta;
-    const cost = AVERATE_PLAYER_COST * (percentile + 0.5);
+    const cost = AVERATE_PLAYER_COST * (player.percentile + 0.5);
     const continent = continents.find(({countries}) =>
       countries.some(country => country.code === player.country)
     );
 
     return {
       ...player,
-      percentile,
       cost: Math.round(cost),
       region: continent.code
     };
@@ -70,6 +63,7 @@ export const pageQuery = graphql`
         image
         country
         rating
+        percentile
         team {
           id
           name
