@@ -62,7 +62,7 @@ function CheckoutDialog(props) {
       variables={{
         playerIds: props.players.map(player => player.id)
       }}
-      onCompleted={data => navigate(`/entries?id=${data.createEntry.id}`)}
+      onCompleted={data => navigate(`/entries/${data.createEntry.id}`)}
       update={updateEntries}
     >
       {(createTeam, {loading, error}) => (

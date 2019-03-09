@@ -38,3 +38,22 @@ export const LIST_ENTRIES = gql`
   }
   ${EntryFragment}
 `;
+
+export const GET_ENTRY = gql`
+  {
+    entry {
+      ...EntryFragment
+      players {
+        id
+        ign
+        name
+        rating
+        image
+        team {
+          name
+          logo
+        }
+      }
+    }
+  }
+`;

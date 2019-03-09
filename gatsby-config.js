@@ -33,6 +33,12 @@ module.exports = {
       options: {
         theme
       }
+    },
+    {
+      resolve: 'gatsby-plugin-create-client-paths',
+      options: {
+        prefixes: ['/entries/*']
+      }
     }
   ]
 };
