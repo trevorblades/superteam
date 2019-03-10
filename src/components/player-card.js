@@ -11,6 +11,7 @@ import withProps from 'recompose/withProps';
 import {CARD_ASPECT_RATIO} from '../utils/constants';
 import {Transition, animated} from 'react-spring/renderprops';
 import {cover, transparentize} from 'polished';
+import {percentileToCost} from '../utils/get-player-cost';
 import {scale} from '../utils/scale';
 
 const StyledCard = styled(Card)(props => ({
@@ -130,7 +131,7 @@ export default class PlayerCard extends PureComponent {
   };
 
   onClick = () => {
-    this.props.onClick(this.props.player.id, this.props.player.cost);
+    this.props.onClick(this.props.player);
   };
 
   renderStatistics(statistics) {
@@ -150,16 +151,9 @@ export default class PlayerCard extends PureComponent {
   }
 
   render() {
-    const {
-      cost,
-      team,
-      statistics,
-      country,
-      ign,
-      name,
-      image
-    } = this.props.player;
+    const {team, statistics, country, ign, name, image} = this.props.player;
     const [statistic] = statistics;
+    const cost = percentileToCost(statistic.percentile);
     const color = scale(statistic.percentile).hex();
     return (
       <StyledCard

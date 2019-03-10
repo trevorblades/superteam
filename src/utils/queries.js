@@ -16,6 +16,11 @@ export const EntryFragment = gql`
     id
     name
     createdAt
+    players {
+      statistics {
+        percentile
+      }
+    }
   }
 `;
 
@@ -49,10 +54,6 @@ export const GET_ENTRY = gql`
         team {
           name
           logo
-        }
-        statistics {
-          rating
-          percentile
         }
       }
     }

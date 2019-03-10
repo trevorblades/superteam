@@ -3,7 +3,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import MoneyRow from './money-row';
+import MoneyRow, {MoneyCell} from './money-row';
 import PropTypes from 'prop-types';
 import React from 'react';
 import SaveButton from './save-button';
@@ -13,6 +13,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
+import getPlayerCost from '../utils/get-player-cost';
 import styled from '@emotion/styled';
 import withUser from './with-user';
 import {CREATE_ENTRY, LIST_ENTRIES} from '../utils/queries';
@@ -48,7 +49,9 @@ function updateEntries(cache, {data}) {
 }
 
 function CheckoutDialog(props) {
-  const totalCost = props.players.reduce((acc, player) => acc + player.cost, 0);
+  const totalCost = props.players
+    .map(getPlayerCost)
+    .reduce((acc, cost) => acc + cost, 0);
   return (
     <Mutation
       mutation={CREATE_ENTRY}
@@ -108,9 +111,7 @@ function CheckoutDialog(props) {
                         <PlayerName>{player.ign}</PlayerName>
                       </PlayerCell>
                     </TableCell>
-                    <TableCell align="right">
-                      ${player.cost.toLocaleString()}
-                    </TableCell>
+                    <MoneyCell value={getPlayerCost(player)} />
                   </TableRow>
                 ))}
                 <MoneyRow label="Total" value={totalCost} />

@@ -6,6 +6,7 @@ import PlayerCard from './player-card';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Region from './region';
+import getPlayerCost from '../utils/get-player-cost';
 import styled from '@emotion/styled';
 import withUser from './with-user';
 import {TEAM_SIZE, TOTAL_BUDGET} from '../utils/constants';
@@ -67,16 +68,17 @@ class TeamBuilder extends Component {
     this.setState({region});
   };
 
-  onPlayerCardClick = (player, cost) => {
+  onPlayerCardClick = player => {
+    const cost = getPlayerCost(player);
     this.setState(prevState => {
-      const isSelected = prevState.selectedPlayers.includes(player);
+      const isSelected = prevState.selectedPlayers.includes(player.id);
       return {
         budget: prevState.budget + cost * (isSelected ? 1 : -1),
         selectedPlayers: isSelected
           ? prevState.selectedPlayers.filter(
-              selectedPlayer => selectedPlayer !== player
+              selectedPlayer => selectedPlayer !== player.id
             )
-          : [...prevState.selectedPlayers, player]
+          : [...prevState.selectedPlayers, player.id]
       };
     });
   };
@@ -137,7 +139,8 @@ class TeamBuilder extends Component {
                     <PlayerCard
                       disabled={
                         !isSelected &&
-                        (isTeamFull || this.state.budget < player.cost)
+                        (isTeamFull ||
+                          this.state.budget < getPlayerCost(player))
                       }
                       player={player}
                       onClick={this.onPlayerCardClick}

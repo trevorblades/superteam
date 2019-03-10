@@ -3,32 +3,26 @@ import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TeamBuilder from '../components/team-builder';
-import {AVERATE_PLAYER_COST} from '../utils/constants';
 import {graphql} from 'gatsby';
 
 export default function Create(props) {
   // TODO: move continent/region attribute to the database
   const {continents} = props.data.countries;
   const players = props.data.superteam.players.map(player => {
-    const [statistic] = player.statistics;
-    const cost = AVERATE_PLAYER_COST * (statistic.percentile + 0.5);
-    const continent = continents.find(({countries}) =>
+    // find the continent code for the player's country
+    const {code: region} = continents.find(({countries}) =>
       countries.some(country => country.code === player.country)
     );
 
     return {
       ...player,
-      cost: Math.round(cost),
-      region: continent.code
+      region
     };
   });
 
-  // get a distinct set of countries from the players
-  const countries = Array.from(new Set(players.map(player => player.country)));
-
   // filter out continents with no players
   const regions = continents.filter(continent =>
-    continent.countries.some(country => countries.includes(country.code))
+    players.some(player => player.region === continent.code)
   );
 
   return (

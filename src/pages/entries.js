@@ -50,10 +50,12 @@ export default function Entries(props) {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {data.entries.map(entry => (
-                        <TableRow key={entry.id}>
-                          <TableCell>{entry.name}</TableCell>
-                          {/* <TableCell align="right">
+                      {data.entries.map(entry => {
+                        console.log(entry.players);
+                        return (
+                          <TableRow key={entry.id}>
+                            <TableCell>{entry.name}</TableCell>
+                            {/* <TableCell align="right">
                             {entry.currentRating}
                           </TableCell>
                           <TableCell align="right">
@@ -61,18 +63,19 @@ export default function Entries(props) {
                               entry.initialRating - entry.currentRating
                             )}
                           </TableCell> */}
-                          <TableCell align="right">
-                            <Button
-                              component={Link}
-                              variant="outlined"
-                              size="small"
-                              to={`/entries/${entry.id}`}
-                            >
-                              View team
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                            <TableCell align="right">
+                              <Button
+                                component={Link}
+                                variant="outlined"
+                                size="small"
+                                to={`/entries/${entry.id}`}
+                              >
+                                View team
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
                     </TableBody>
                   </Table>
                 </Fragment>
