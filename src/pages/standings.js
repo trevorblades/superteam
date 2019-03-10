@@ -9,7 +9,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-// import formatDiff from '../utils/format-diff';
 import {Section} from '../components/common';
 import {graphql} from 'gatsby';
 

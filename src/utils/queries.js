@@ -19,6 +19,8 @@ export const EntryFragment = gql`
     players {
       statistics {
         percentile
+        week
+        year
       }
     }
   }

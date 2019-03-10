@@ -13,6 +13,7 @@
     "apollo-link-context": "^1.0.15",
     "apollo-link-http": "^1.5.12",
     "chroma-js": "^2.0.3",
+    "date-fns": "^2.0.0-alpha.27",
     "dotenv": "^6.2.0",
     "emoji-flags": "^1.2.0",
     "gatsby": "^2.1.17",

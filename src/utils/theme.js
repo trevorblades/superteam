@@ -11,6 +11,9 @@ module.exports = {
     secondary: {
       main: '#00be00',
       contrastText: '#fff'
+    },
+    error: {
+      main: '#ff0000'
     }
   },
   typography: {
