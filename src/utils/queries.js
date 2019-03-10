@@ -17,6 +17,14 @@ export const EntryFragment = gql`
     name
     createdAt
     players {
+      id
+      ign
+      name
+      image
+      team {
+        name
+        logo
+      }
       statistics {
         percentile
         week
@@ -48,16 +56,6 @@ export const GET_ENTRY = gql`
   query GetQuery($id: ID!) {
     entry(id: $id) {
       ...EntryFragment
-      players {
-        id
-        ign
-        name
-        image
-        team {
-          name
-          logo
-        }
-      }
     }
   }
   ${EntryFragment}

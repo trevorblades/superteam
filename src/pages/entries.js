@@ -21,6 +21,7 @@ import {LIST_ENTRIES} from '../utils/queries';
 import {Link} from 'gatsby';
 import {Query} from 'react-apollo';
 import {Section} from '../components/common';
+import {TOTAL_BUDGET} from '../utils/constants';
 
 export default function Entries(props) {
   return (
@@ -50,6 +51,7 @@ export default function Entries(props) {
                         <TableCell>Team name</TableCell>
                         <TableCell align="right">Total value</TableCell>
                         <TableCell align="right">Gain/loss</TableCell>
+                        <TableCell align="right">Created</TableCell>
                         <TableCell align="right">Actions</TableCell>
                       </TableRow>
                     </TableHead>
@@ -69,18 +71,24 @@ export default function Entries(props) {
                           })
                           .reduce(sum);
 
+                        const initialRemainder = TOTAL_BUDGET - initialValue;
                         const currentValue = entry.players
                           .map(getPlayerCost)
                           .reduce(sum);
+                        const adjustedValue = currentValue + initialRemainder;
 
+                        const createdAt = new Date(Number(entry.createdAt));
                         return (
                           <TableRow key={entry.id}>
                             <TableCell>{entry.name}</TableCell>
                             <TableCell align="right">
-                              ${currentValue.toLocaleString()}
+                              ${adjustedValue.toLocaleString()}
                             </TableCell>
                             <TableCell align="right">
                               <Diff value={currentValue - initialValue} />
+                            </TableCell>
+                            <TableCell align="right">
+                              {createdAt.toLocaleDateString()}
                             </TableCell>
                             <TableCell align="right">
                               <Button
