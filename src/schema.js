@@ -1,7 +1,6 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
-import {Entry, Player, Team} from './db';
+import {Entry, Player, Statistic, Team} from './db';
 import {Op} from 'sequelize';
-import {sumRating} from './utils';
 
 export const typeDefs = gql`
   type Player {
@@ -10,14 +9,14 @@ export const typeDefs = gql`
     ign: String
     country: String
     image: String
-    rating: Float
-    percentile: Float
     team: Team
     statistics: [Statistic]
   }
 
   type Statistic {
+    id: ID
     rating: Float
+    percentile: Float
     kills: Int
     deaths: Int
     kdRatio: Float
@@ -27,6 +26,8 @@ export const typeDefs = gql`
     assistsPerRound: Float
     deathsPerRound: Float
     grenadeDamagePerRound: Float
+    week: Int
+    year: Int
   }
 
   type Team {
@@ -45,8 +46,6 @@ export const typeDefs = gql`
   type Entry {
     id: ID
     name: String
-    initialRating: Float
-    currentRating: Float
     createdAt: String
     user: User
     players: [Player]
@@ -70,7 +69,11 @@ export const typeDefs = gql`
 export const resolvers = {
   Player: {
     team: parent => parent.getTeam(),
-    statistics: parent => parent.getStatistics()
+    statistics: parent =>
+      parent.getStatistics({
+        order: [['year', 'desc'], ['week', 'desc']],
+        limit: 1
+      })
   },
   Entry: {
     players: parent => parent.getPlayers()
@@ -81,7 +84,17 @@ export const resolvers = {
     player: (parent, args) => Player.findByPk(args.id),
     players: () =>
       Player.findAll({
-        order: [['rating', 'desc']]
+        include: [
+          {
+            model: Statistic,
+            attributes: []
+          }
+        ],
+        order: [
+          [Statistic, 'year', 'desc'],
+          [Statistic, 'week', 'desc'],
+          [Statistic, 'percentile', 'desc']
+        ]
       }),
     entry: async (parent, args, {user}) => {
       if (!user) {
@@ -106,14 +119,10 @@ export const resolvers = {
       }
 
       return user.getEntries({
-        order: [['createdAt', 'desc']]
+        order: [['id', 'desc']]
       });
     },
-    standings: () =>
-      Entry.findAll({
-        order: [['currentRating', 'desc']],
-        limit: 24
-      })
+    standings: () => Entry.findAll({limit: 24})
   },
   Mutation: {
     async createEntry(parent, args, {user}) {
@@ -121,22 +130,15 @@ export const resolvers = {
         throw new AuthenticationError('Unauthorized');
       }
 
+      const entry = await Entry.create({name: args.name});
+      await entry.setUser(user);
+
       const players = await Player.findAll({
         where: {
           id: {
             [Op.in]: args.playerIds
           }
         }
-      });
-
-      const totalRating = players.reduce(sumRating, 0);
-      const averageRating = totalRating / players.length;
-      const initialRating = averageRating.toPrecision(3);
-      const entry = await Entry.create({
-        name: args.name,
-        initialRating,
-        currentRating: initialRating,
-        userId: user.id
       });
 
       await entry.setPlayers(players);

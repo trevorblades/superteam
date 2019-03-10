@@ -1,20 +1,19 @@
 import Sequelize from 'sequelize';
 
 export const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  // logging: false
+  logging: false
 });
 
 export const Player = sequelize.define('player', {
   name: Sequelize.STRING,
   ign: Sequelize.STRING,
   country: Sequelize.STRING,
-  image: Sequelize.STRING,
-  rating: Sequelize.FLOAT,
-  percentile: Sequelize.FLOAT
+  image: Sequelize.STRING
 });
 
 export const Statistic = sequelize.define('statistic', {
   rating: Sequelize.FLOAT,
+  percentile: Sequelize.FLOAT,
   kills: Sequelize.INTEGER,
   deaths: Sequelize.INTEGER,
   kdRatio: Sequelize.FLOAT,
@@ -24,7 +23,8 @@ export const Statistic = sequelize.define('statistic', {
   assistsPerRound: Sequelize.FLOAT,
   deathsPerRound: Sequelize.FLOAT,
   grenadeDamagePerRound: Sequelize.FLOAT,
-  periodEndsAt: Sequelize.DATE
+  week: Sequelize.INTEGER,
+  year: Sequelize.INTEGER
 });
 
 Player.hasMany(Statistic);
@@ -45,18 +45,22 @@ export const User = sequelize.define('user', {
 });
 
 export const Entry = sequelize.define('entry', {
-  name: Sequelize.STRING,
-  initialRating: Sequelize.FLOAT,
-  currentRating: Sequelize.FLOAT
+  name: Sequelize.STRING
 });
 
-const Selection = sequelize.define('selection', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+const Selection = sequelize.define(
+  'selection',
+  {
+    id: {
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    }
+  },
+  {
+    paranoid: true
   }
-});
+);
 
 User.hasMany(Entry);
 Entry.belongsTo(User);
