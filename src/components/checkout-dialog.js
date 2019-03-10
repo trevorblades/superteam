@@ -85,6 +85,7 @@ function CheckoutDialog(props) {
               required
               fullWidth
               autoFocus
+              disabled={loading}
               spellCheck={false}
               autoComplete="off"
               margin="normal"
