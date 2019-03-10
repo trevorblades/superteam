@@ -7,7 +7,7 @@ import {Player, Statistic, Team, sequelize} from '../src/db';
 
 const datePattern = 'yyyy-MM-dd';
 const start = new Date('2018-01-01');
-const end = new Date('2019-01-22'); // pass a date in here to adjust time window (e.g. '2019-01-01')
+const end = new Date('2019-02-12'); // pass a date in here to adjust time window (e.g. '2019-01-01')
 async function update() {
   const queryOptions = {
     matchType: 'Lan',
@@ -16,11 +16,10 @@ async function update() {
     endDate: format(end, datePattern)
   };
 
-  const playerRanking = await HLTV.getPlayerRanking(queryOptions);
-
   // first, we loop through the most recent ranking and add any newcomers to the
   // players table
   let newPlayers = 0;
+  const playerRanking = await HLTV.getPlayerRanking(queryOptions);
   for (let i = 0; i < playerRanking.length; i++) {
     const {id, name} = playerRanking[i];
     const exists = await Player.count({
