@@ -9,7 +9,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import formatDiff from '../utils/format-diff';
+// import formatDiff from '../utils/format-diff';
 import {Section} from '../components/common';
 import {graphql} from 'gatsby';
 
@@ -29,8 +29,8 @@ export default function Standings(props) {
             <TableRow>
               <TableCell>Rank</TableCell>
               <TableCell>Team name</TableCell>
-              <TableCell align="right">Avg. rating</TableCell>
-              <TableCell align="right">Rating diff.</TableCell>
+              {/* <TableCell align="right">Avg. rating</TableCell>
+              <TableCell align="right">Rating diff.</TableCell> */}
               <TableCell align="right">Created</TableCell>
             </TableRow>
           </TableHead>
@@ -41,10 +41,10 @@ export default function Standings(props) {
                 <TableRow key={entry.id}>
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{entry.name}</TableCell>
-                  <TableCell align="right">{entry.currentRating}</TableCell>
+                  {/* <TableCell align="right">{entry.currentRating}</TableCell>
                   <TableCell align="right">
                     {formatDiff(entry.initialRating - entry.currentRating)}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell align="right">
                     {date.toLocaleDateString()}
                   </TableCell>
@@ -68,8 +68,6 @@ export const pageQuery = graphql`
       entries: standings {
         id
         name
-        initialRating
-        currentRating
         createdAt
       }
     }

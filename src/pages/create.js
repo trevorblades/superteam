@@ -10,7 +10,8 @@ export default function Create(props) {
   // TODO: move continent/region attribute to the database
   const {continents} = props.data.countries;
   const players = props.data.superteam.players.map(player => {
-    const cost = AVERATE_PLAYER_COST * (player.percentile + 0.5);
+    const [statistic] = player.statistics;
+    const cost = AVERATE_PLAYER_COST * (statistic.percentile + 0.5);
     const continent = continents.find(({countries}) =>
       countries.some(country => country.code === player.country)
     );
@@ -62,17 +63,20 @@ export const pageQuery = graphql`
         ign
         image
         country
-        rating
-        percentile
         team {
           id
           name
           logo
         }
         statistics {
+          id
+          rating
+          percentile
           kdRatio
           damagePerRound
           headshots
+          week
+          year
         }
       }
     }

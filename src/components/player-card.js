@@ -151,7 +151,6 @@ export default class PlayerCard extends PureComponent {
 
   render() {
     const {
-      percentile,
       cost,
       team,
       statistics,
@@ -160,7 +159,8 @@ export default class PlayerCard extends PureComponent {
       name,
       image
     } = this.props.player;
-    const color = scale(percentile).hex();
+    const [statistic] = statistics;
+    const color = scale(statistic.percentile).hex();
     return (
       <StyledCard
         disabled={this.props.disabled}
@@ -224,7 +224,7 @@ export default class PlayerCard extends PureComponent {
                   &nbsp;{' '}
                 </StatusText>
               </Status>
-              {this.renderStatistics(statistics[0])}
+              {this.renderStatistics(statistic)}
             </Fragment>
           )}
           <PlayerImage src={image} centered={this.props.mini} />

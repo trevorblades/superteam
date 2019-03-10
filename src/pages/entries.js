@@ -12,7 +12,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import formatDiff from '../utils/format-diff';
+// import formatDiff from '../utils/format-diff';
 import {LIST_ENTRIES} from '../utils/queries';
 import {Link} from 'gatsby';
 import {Query} from 'react-apollo';
@@ -44,8 +44,8 @@ export default function Entries(props) {
                     <TableHead>
                       <TableRow>
                         <TableCell>Team name</TableCell>
-                        <TableCell align="right">Rating</TableCell>
-                        <TableCell align="right">Gain/loss</TableCell>
+                        {/* <TableCell align="right">Rating</TableCell>
+                        <TableCell align="right">Gain/loss</TableCell> */}
                         <TableCell align="right">Actions</TableCell>
                       </TableRow>
                     </TableHead>
@@ -53,14 +53,14 @@ export default function Entries(props) {
                       {data.entries.map(entry => (
                         <TableRow key={entry.id}>
                           <TableCell>{entry.name}</TableCell>
-                          <TableCell align="right">
+                          {/* <TableCell align="right">
                             {entry.currentRating}
                           </TableCell>
                           <TableCell align="right">
                             {formatDiff(
                               entry.initialRating - entry.currentRating
                             )}
-                          </TableCell>
+                          </TableCell> */}
                           <TableCell align="right">
                             <Button
                               component={Link}

@@ -13,13 +13,16 @@ export const Section = styled.section({
   padding: `${56}px ${48}px`
 });
 
-export const PlayerAvatar = mapProps(({player, ...props}) => ({
-  ...props,
-  src: player.image,
-  style: {
-    backgroundColor: scale(player.percentile).hex()
-  }
-}))(
+export const PlayerAvatar = mapProps(({player, ...props}) => {
+  const [statistic] = player.statistics;
+  return {
+    ...props,
+    src: player.image,
+    style: {
+      backgroundColor: scale(statistic.percentile).hex()
+    }
+  };
+})(
   styled(Avatar)(props => size(props.size), {
     alignItems: 'flex-start',
     img: css(size('150%'), {

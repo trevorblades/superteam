@@ -15,8 +15,6 @@ export const EntryFragment = gql`
   fragment EntryFragment on Entry {
     id
     name
-    initialRating
-    currentRating
     createdAt
   }
 `;
@@ -48,11 +46,13 @@ export const GET_ENTRY = gql`
         ign
         name
         image
-        rating
-        percentile
         team {
           name
           logo
+        }
+        statistics {
+          rating
+          percentile
         }
       }
     }
