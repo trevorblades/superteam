@@ -71,8 +71,7 @@ export const resolvers = {
     team: parent => parent.getTeam(),
     statistics: parent =>
       parent.getStatistics({
-        order: [['year', 'desc'], ['week', 'desc']],
-        limit: 1
+        order: [['year', 'desc'], ['week', 'desc']]
       })
   },
   Entry: {

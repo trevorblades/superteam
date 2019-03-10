@@ -6,11 +6,9 @@ import {HLTV} from 'hltv';
 import {Player, Statistic, Team, sequelize} from '../src/db';
 
 const datePattern = 'yyyy-MM-dd';
+const start = new Date('2018-01-01');
+const end = new Date('2019-01-22'); // pass a date in here to adjust time window (e.g. '2019-01-01')
 async function update() {
-  const end = new Date('2019-01-08'); // pass a date in here to adjust time window (e.g. '2019-01-01')
-  const start = new Date(end);
-  start.setFullYear(start.getFullYear() - 1);
-
   const queryOptions = {
     matchType: 'Lan',
     rankingFilter: 'Top50',
@@ -65,10 +63,10 @@ async function update() {
           id: player.id
         });
 
-        const headshots = parseFloat(statistics.headshots).toPrecision(3) / 100;
+        const headshots = parseFloat(statistics.headshots) / 100;
         const statistic = await Statistic.create({
           ...statistics,
-          headshots,
+          headshots: headshots.toPrecision(3),
           week,
           year
         });
@@ -130,11 +128,12 @@ async function update() {
     const maxRating = Math.max(...ratings);
     const delta = maxRating - minRating;
     await Promise.all(
-      statistics.map(statistic =>
-        statistic.update({
-          percentile: (statistic.rating - minRating) / delta
-        })
-      )
+      statistics.map(statistic => {
+        const percentile = (statistic.rating - minRating) / delta;
+        return statistic.update({
+          percentile: percentile.toPrecision(3)
+        });
+      })
     );
   }
 
