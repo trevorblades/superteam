@@ -117,24 +117,26 @@ async function update() {
     }
   }
 
-  // create an array of all current player ratings
-  const ratings = players.map(player => {
-    const [{rating}] = player.getDataValue('statistics');
-    return rating;
-  });
+  if (updatedPlayers) {
+    // update percentiles if any player gets updated
+    // create an array of all current player statistics
+    const statistics = players.flatMap(player =>
+      player.getDataValue('statistics')
+    );
 
-  // calculate their percentile and update the statistic row
-  const minRating = Math.min(...ratings);
-  const maxRating = Math.max(...ratings);
-  const delta = maxRating - minRating;
-  await Promise.all(
-    players.map(player => {
-      const [statistic] = player.getDataValue('statistics');
-      return statistic.update({
-        percentile: (statistic.rating - minRating) / delta
-      });
-    })
-  );
+    // calculate their percentile and update the statistic row
+    const ratings = statistics.map(statistic => statistic.rating);
+    const minRating = Math.min(...ratings);
+    const maxRating = Math.max(...ratings);
+    const delta = maxRating - minRating;
+    await Promise.all(
+      statistics.map(statistic =>
+        statistic.update({
+          percentile: (statistic.rating - minRating) / delta
+        })
+      )
+    );
+  }
 
   // return the updated and new counts to display in the console output
   return {
