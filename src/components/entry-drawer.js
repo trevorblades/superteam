@@ -1,10 +1,10 @@
 import CardHeader from '@material-ui/core/CardHeader';
 import Diff from './diff';
 import Drawer from '@material-ui/core/Drawer';
+import EntryChart from './entry-chart';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
@@ -87,17 +87,14 @@ export default class EntryDrawer extends Component {
                             <PlayerAvatar player={player} />
                           </ListItemAvatar>
                           <ListItemText secondary={player.name}>
-                            {player.ign}
+                            {player.ign} (
+                            <Diff value={currentValue - initialValue} />)
                           </ListItemText>
-                          <ListItemSecondaryAction>
-                            <Typography>
-                              <Diff value={currentValue - initialValue} />
-                            </Typography>
-                          </ListItemSecondaryAction>
                         </ListItem>
                       );
                     })}
                   </List>
+                  <EntryChart players={data.entry.players} />
                 </Fragment>
               );
             }}

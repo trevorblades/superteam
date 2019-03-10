@@ -8,6 +8,7 @@
     "@emotion/core": "^10.0.7",
     "@emotion/styled": "^10.0.7",
     "@material-ui/core": "^3.9.2",
+    "@nivo/line": "^0.52.1",
     "apollo-cache-inmemory": "^1.5.1",
     "apollo-client": "^2.5.1",
     "apollo-link-context": "^1.0.15",
