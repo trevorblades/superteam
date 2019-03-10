@@ -1,19 +1,16 @@
 #!/usr/bin/env node -r esm -r dotenv/config
-import format from 'date-fns/format';
 import getISOWeek from 'date-fns/getISOWeek';
 import getISOWeekYear from 'date-fns/getISOWeekYear';
 import {HLTV} from 'hltv';
 import {Player, Statistic, Team, sequelize} from '../src/db';
 
-const datePattern = 'yyyy-MM-dd';
-const start = new Date('2018-01-01');
-const end = new Date('2019-02-12'); // pass a date in here to adjust time window (e.g. '2019-01-01')
+const endDate = '2019-02-12'; // pass a date in here to adjust time window (e.g. '2019-01-01')
 async function update() {
   const queryOptions = {
     matchType: 'Lan',
     rankingFilter: 'Top50',
-    startDate: format(start, datePattern),
-    endDate: format(end, datePattern)
+    startDate: '2018-01-01', // don't change this
+    endDate
   };
 
   // first, we loop through the most recent ranking and add any newcomers to the
@@ -38,8 +35,9 @@ async function update() {
   // next, we loop through all the players in the players table and retrieve
   // up-to-date information and statistics
   let updatedPlayers = 0;
-  const week = getISOWeek(end);
-  const year = getISOWeekYear(end);
+  const date = new Date(endDate);
+  const week = getISOWeek(date);
+  const year = getISOWeekYear(date);
   const players = await Player.findAll({
     include: [
       {
