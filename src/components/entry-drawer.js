@@ -1,12 +1,17 @@
 import CardHeader from '@material-ui/core/CardHeader';
+import Diff from './diff';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
+import getISOWeek from 'date-fns/getISOWeek';
+import getISOWeekYear from 'date-fns/getISOWeekYear';
+import getPlayerCost, {getInitialPlayerCost} from '../utils/get-player-cost';
 import styled from '@emotion/styled';
 import {GET_ENTRY} from '../utils/queries';
 import {PlayerAvatar} from './common';
@@ -59,6 +64,8 @@ export default class EntryDrawer extends Component {
               }
 
               const date = new Date(Number(data.entry.createdAt));
+              const week = getISOWeek(date);
+              const year = getISOWeekYear(date);
               return (
                 <Fragment>
                   <CardHeader
@@ -66,16 +73,30 @@ export default class EntryDrawer extends Component {
                     subheader={`Created ${date.toLocaleDateString()}`}
                   />
                   <List>
-                    {data.entry.players.map(player => (
-                      <ListItem key={player.id}>
-                        <ListItemAvatar>
-                          <PlayerAvatar player={player} />
-                        </ListItemAvatar>
-                        <ListItemText secondary={player.name}>
-                          {player.ign}
-                        </ListItemText>
-                      </ListItem>
-                    ))}
+                    {data.entry.players.map(player => {
+                      const currentValue = getPlayerCost(player);
+                      const initialValue = getInitialPlayerCost(
+                        week,
+                        year,
+                        player
+                      );
+
+                      return (
+                        <ListItem key={player.id}>
+                          <ListItemAvatar>
+                            <PlayerAvatar player={player} />
+                          </ListItemAvatar>
+                          <ListItemText secondary={player.name}>
+                            {player.ign}
+                          </ListItemText>
+                          <ListItemSecondaryAction>
+                            <Typography>
+                              <Diff value={currentValue - initialValue} />
+                            </Typography>
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                      );
+                    })}
                   </List>
                 </Fragment>
               );

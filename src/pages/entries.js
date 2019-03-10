@@ -15,7 +15,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import getISOWeek from 'date-fns/getISOWeek';
 import getISOWeekYear from 'date-fns/getISOWeekYear';
-import getPlayerCost, {percentileToCost} from '../utils/get-player-cost';
+import getPlayerCost, {getInitialPlayerCost} from '../utils/get-player-cost';
 import sum from '../utils/sum';
 import {LIST_ENTRIES} from '../utils/queries';
 import {Link} from 'gatsby';
@@ -61,14 +61,7 @@ export default function Entries(props) {
                         const week = getISOWeek(date);
                         const year = getISOWeekYear(date);
                         const initialValue = entry.players
-                          .map(player => {
-                            const {percentile} = player.statistics.find(
-                              statistic =>
-                                statistic.week === week &&
-                                statistic.year === year
-                            );
-                            return percentileToCost(percentile);
-                          })
+                          .map(getInitialPlayerCost.bind(this, week, year))
                           .reduce(sum);
 
                         const initialRemainder = TOTAL_BUDGET - initialValue;
@@ -76,8 +69,6 @@ export default function Entries(props) {
                           .map(getPlayerCost)
                           .reduce(sum);
                         const adjustedValue = currentValue + initialRemainder;
-
-                        const createdAt = new Date(Number(entry.createdAt));
                         return (
                           <TableRow key={entry.id}>
                             <TableCell>{entry.name}</TableCell>
@@ -88,7 +79,7 @@ export default function Entries(props) {
                               <Diff value={currentValue - initialValue} />
                             </TableCell>
                             <TableCell align="right">
-                              {createdAt.toLocaleDateString()}
+                              {date.toLocaleDateString()}
                             </TableCell>
                             <TableCell align="right">
                               <Button
