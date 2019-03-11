@@ -10,9 +10,9 @@ import styled from '@emotion/styled';
 import withProps from 'recompose/withProps';
 import {CARD_ASPECT_RATIO} from '../utils/constants';
 import {Transition, animated} from 'react-spring/renderprops';
+import {classes} from '../utils/scale';
 import {cover, transparentize} from 'polished';
 import {percentileToCost} from '../utils/get-player-cost';
-import {scale} from '../utils/scale';
 
 const StyledCard = styled(Card)(props => ({
   paddingTop: `${(1 / CARD_ASPECT_RATIO) * 100}%`,
@@ -154,7 +154,7 @@ export default class PlayerCard extends PureComponent {
     const {team, statistics, country, ign, name, image} = this.props.player;
     const [statistic] = statistics;
     const cost = percentileToCost(statistic.percentile);
-    const color = scale(statistic.percentile).hex();
+    const color = classes(statistic.percentile).hex();
     return (
       <StyledCard
         disabled={this.props.disabled}

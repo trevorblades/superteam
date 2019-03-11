@@ -1,4 +1,5 @@
 import CardHeader from '@material-ui/core/CardHeader';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Diff from './diff';
 import Drawer from '@material-ui/core/Drawer';
 import EntryChart from './entry-chart';
@@ -17,14 +18,21 @@ import {GET_ENTRY} from '../utils/queries';
 import {PlayerAvatar} from './common';
 import {Query} from 'react-apollo';
 import {navigate} from 'gatsby';
+import {withStyles} from '@material-ui/core';
 
-const Container = styled.div({
-  width: 400,
-  padding: 8
+const Loading = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  margin: 'auto'
 });
 
-export default class EntryDrawer extends Component {
+const LoadingText = styled(Typography)({
+  marginLeft: 16
+});
+
+class EntryDrawer extends Component {
   static propTypes = {
+    classes: PropTypes.object.isRequired,
     match: PropTypes.array
   };
 
@@ -48,59 +56,72 @@ export default class EntryDrawer extends Component {
         anchor="right"
         open={Boolean(this.props.match)}
         onClose={() => navigate('/entries')}
+        classes={{
+          paper: this.props.classes.paper
+        }}
       >
-        <Container>
-          <Query
-            query={GET_ENTRY}
-            variables={{
-              id: this.state.id
-            }}
-          >
-            {({data, loading, error}) => {
-              if (loading) {
-                return <Typography>Loading</Typography>;
-              } else if (error) {
-                return <Typography color="error">{error.message}</Typography>;
-              }
-
-              const date = new Date(Number(data.entry.createdAt));
-              const week = getISOWeek(date);
-              const year = getISOWeekYear(date);
+        <Query
+          query={GET_ENTRY}
+          variables={{
+            id: this.state.id
+          }}
+        >
+          {({data, loading, error}) => {
+            if (loading) {
               return (
-                <Fragment>
-                  <CardHeader
-                    title={data.entry.name}
-                    subheader={`Created ${date.toLocaleDateString()}`}
-                  />
-                  <EntryChart players={data.entry.players} />
-                  <List>
-                    {data.entry.players.map(player => {
-                      const currentValue = getPlayerCost(player);
-                      const initialValue = getInitialPlayerCost(
-                        week,
-                        year,
-                        player
-                      );
-
-                      return (
-                        <ListItem key={player.id}>
-                          <ListItemAvatar>
-                            <PlayerAvatar player={player} />
-                          </ListItemAvatar>
-                          <ListItemText secondary={player.name}>
-                            {player.ign} (
-                            <Diff value={currentValue - initialValue} />)
-                          </ListItemText>
-                        </ListItem>
-                      );
-                    })}
-                  </List>
-                </Fragment>
+                <Loading>
+                  <CircularProgress size={32} />
+                  <LoadingText>Loading...</LoadingText>
+                </Loading>
               );
-            }}
-          </Query>
-        </Container>
+            } else if (error) {
+              return <Typography color="error">{error.message}</Typography>;
+            }
+
+            const date = new Date(Number(data.entry.createdAt));
+            const week = getISOWeek(date);
+            const year = getISOWeekYear(date);
+            return (
+              <Fragment>
+                <CardHeader
+                  title={data.entry.name}
+                  subheader={`Created ${date.toLocaleDateString()}`}
+                />
+                <EntryChart players={data.entry.players} />
+                <List>
+                  {data.entry.players.map(player => {
+                    const currentValue = getPlayerCost(player);
+                    const initialValue = getInitialPlayerCost(
+                      week,
+                      year,
+                      player
+                    );
+
+                    return (
+                      <ListItem key={player.id}>
+                        <ListItemAvatar>
+                          <PlayerAvatar player={player} />
+                        </ListItemAvatar>
+                        <ListItemText secondary={player.name}>
+                          {player.ign} (
+                          <Diff value={currentValue - initialValue} />)
+                        </ListItemText>
+                      </ListItem>
+                    );
+                  })}
+                </List>
+              </Fragment>
+            );
+          }}
+        </Query>
       </Drawer>
     );
   }
 }
+
+export default withStyles({
+  paper: {
+    width: 400,
+    padding: 8
+  }
+})(EntryDrawer);

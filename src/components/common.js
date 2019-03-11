@@ -1,8 +1,8 @@
 import Avatar from '@material-ui/core/Avatar';
 import mapProps from 'recompose/mapProps';
 import styled from '@emotion/styled';
+import {classes} from '../utils/scale';
 import {css} from '@emotion/core';
-import {scale} from '../utils/scale';
 import {size} from 'polished';
 
 export const Hero = styled.section({
@@ -19,7 +19,7 @@ export const PlayerAvatar = mapProps(({player, ...props}) => {
     ...props,
     src: player.image,
     style: {
-      backgroundColor: scale(statistic.percentile).hex()
+      backgroundColor: classes(statistic.percentile).hex()
     }
   };
 })(

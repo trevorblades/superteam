@@ -1,20 +1,35 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import chroma from 'chroma-js';
 import formatMoney from '../utils/format-money';
+import getPlayerCost, {percentileToCost} from '../utils/get-player-cost';
 import styled from '@emotion/styled';
 import {ResponsiveLine} from '@nivo/line';
-import {percentileToCost} from '../utils/get-player-cost';
+import {darken, lighten} from 'polished';
+import {withTheme} from '@material-ui/core';
 
 const Container = styled.div({
   height: 200,
   fontFamily: 'Inconsolata, monospace'
 });
 
-export default function EntryChart(props) {
+function EntryChart(props) {
+  const {error} = props.theme.palette;
+  const players = props.players
+    .slice()
+    .sort((a, b) => getPlayerCost(a) - getPlayerCost(b));
+  const igns = players.map(player => player.ign);
+  const scale = chroma
+    .scale([lighten(0.2, error.light), darken(0.1, error.dark)])
+    .domain([0, players.length - 1]);
   return (
     <Container>
       <ResponsiveLine
-        data={props.players.map(player => ({
+        colorBy={data => {
+          const color = scale(igns.indexOf(data.id));
+          return color.hex();
+        }}
+        data={players.map(player => ({
           id: player.ign,
           data: player.statistics
             .map(statistic => ({
@@ -25,8 +40,8 @@ export default function EntryChart(props) {
         }))}
         margin={{
           top: 16,
-          bottom: 60,
           right: 16,
+          bottom: 60,
           left: 60
         }}
         axisBottom={{
@@ -42,7 +57,6 @@ export default function EntryChart(props) {
         tooltipFormat={formatMoney}
         yScale={{
           type: 'linear',
-          stacked: false,
           min: 'auto',
           max: 'auto'
         }}
@@ -52,5 +66,8 @@ export default function EntryChart(props) {
 }
 
 EntryChart.propTypes = {
-  players: PropTypes.array.isRequired
+  players: PropTypes.array.isRequired,
+  theme: PropTypes.object.isRequired
 };
+
+export default withTheme()(EntryChart);
