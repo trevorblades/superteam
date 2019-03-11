@@ -5,6 +5,7 @@ import EntryDrawer from '../components/entry-drawer';
 import Header from '../components/header';
 import Helmet from 'react-helmet';
 import Layout from '../components/layout';
+import LoadingIndicator from '../components/loading-indicator';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
 import Table from '@material-ui/core/Table';
@@ -38,7 +39,7 @@ export default function Entries(props) {
           <Query query={LIST_ENTRIES}>
             {({data, loading, error}) => {
               if (loading) {
-                return <Typography>Loading</Typography>;
+                return <LoadingIndicator />;
               } else if (error) {
                 return <Typography color="error">{error.message}</Typography>;
               }
