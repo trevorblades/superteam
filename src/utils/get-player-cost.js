@@ -1,3 +1,4 @@
+import sum from './sum';
 import {AVERATE_PLAYER_COST} from './constants';
 
 export function percentileToCost(percentile) {
@@ -10,6 +11,10 @@ export function getInitialPlayerCost(week, year, player) {
     statistic => statistic.week === week && statistic.year === year
   );
   return percentileToCost(percentile);
+}
+
+export function getTotalPlayerCost(players) {
+  return players.map(getPlayerCost).reduce(sum);
 }
 
 export default function getPlayerCost(player) {

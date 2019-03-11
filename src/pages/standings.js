@@ -10,10 +10,27 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
+import getEntryFinancials from '../utils/get-entry-financials';
 import {Section} from '../components/common';
 import {graphql} from 'gatsby';
 
 export default function Standings(props) {
+  const entries = props.data.superteam.entries
+    .map(entry => ({
+      ...entry,
+      ...getEntryFinancials(entry)
+    }))
+    .sort((a, b) => b.diff - a.diff);
+
+  const counts = entries.reduce(
+    (acc, entry) => ({
+      ...acc,
+      [entry.diff]: acc[entry.diff] ? acc[entry.diff] + 1 : 1
+    }),
+    {}
+  );
+
+  const diffs = Object.keys(counts).map(Number);
   return (
     <Layout>
       <Helmet>
@@ -33,15 +50,17 @@ export default function Standings(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.data.superteam.entries.map((entry, index) => {
-              const createdAt = new Date(Number(entry.createdAt));
+            {entries.map(entry => {
               return (
                 <TableRow key={entry.id}>
-                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>
+                    {counts[entry.diff] > 1 ? 'T' : ''}
+                    {diffs.indexOf(entry.diff) + 1}
+                  </TableCell>
                   <TableCell>{entry.name}</TableCell>
                   <FinancialCells
-                    createdAt={createdAt}
-                    players={entry.players}
+                    diff={entry.diff}
+                    totalValue={entry.totalValue}
                   />
                 </TableRow>
               );

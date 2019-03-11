@@ -13,9 +13,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
-import getPlayerCost from '../utils/get-player-cost';
+import getPlayerCost, {getTotalPlayerCost} from '../utils/get-player-cost';
 import styled from '@emotion/styled';
-import sum from '../utils/sum';
 import withUser from './with-user';
 import {CREATE_ENTRY, LIST_ENTRIES} from '../utils/queries';
 import {FaChevronLeft} from 'react-icons/fa';
@@ -50,7 +49,7 @@ function updateEntries(cache, {data}) {
 }
 
 function CheckoutDialog(props) {
-  const totalCost = props.players.map(getPlayerCost).reduce(sum);
+  const totalCost = getTotalPlayerCost(props.players);
   return (
     <Mutation
       mutation={CREATE_ENTRY}

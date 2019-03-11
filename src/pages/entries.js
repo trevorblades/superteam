@@ -14,6 +14,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
+import getEntryFinancials from '../utils/get-entry-financials';
 import {LIST_ENTRIES} from '../utils/queries';
 import {Link} from 'gatsby';
 import {Query} from 'react-apollo';
@@ -52,16 +53,13 @@ export default function Entries(props) {
                     </TableHead>
                     <TableBody>
                       {data.entries.map(entry => {
-                        const createdAt = new Date(Number(entry.createdAt));
+                        const {date, ...financials} = getEntryFinancials(entry);
                         return (
                           <TableRow key={entry.id}>
                             <TableCell>{entry.name}</TableCell>
-                            <FinancialCells
-                              createdAt={createdAt}
-                              players={entry.players}
-                            />
+                            <FinancialCells {...financials} />
                             <TableCell align="right">
-                              {createdAt.toLocaleDateString()}
+                              {date.toLocaleDateString()}
                             </TableCell>
                             <TableCell align="right">
                               <Button
