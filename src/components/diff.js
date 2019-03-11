@@ -3,16 +3,16 @@ import React from 'react';
 import {withTheme} from '@material-ui/core/styles';
 
 function Diff(props) {
-  let color;
-  if (props.value) {
-    const {error, secondary} = props.theme.palette;
-    color = props.value < 0 ? error.dark : secondary.dark;
+  if (!props.value) {
+    return <span>Even</span>;
   }
 
+  const {error, secondary} = props.theme.palette;
+  const color = props.value < 0 ? error.dark : secondary.dark;
+  const sign = props.value > 0 ? '+' : '-';
   return (
     <span style={{color}}>
-      {props.value > 0 ? '+' : ''}
-      {props.value.toLocaleString()}
+      {sign}${Math.abs(props.value).toLocaleString()}
     </span>
   );
 }

@@ -25,6 +25,7 @@ function EntryChart(props) {
   return (
     <Container>
       <ResponsiveLine
+        animate={false}
         colorBy={data => {
           const color = scale(igns.indexOf(data.id));
           return color.hex();

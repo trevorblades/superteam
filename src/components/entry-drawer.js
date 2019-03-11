@@ -8,8 +8,9 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import LoadingIndicator from './loading-indicator';
 import PropTypes from 'prop-types';
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
+import formatMoney from '../utils/format-money';
 import getISOWeek from 'date-fns/getISOWeek';
 import getISOWeekYear from 'date-fns/getISOWeekYear';
 import getPlayerCost, {getInitialPlayerCost} from '../utils/get-player-cost';
@@ -22,6 +23,18 @@ import {withStyles} from '@material-ui/core';
 
 const StyledLoadingIndicator = styled(LoadingIndicator)({
   margin: 'auto'
+});
+
+const StyledListItemText = styled(ListItemText)({
+  paddingRight: 0
+});
+
+const SecondaryText = styled.span({
+  display: 'flex'
+});
+
+const PlayerValue = styled.span({
+  marginLeft: 'auto'
 });
 
 class EntryDrawer extends Component {
@@ -71,7 +84,7 @@ class EntryDrawer extends Component {
             const week = getISOWeek(date);
             const year = getISOWeekYear(date);
             return (
-              <Fragment>
+              <div>
                 <CardHeader
                   title={data.entry.name}
                   subheader={`Created ${date.toLocaleDateString()}`}
@@ -91,15 +104,24 @@ class EntryDrawer extends Component {
                         <ListItemAvatar>
                           <PlayerAvatar player={player} />
                         </ListItemAvatar>
-                        <ListItemText secondary={player.name}>
-                          {player.ign} (
-                          <Diff value={currentValue - initialValue} />)
-                        </ListItemText>
+                        <StyledListItemText
+                          secondary={
+                            <SecondaryText>
+                              {player.name}
+                              <PlayerValue>
+                                <Diff value={currentValue - initialValue} /> •{' '}
+                                {formatMoney(getPlayerCost(player))}
+                              </PlayerValue>
+                            </SecondaryText>
+                          }
+                        >
+                          {player.ign}
+                        </StyledListItemText>
                       </ListItem>
                     );
                   })}
                 </List>
-              </Fragment>
+              </div>
             );
           }}
         </Query>
