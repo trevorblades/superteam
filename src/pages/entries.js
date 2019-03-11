@@ -1,7 +1,7 @@
 import AuthRequired from '../components/auth-required';
 import Button from '@material-ui/core/Button';
-import Diff from '../components/diff';
 import EntryDrawer from '../components/entry-drawer';
+import FinancialCells, {FinancialHeaders} from '../components/financial-cells';
 import Header from '../components/header';
 import Helmet from 'react-helmet';
 import Layout from '../components/layout';
@@ -14,15 +14,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import getISOWeek from 'date-fns/getISOWeek';
-import getISOWeekYear from 'date-fns/getISOWeekYear';
-import getPlayerCost, {getInitialPlayerCost} from '../utils/get-player-cost';
-import sum from '../utils/sum';
 import {LIST_ENTRIES} from '../utils/queries';
 import {Link} from 'gatsby';
 import {Query} from 'react-apollo';
 import {Section} from '../components/common';
-import {TOTAL_BUDGET} from '../utils/constants';
 
 export default function Entries(props) {
   return (
@@ -50,37 +45,23 @@ export default function Entries(props) {
                     <TableHead>
                       <TableRow>
                         <TableCell>Team name</TableCell>
-                        <TableCell align="right">Total value</TableCell>
-                        <TableCell align="right">Gain/loss</TableCell>
+                        <FinancialHeaders />
                         <TableCell align="right">Created</TableCell>
                         <TableCell align="right">Actions</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {data.entries.map(entry => {
-                        const date = new Date(Number(entry.createdAt));
-                        const week = getISOWeek(date);
-                        const year = getISOWeekYear(date);
-                        const initialValue = entry.players
-                          .map(getInitialPlayerCost.bind(this, week, year))
-                          .reduce(sum);
-
-                        const initialRemainder = TOTAL_BUDGET - initialValue;
-                        const currentValue = entry.players
-                          .map(getPlayerCost)
-                          .reduce(sum);
-                        const adjustedValue = currentValue + initialRemainder;
+                        const createdAt = new Date(Number(entry.createdAt));
                         return (
                           <TableRow key={entry.id}>
                             <TableCell>{entry.name}</TableCell>
+                            <FinancialCells
+                              createdAt={createdAt}
+                              players={entry.players}
+                            />
                             <TableCell align="right">
-                              ${adjustedValue.toLocaleString()}
-                            </TableCell>
-                            <TableCell align="right">
-                              <Diff value={currentValue - initialValue} />
-                            </TableCell>
-                            <TableCell align="right">
-                              {date.toLocaleDateString()}
+                              {createdAt.toLocaleDateString()}
                             </TableCell>
                             <TableCell align="right">
                               <Button

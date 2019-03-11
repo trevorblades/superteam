@@ -1,3 +1,4 @@
+import FinancialCells, {FinancialHeaders} from '../components/financial-cells';
 import Header from '../components/header';
 import Helmet from 'react-helmet';
 import Layout from '../components/layout';
@@ -28,25 +29,20 @@ export default function Standings(props) {
             <TableRow>
               <TableCell>Rank</TableCell>
               <TableCell>Team name</TableCell>
-              {/* <TableCell align="right">Avg. rating</TableCell>
-              <TableCell align="right">Rating diff.</TableCell> */}
-              <TableCell align="right">Created</TableCell>
+              <FinancialHeaders />
             </TableRow>
           </TableHead>
           <TableBody>
             {props.data.superteam.entries.map((entry, index) => {
-              const date = new Date(Number(entry.createdAt));
+              const createdAt = new Date(Number(entry.createdAt));
               return (
                 <TableRow key={entry.id}>
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{entry.name}</TableCell>
-                  {/* <TableCell align="right">{entry.currentRating}</TableCell>
-                  <TableCell align="right">
-                    {formatDiff(entry.initialRating - entry.currentRating)}
-                  </TableCell> */}
-                  <TableCell align="right">
-                    {date.toLocaleDateString()}
-                  </TableCell>
+                  <FinancialCells
+                    createdAt={createdAt}
+                    players={entry.players}
+                  />
                 </TableRow>
               );
             })}
@@ -68,6 +64,13 @@ export const pageQuery = graphql`
         id
         name
         createdAt
+        players {
+          statistics {
+            percentile
+            week
+            year
+          }
+        }
       }
     }
   }
