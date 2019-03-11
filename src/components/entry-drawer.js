@@ -72,6 +72,7 @@ export default class EntryDrawer extends Component {
                     title={data.entry.name}
                     subheader={`Created ${date.toLocaleDateString()}`}
                   />
+                  <EntryChart players={data.entry.players} />
                   <List>
                     {data.entry.players.map(player => {
                       const currentValue = getPlayerCost(player);
@@ -94,7 +95,6 @@ export default class EntryDrawer extends Component {
                       );
                     })}
                   </List>
-                  <EntryChart players={data.entry.players} />
                 </Fragment>
               );
             }}

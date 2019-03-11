@@ -6,7 +6,7 @@ import {ResponsiveLine} from '@nivo/line';
 import {percentileToCost} from '../utils/get-player-cost';
 
 const Container = styled.div({
-  height: 250,
+  height: 200,
   fontFamily: 'Inconsolata, monospace'
 });
 
@@ -24,16 +24,13 @@ export default function EntryChart(props) {
             .sort((a, b) => a.x - b.x)
         }))}
         margin={{
-          top: 20,
-          bottom: 50,
-          right: 20,
-          left: 50
+          top: 16,
+          bottom: 60,
+          right: 16,
+          left: 60
         }}
         axisBottom={{
           orient: 'bottom',
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
           legend: 'week',
           legendOffset: 36,
           legendPosition: 'middle'
@@ -42,6 +39,7 @@ export default function EntryChart(props) {
           format: formatMoney,
           tickValues: 5
         }}
+        tooltipFormat={formatMoney}
         yScale={{
           type: 'linear',
           stacked: false,
