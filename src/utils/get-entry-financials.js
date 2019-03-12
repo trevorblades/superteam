@@ -4,10 +4,17 @@ import sum from './sum';
 import {TOTAL_BUDGET} from './constants';
 import {getInitialPlayerCost, getTotalPlayerCost} from './get-player-cost';
 
+export function getEntryDate(createdAt) {
+  const date = new Date(Number(createdAt));
+  return {
+    date,
+    week: getISOWeek(date),
+    year: getISOWeekYear(date)
+  };
+}
+
 export default function getEntryFinancials(entry) {
-  const date = new Date(Number(entry.createdAt));
-  const week = getISOWeek(date);
-  const year = getISOWeekYear(date);
+  const {date, week, year} = getEntryDate(entry.createdAt);
   const initialValue = entry.players
     .map(getInitialPlayerCost.bind(this, week, year))
     .reduce(sum);
@@ -16,6 +23,8 @@ export default function getEntryFinancials(entry) {
   const currentValue = getTotalPlayerCost(entry.players);
   return {
     date,
+    week,
+    year,
     totalValue: currentValue + initialRemainder,
     diff: currentValue - initialValue
   };

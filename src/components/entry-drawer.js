@@ -11,13 +11,12 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
 import formatMoney from '../utils/format-money';
-import getISOWeek from 'date-fns/getISOWeek';
-import getISOWeekYear from 'date-fns/getISOWeekYear';
 import getPlayerCost, {getInitialPlayerCost} from '../utils/get-player-cost';
 import styled from '@emotion/styled';
 import {GET_ENTRY} from '../utils/queries';
 import {PlayerAvatar} from './common';
 import {Query} from 'react-apollo';
+import {getEntryDate} from '../utils/get-entry-financials';
 import {navigate} from 'gatsby';
 import {withStyles} from '@material-ui/core';
 
@@ -44,6 +43,7 @@ class EntryDrawer extends Component {
   };
 
   static getDerivedStateFromProps(props) {
+    // we do this so the drawer content doesn't change when it transitions out
     if (props.match) {
       return {
         id: props.match[1]
@@ -80,16 +80,25 @@ class EntryDrawer extends Component {
               return <Typography color="error">{error.message}</Typography>;
             }
 
-            const date = new Date(Number(data.entry.createdAt));
-            const week = getISOWeek(date);
-            const year = getISOWeekYear(date);
+            const {date, week, year} = getEntryDate(data.entry.createdAt);
             return (
               <div>
                 <CardHeader
                   title={data.entry.name}
-                  subheader={`Created ${date.toLocaleDateString()}`}
+                  subheader={
+                    <span>
+                      Created{' '}
+                      <span className={this.props.classes.createdAt}>
+                        {date.toLocaleDateString()}
+                      </span>
+                    </span>
+                  }
                 />
-                <EntryChart players={data.entry.players} />
+                <EntryChart
+                  players={data.entry.players}
+                  year={year}
+                  week={week}
+                />
                 <List>
                   {data.entry.players.map(player => {
                     const currentValue = getPlayerCost(player);
@@ -130,9 +139,15 @@ class EntryDrawer extends Component {
   }
 }
 
-export default withStyles({
-  paper: {
-    width: 400,
-    padding: 8
-  }
-})(EntryDrawer);
+export default withStyles(
+  theme => ({
+    paper: {
+      width: 400,
+      padding: 8
+    },
+    createdAt: {
+      color: theme.palette.primary.light
+    }
+  }),
+  {withTheme: true}
+)(EntryDrawer);

@@ -14,13 +14,13 @@ const Container = styled.div({
 });
 
 function EntryChart(props) {
-  const {error} = props.theme.palette;
+  const {error, primary} = props.theme.palette;
   const players = props.players
     .slice()
     .sort((a, b) => getPlayerCost(a) - getPlayerCost(b));
   const igns = players.map(player => player.ign);
   const scale = chroma
-    .scale([lighten(0.2, error.light), darken(0.1, error.dark)])
+    .scale([lighten(0.2, error.light), darken(0.05, error.dark)])
     .domain([0, players.length - 1]);
   return (
     <Container>
@@ -45,6 +45,16 @@ function EntryChart(props) {
           bottom: 60,
           left: 60
         }}
+        markers={[
+          {
+            axis: 'x',
+            value: props.week,
+            lineStyle: {
+              stroke: primary.light,
+              strokeWidth: 2
+            }
+          }
+        ]}
         axisBottom={{
           orient: 'bottom',
           legend: 'week',
@@ -68,7 +78,9 @@ function EntryChart(props) {
 
 EntryChart.propTypes = {
   players: PropTypes.array.isRequired,
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
+  // year: PropTypes.number.isRequired,
+  week: PropTypes.number.isRequired
 };
 
 export default withTheme()(EntryChart);
