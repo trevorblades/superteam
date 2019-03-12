@@ -4,6 +4,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MoneyRow, {MoneyCell} from './money-row';
+import PlayerAvatar from './player-avatar';
 import PropTypes from 'prop-types';
 import React from 'react';
 import SaveButton from './save-button';
@@ -19,7 +20,6 @@ import withUser from './with-user';
 import {CREATE_ENTRY, LIST_ENTRIES} from '../utils/queries';
 import {FaChevronLeft} from 'react-icons/fa';
 import {Mutation} from 'react-apollo';
-import {PlayerAvatar} from './common';
 import {TOTAL_BUDGET} from '../utils/constants';
 import {navigate} from 'gatsby';
 
