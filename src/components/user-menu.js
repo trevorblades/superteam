@@ -66,7 +66,7 @@ class UserMenu extends Component {
           }}
         >
           <MenuItem component={Link} to="/entries">
-            My entries
+            My teams
           </MenuItem>
           <MenuItem>Settings</MenuItem>
           <MenuItem onClick={this.logout}>Log out</MenuItem>

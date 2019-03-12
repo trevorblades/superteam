@@ -20,6 +20,7 @@ import {Link} from 'gatsby';
 import {Query} from 'react-apollo';
 import {Section} from '../components/common';
 
+const title = 'My teams';
 export default function Entries(props) {
   return (
     <Layout>
@@ -27,10 +28,10 @@ export default function Entries(props) {
       <AuthRequired>
         <Section>
           <Helmet>
-            <title>My entries</title>
+            <title>{title}</title>
           </Helmet>
           <Typography variant="h3" gutterBottom>
-            My entries
+            {title}
           </Typography>
           <Query query={LIST_ENTRIES}>
             {({data, loading, error}) => {
