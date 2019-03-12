@@ -80,7 +80,7 @@ class EntryDrawer extends Component {
               return <Typography color="error">{error.message}</Typography>;
             }
 
-            const {date, week, year} = getEntryDate(data.entry.createdAt);
+            const {date, week, year} = getEntryDate(data.entry);
             return (
               <div>
                 <CardHeader

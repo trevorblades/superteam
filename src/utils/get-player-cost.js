@@ -8,7 +8,7 @@ export function percentileToCost(percentile) {
 
 export function getInitialPlayerCost(week, year, player) {
   const {percentile} = player.statistics.find(
-    statistic => statistic.week === week && statistic.year === year
+    statistic => statistic.week <= week && statistic.year <= year
   );
   return percentileToCost(percentile);
 }
