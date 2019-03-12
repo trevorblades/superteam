@@ -13,7 +13,6 @@ import {Transition, animated} from 'react-spring/renderprops';
 import {classes} from '../utils/scale';
 import {cover, transparentize} from 'polished';
 import {percentileToCost} from '../utils/get-player-cost';
-import {teamLogoStyles} from './common';
 
 const StyledCard = styled(Card)(props => ({
   paddingTop: `${(1 / CARD_ASPECT_RATIO) * 100}%`,
@@ -27,9 +26,11 @@ const StyledCard = styled(Card)(props => ({
   WebkitTransform: 'perspective(1000px)'
 }));
 
-const TeamLogo = styled.div(cover(), teamLogoStyles, {
+const TeamLogo = styled.div(cover(), {
   backgroundSize: '150%',
-  backgroundPosition: 'center'
+  backgroundPosition: 'center',
+  mixBlendMode: 'luminosity',
+  opacity: 0.5
 });
 
 const StyledCardActionArea = styled(CardActionArea)(cover(), {

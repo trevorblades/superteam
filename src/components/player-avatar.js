@@ -4,7 +4,6 @@ import React from 'react';
 import styled from '@emotion/styled';
 import {classes} from '../utils/scale';
 import {size} from 'polished';
-import {teamLogoStyles} from './common';
 
 const StyledAvatar = styled(Avatar)(props => size(props.size));
 
@@ -14,7 +13,9 @@ const PlayerImage = styled(StyledImage)({
   position: 'relative'
 });
 
-const Logo = styled(StyledImage)(teamLogoStyles, {
+const Logo = styled(StyledImage)({
+  mixBlendMode: 'luminosity',
+  opacity: 1 / 3,
   position: 'absolute'
 });
 
