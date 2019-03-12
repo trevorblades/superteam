@@ -60,6 +60,8 @@ export default function Standings(props) {
                   <TableCell>{entry.name}</TableCell>
                   <FinancialCells
                     diff={entry.diff}
+                    playerValue={entry.playerValue}
+                    cash={entry.cash}
                     totalValue={entry.totalValue}
                   />
                 </TableRow>

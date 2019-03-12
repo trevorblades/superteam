@@ -21,13 +21,15 @@ export default function getEntryFinancials(entry) {
     .map(getInitialPlayerCost.bind(this, week, year))
     .reduce(sum);
 
-  const initialRemainder = TOTAL_BUDGET - initialValue;
-  const currentValue = getTotalPlayerCost(entry.players);
+  const cash = TOTAL_BUDGET - initialValue;
+  const playerValue = getTotalPlayerCost(entry.players);
   return {
     date,
     week,
     year,
-    totalValue: currentValue + initialRemainder,
-    diff: currentValue - initialValue
+    playerValue,
+    cash,
+    totalValue: playerValue + cash,
+    diff: playerValue - initialValue
   };
 }
