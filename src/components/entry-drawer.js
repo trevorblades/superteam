@@ -146,6 +146,7 @@ export default withStyles(
       padding: 8
     },
     createdAt: {
+      fontWeight: 'bold',
       color: theme.palette.primary.light
     }
   }),
