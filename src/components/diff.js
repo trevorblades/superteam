@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import formatMoney from '../utils/format-money';
 import {withTheme} from '@material-ui/core/styles';
 
 function Diff(props) {
@@ -12,7 +13,8 @@ function Diff(props) {
   const sign = props.value > 0 ? '+' : '-';
   return (
     <span style={{color}}>
-      {sign}${Math.abs(props.value).toLocaleString()}
+      {sign}
+      {formatMoney(Math.abs(props.value))}
     </span>
   );
 }
