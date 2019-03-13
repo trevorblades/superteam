@@ -6,18 +6,18 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
-import TwitterLogin from './twitter-login';
+import TwitterLogin from '../twitter-login';
 import Typography from '@material-ui/core/Typography';
 import UserMenu from './user-menu';
 import compose from 'recompose/compose';
-import logo from '../assets/logo.png';
+import logo from '../../assets/logo.png';
 import mapProps from 'recompose/mapProps';
 import styled from '@emotion/styled';
 import withProps from 'recompose/withProps';
-import withUser from './with-user';
+import withUser from '../with-user';
 import {FaTwitter} from 'react-icons/fa';
 import {Link, StaticQuery, graphql} from 'gatsby';
-import {TWITTER_BLUE} from '../utils/constants';
+import {TWITTER_BLUE} from '../../utils/constants';
 import {withTheme} from '@material-ui/core/styles';
 
 const Logo = styled.div({

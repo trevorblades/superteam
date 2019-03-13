@@ -1,10 +1,14 @@
-import Finance from './finance';
+import FinanceText from './finance-text';
 import Paper from '@material-ui/core/Paper';
 import PlayerCard from './player-card';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import styled from '@emotion/styled';
-import {CARD_ASPECT_RATIO, TEAM_SIZE, TOTAL_BUDGET} from '../utils/constants';
+import {
+  CARD_ASPECT_RATIO,
+  TEAM_SIZE,
+  TOTAL_BUDGET
+} from '../../utils/constants';
 import {withTheme} from '@material-ui/core/styles';
 
 const Container = styled(Paper)({
@@ -37,7 +41,7 @@ const Player = withTheme()(
   }))
 );
 
-export default class Footer extends Component {
+export default class TeamFooter extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -62,7 +66,7 @@ export default class Footer extends Component {
   render() {
     return (
       <Container component="footer" square elevation={10}>
-        <Finance
+        <FinanceText
           title="Amount spent"
           from={TOTAL_BUDGET - this.state.prevBudget}
           to={TOTAL_BUDGET - this.props.budget}
@@ -88,7 +92,7 @@ export default class Footer extends Component {
               return <Player key={index} />;
             })}
         </Players>
-        <Finance
+        <FinanceText
           colored
           title="Remaining budget"
           from={this.state.prevBudget}

@@ -1,11 +1,11 @@
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import React from 'react';
-import TwitterLogin from './twitter-login';
+import TwitterLogin from '../twitter-login';
 import styled from '@emotion/styled';
 import {FaTwitter} from 'react-icons/fa';
 import {MdCheck} from 'react-icons/md';
-import {TWITTER_BLUE} from '../utils/constants';
+import {TWITTER_BLUE} from '../../utils/constants';
 import {withTheme} from '@material-ui/core/styles';
 
 const StyledButton = withTheme()(

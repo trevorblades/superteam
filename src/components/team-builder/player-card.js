@@ -5,14 +5,15 @@ import PropTypes from 'prop-types';
 import React, {Fragment, PureComponent} from 'react';
 import Typography from '@material-ui/core/Typography';
 import emojiFlags from 'emoji-flags';
+import formatMoney from '../../utils/format-money';
 import mapProps from 'recompose/mapProps';
 import styled from '@emotion/styled';
 import withProps from 'recompose/withProps';
-import {CARD_ASPECT_RATIO} from '../utils/constants';
+import {CARD_ASPECT_RATIO} from '../../utils/constants';
 import {Transition, animated} from 'react-spring/renderprops';
-import {classes} from '../utils/scale';
+import {classes} from '../../utils/scale';
 import {cover, transparentize} from 'polished';
-import {percentileToCost} from '../utils/get-player-cost';
+import {percentileToCost} from '../../utils/get-player-cost';
 
 const StyledCard = styled(Card)(props => ({
   paddingTop: `${(1 / CARD_ASPECT_RATIO) * 100}%`,
@@ -209,7 +210,7 @@ export default class PlayerCard extends PureComponent {
                           )
                         : style => (
                             <animated.span style={style}>
-                              ${cost.toLocaleString()}
+                              {formatMoney(cost)}
                             </animated.span>
                           )
                     }

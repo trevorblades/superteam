@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import styled from '@emotion/styled';
 import {MdShoppingCart} from 'react-icons/md';
-import {TEAM_SIZE} from '../utils/constants';
+import {TEAM_SIZE} from '../../utils/constants';
 
 const StyledButton = styled(Button)({
   marginLeft: 16

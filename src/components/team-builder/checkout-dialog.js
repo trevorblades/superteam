@@ -4,7 +4,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MoneyRow, {MoneyCell} from './money-row';
-import PlayerAvatar from './player-avatar';
+import PlayerAvatar from '../player-avatar';
 import PropTypes from 'prop-types';
 import React from 'react';
 import SaveButton from './save-button';
@@ -14,13 +14,13 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
-import getPlayerCost, {getTotalPlayerCost} from '../utils/get-player-cost';
+import getPlayerCost, {getTotalPlayerCost} from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
-import withUser from './with-user';
-import {CREATE_ENTRY, LIST_ENTRIES} from '../utils/queries';
+import withUser from '../with-user';
+import {CREATE_ENTRY, LIST_ENTRIES} from '../../utils/queries';
 import {FaChevronLeft} from 'react-icons/fa';
 import {Mutation} from 'react-apollo';
-import {TOTAL_BUDGET} from '../utils/constants';
+import {TOTAL_BUDGET} from '../../utils/constants';
 import {navigate} from 'gatsby';
 
 const PlayerCell = styled.div({

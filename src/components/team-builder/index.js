@@ -1,17 +1,17 @@
 import CheckoutButton from './checkout-button';
-import Footer from './footer';
 import Grid from '@material-ui/core/Grid';
-import Header from './header';
+import Header from '../header';
 import Helmet from 'react-helmet';
-import Layout from './layout';
+import Layout from '../layout';
 import PlayerCard from './player-card';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Region from './region';
-import getPlayerCost from '../utils/get-player-cost';
+import TeamFooter from './team-footer';
+import getPlayerCost from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
-import withUser from './with-user';
-import {TEAM_SIZE, TOTAL_BUDGET} from '../utils/constants';
+import withUser from '../with-user';
+import {TEAM_SIZE, TOTAL_BUDGET} from '../../utils/constants';
 import {cover} from 'polished';
 import {withTheme} from '@material-ui/core/styles';
 
@@ -165,7 +165,7 @@ class TeamBuilder extends Component {
               })}
             </Grid>
           </GridWrapper>
-          <Footer
+          <TeamFooter
             budget={this.state.budget}
             onPlayerCardClick={this.onPlayerCardClick}
             players={selectedPlayers}
