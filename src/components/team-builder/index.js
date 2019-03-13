@@ -1,11 +1,9 @@
 import CheckoutButton from './checkout-button';
 import Grid from '@material-ui/core/Grid';
 import Header from '../header';
-import Helmet from 'react-helmet';
-import Layout from '../layout';
 import PlayerCard from './player-card';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import Region from './region';
 import TeamFooter from './team-footer';
 import getPlayerCost from '../../utils/get-player-cost';
@@ -109,10 +107,7 @@ class TeamBuilder extends Component {
 
     const isTeamFull = this.state.selectedPlayers.length >= TEAM_SIZE;
     return (
-      <Layout>
-        <Helmet>
-          <title>Create a team</title>
-        </Helmet>
+      <Fragment>
         <Container>
           <Header>
             <CheckoutButton players={selectedPlayers} />
@@ -171,7 +166,7 @@ class TeamBuilder extends Component {
             players={selectedPlayers}
           />
         </Container>
-      </Layout>
+      </Fragment>
     );
   }
 }
