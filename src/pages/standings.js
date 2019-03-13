@@ -1,4 +1,5 @@
 import FinancialCells, {FinancialHeaders} from '../components/financial-cells';
+import Footer from '../components/footer';
 import Header from '../components/header';
 import Helmet from 'react-helmet';
 import Layout from '../components/layout';
@@ -70,6 +71,7 @@ export default function Standings(props) {
           </TableBody>
         </Table>
       </Section>
+      <Footer />
     </Layout>
   );
 }

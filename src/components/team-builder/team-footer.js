@@ -1,14 +1,17 @@
 import FinanceText from './finance-text';
+import LastUpdated from '../last-updated';
 import Paper from '@material-ui/core/Paper';
 import PlayerCard from './player-card';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import Tooltip from '@material-ui/core/Tooltip';
 import styled from '@emotion/styled';
 import {
   CARD_ASPECT_RATIO,
   TEAM_SIZE,
   TOTAL_BUDGET
 } from '../../utils/constants';
+import {MdUpdate} from 'react-icons/md';
 import {withTheme} from '@material-ui/core/styles';
 
 const Container = styled(Paper)({
@@ -38,6 +41,16 @@ const Player = withTheme()(
     ':not(:last-child)': {
       marginRight: 12
     }
+  }))
+);
+
+const StyledUpdateIcon = withTheme()(
+  styled(MdUpdate)(({theme}) => ({
+    fill: theme.palette.text.secondary,
+    cursor: 'help',
+    position: 'absolute',
+    bottom: 8,
+    left: 8
   }))
 );
 
@@ -98,6 +111,9 @@ export default class TeamFooter extends Component {
           from={this.state.prevBudget}
           to={this.props.budget}
         />
+        <Tooltip title={<LastUpdated />}>
+          <StyledUpdateIcon size={20} />
+        </Tooltip>
       </Container>
     );
   }
