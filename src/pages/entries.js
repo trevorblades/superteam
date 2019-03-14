@@ -65,11 +65,21 @@ export default function Entries(props) {
                             <TableCell align="right">
                               <Button
                                 component={Link}
+                                size="small"
+                                to={`/edit/${entry.id}`}
+                                style={{
+                                  marginRight: 8
+                                }}
+                              >
+                                Edit
+                              </Button>
+                              <Button
+                                component={Link}
                                 variant="outlined"
                                 size="small"
                                 to={`/entries/${entry.id}`}
                               >
-                                View team
+                                Details
                               </Button>
                             </TableCell>
                           </TableRow>
