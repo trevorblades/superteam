@@ -1,3 +1,4 @@
+import Header from './header';
 import Helmet from 'react-helmet';
 import NoSsr from '@material-ui/core/NoSsr';
 import PropTypes from 'prop-types';
@@ -16,9 +17,12 @@ function AuthRequired(props) {
         {props.user ? (
           props.children
         ) : (
-          <Section>
-            <Typography>No user plz login</Typography>
-          </Section>
+          <Fragment>
+            <Header />
+            <Section>
+              <Typography>No user plz login</Typography>
+            </Section>
+          </Fragment>
         )}
       </NoSsr>
     </Fragment>

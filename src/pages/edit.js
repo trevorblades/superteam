@@ -1,3 +1,4 @@
+import AuthRequired from '../components/auth-required';
 import Header from '../components/header';
 import Helmet from 'react-helmet';
 import Layout from '../components/layout';
@@ -9,10 +10,18 @@ import SaveButton from '../components/save-button';
 import TeamBuilder from '../components/team-builder';
 import TeamBuilderWrapper from '../components/team-builder-wrapper';
 import getEntryFinancials from '../utils/get-entry-financials';
+import styled from '@emotion/styled';
 import {GET_ENTRY, UPDATE_ENTRY} from '../utils/queries';
 import {Mutation, Query} from 'react-apollo';
 import {TEAM_SIZE} from '../utils/constants';
 import {navigate} from 'gatsby';
+
+const StyledLoadingIndicator = styled(LoadingIndicator)({
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)'
+});
 
 export default function Edit(props) {
   const match = props.location.pathname.match(/^\/edit\/(\d+)\/?$/);
@@ -21,61 +30,70 @@ export default function Edit(props) {
   }
 
   return (
-    <Query query={GET_ENTRY} variables={{id: match[1]}}>
-      {({data, loading, error}) => {
-        if (loading) {
-          return <LoadingIndicator />;
-        }
+    <Layout>
+      <AuthRequired>
+        <Query query={GET_ENTRY} variables={{id: match[1]}}>
+          {({data, loading, error}) => {
+            if (loading) {
+              return <StyledLoadingIndicator />;
+            }
 
-        if (error) {
-          return <div>{error.message}</div>;
-        }
+            if (error) {
+              return <div>{error.message}</div>;
+            }
 
-        const {playerValue, totalValue} = getEntryFinancials(data.entry);
-        return (
-          <Layout>
-            <Helmet>
-              <title>{data.entry.name}</title>
-            </Helmet>
-            <TeamBuilderWrapper
-              amountSpent={playerValue}
-              selectedPlayers={data.entry.players.map(player => player.id)}
-            >
-              {teamBuilderProps => {
-                const {selectedPlayers} = teamBuilderProps;
-                return (
-                  <Fragment>
-                    <Header>
-                      <Mutation
-                        mutation={UPDATE_ENTRY}
-                        variables={{
-                          id: data.entry.id,
-                          playerIds: selectedPlayers.map(player => player.id)
-                        }}
-                        onCompleted={data =>
-                          navigate(`/entries/${data.updateEntry.id}`)
-                        }
-                      >
-                        {(updateEntry, {loading}) => (
-                          <SaveButton
-                            style={{marginLeft: 16}}
-                            onClick={updateEntry}
-                            disabled={
-                              loading || selectedPlayers.length < TEAM_SIZE
+            const {playerValue, totalValue} = getEntryFinancials(data.entry);
+            return (
+              <Fragment>
+                <Helmet>
+                  <title>{data.entry.name}</title>
+                </Helmet>
+                <TeamBuilderWrapper
+                  amountSpent={playerValue}
+                  selectedPlayers={data.entry.players.map(player => player.id)}
+                >
+                  {teamBuilderProps => {
+                    const {selectedPlayers} = teamBuilderProps;
+                    return (
+                      <Fragment>
+                        <Header>
+                          <Mutation
+                            mutation={UPDATE_ENTRY}
+                            variables={{
+                              id: data.entry.id,
+                              playerIds: selectedPlayers.map(
+                                player => player.id
+                              )
+                            }}
+                            onCompleted={data =>
+                              navigate(`/entries/${data.updateEntry.id}`)
                             }
-                          />
-                        )}
-                      </Mutation>
-                    </Header>
-                    <TeamBuilder {...teamBuilderProps} budget={totalValue} />
-                  </Fragment>
-                );
-              }}
-            </TeamBuilderWrapper>
-          </Layout>
-        );
-      }}
-    </Query>
+                          >
+                            {(updateEntry, {loading}) => (
+                              <SaveButton
+                                style={{marginLeft: 16}}
+                                onClick={updateEntry}
+                                disabled={
+                                  loading || selectedPlayers.length < TEAM_SIZE
+                                }
+                              />
+                            )}
+                          </Mutation>
+                        </Header>
+                        <TeamBuilder
+                          {...teamBuilderProps}
+                          budget={totalValue}
+                        />
+                      </Fragment>
+                    );
+                  }}
+                </TeamBuilderWrapper>
+              </Fragment>
+            );
+          }}
+        </Query>
+      </AuthRequired>
+    </Layout>
   );
 }
 

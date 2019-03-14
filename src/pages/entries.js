@@ -24,8 +24,8 @@ const title = 'My teams';
 export default function Entries(props) {
   return (
     <Layout>
-      <Header />
       <AuthRequired>
+        <Header />
         <Section>
           <Helmet>
             <title>{title}</title>
