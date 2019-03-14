@@ -9,10 +9,12 @@ import React, {Fragment} from 'react';
 import SaveButton from '../components/save-button';
 import TeamBuilder from '../components/team-builder';
 import TeamBuilderWrapper from '../components/team-builder-wrapper';
+import Typography from '@material-ui/core/Typography';
 import getEntryFinancials from '../utils/get-entry-financials';
 import styled from '@emotion/styled';
 import {GET_ENTRY, UPDATE_ENTRY} from '../utils/queries';
 import {Mutation, Query} from 'react-apollo';
+import {Section} from '../components/common';
 import {TEAM_SIZE} from '../utils/constants';
 import {navigate} from 'gatsby';
 
@@ -39,7 +41,17 @@ export default function Edit(props) {
             }
 
             if (error) {
-              return <div>{error.message}</div>;
+              return (
+                <Fragment>
+                  <Header />
+                  <Section>
+                    <Typography variant="h2" gutterBottom>
+                      Error
+                    </Typography>
+                    <Typography variant="body1">{error.message}</Typography>
+                  </Section>
+                </Fragment>
+              );
             }
 
             const {playerValue, totalValue} = getEntryFinancials(data.entry);
