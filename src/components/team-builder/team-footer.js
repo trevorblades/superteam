@@ -6,11 +6,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import styled from '@emotion/styled';
-import {
-  CARD_ASPECT_RATIO,
-  TEAM_SIZE,
-  TOTAL_BUDGET
-} from '../../utils/constants';
+import {CARD_ASPECT_RATIO, TEAM_SIZE} from '../../utils/constants';
 import {MdUpdate} from 'react-icons/md';
 import {withTheme} from '@material-ui/core/styles';
 
@@ -58,20 +54,21 @@ export default class TeamFooter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      prevBudget: props.budget
+      prevAmountSpent: props.amountSpent
     };
   }
 
   static propTypes = {
     budget: PropTypes.number.isRequired,
+    amountSpent: PropTypes.number.isRequired,
     players: PropTypes.array.isRequired,
     onPlayerCardClick: PropTypes.func.isRequired
   };
 
   componentDidUpdate(prevProps) {
-    if (prevProps.budget !== this.props.budget) {
+    if (prevProps.amountSpent !== this.props.amountSpent) {
       this.setState({
-        prevBudget: prevProps.budget
+        prevAmountSpent: prevProps.amountSpent
       });
     }
   }
@@ -81,8 +78,8 @@ export default class TeamFooter extends Component {
       <Container component="footer" square elevation={10}>
         <FinanceText
           title="Amount spent"
-          from={TOTAL_BUDGET - this.state.prevBudget}
-          to={TOTAL_BUDGET - this.props.budget}
+          from={this.state.prevAmountSpent}
+          to={this.props.amountSpent}
         />
         <Players>
           {this.props.players
@@ -108,8 +105,8 @@ export default class TeamFooter extends Component {
         <FinanceText
           colored
           title="Remaining budget"
-          from={this.state.prevBudget}
-          to={this.props.budget}
+          from={this.props.budget - this.state.prevAmountSpent}
+          to={this.props.budget - this.props.amountSpent}
         />
         <Tooltip title={<LastUpdated />}>
           <StyledUpdateIcon size={20} />

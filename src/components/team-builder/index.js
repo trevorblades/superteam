@@ -9,6 +9,7 @@ import TeamFooter from './team-footer';
 import getPlayerCost from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
 import withUser from '../with-user';
+import {StaticQuery, graphql} from 'gatsby';
 import {TEAM_SIZE, TOTAL_BUDGET} from '../../utils/constants';
 import {cover} from 'polished';
 import {withTheme} from '@material-ui/core/styles';
@@ -52,17 +53,27 @@ const Regions = withTheme()(
   })
 );
 
-class TeamBuilder extends Component {
+class TeamBuilderInner extends Component {
   static propTypes = {
-    players: PropTypes.array.isRequired,
-    regions: PropTypes.array.isRequired
+    budget: PropTypes.number,
+    amountSpent: PropTypes.number,
+    selectedPlayers: PropTypes.array
   };
 
-  state = {
+  static defaultProps = {
     budget: TOTAL_BUDGET,
-    region: null,
+    amountSpent: 0,
     selectedPlayers: []
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      region: null,
+      amountSpent: props.amountSpent,
+      selectedPlayers: props.selectedPlayers
+    };
+  }
 
   onRegionClick = region => {
     this.setState({region});
@@ -71,10 +82,10 @@ class TeamBuilder extends Component {
   onPlayerCardClick = player => {
     const cost = getPlayerCost(player);
     this.setState(prevState => {
-      const isSelected = prevState.selectedPlayers.includes(player.id);
+      const wasSelected = prevState.selectedPlayers.includes(player.id);
       return {
-        budget: prevState.budget + cost * (isSelected ? 1 : -1),
-        selectedPlayers: isSelected
+        amountSpent: prevState.amountSpent + cost * (wasSelected ? -1 : 1),
+        selectedPlayers: wasSelected
           ? prevState.selectedPlayers.filter(
               selectedPlayer => selectedPlayer !== player.id
             )
@@ -90,86 +101,139 @@ class TeamBuilder extends Component {
   }
 
   render() {
-    const selectedPlayers = this.props.players
-      .filter(this.isPlayerSelected)
-      .sort((a, b) => this.getSelectedIndex(a) - this.getSelectedIndex(b));
-
-    let filteredPlayers = this.props.players;
-    if (this.state.region) {
-      const region = this.props.regions.find(
-        ({code}) => code === this.state.region
-      );
-
-      filteredPlayers = filteredPlayers.filter(player =>
-        region.countries.some(country => country.code === player.country)
-      );
-    }
-
-    const isTeamFull = this.state.selectedPlayers.length >= TEAM_SIZE;
     return (
-      <Fragment>
-        <Container>
-          <Header>
-            <CheckoutButton players={selectedPlayers} />
-          </Header>
-          <Regions>
-            <Region
-              selected={!this.state.region}
-              value={null}
-              onClick={this.onRegionClick}
-            >
-              All players
-            </Region>
-            {this.props.regions.map(region => (
-              <Region
-                key={region.code}
-                selected={this.state.region === region.code}
-                value={region.code}
-                onClick={this.onRegionClick}
-              >
-                {region.name}
-              </Region>
-            ))}
-          </Regions>
-          <GridWrapper>
-            <Grid container spacing={gridSpacing}>
-              {filteredPlayers.map(player => {
-                const isSelected = this.isPlayerSelected(player);
-                return (
-                  <Grid
-                    item
-                    key={player.id}
-                    xs={12}
-                    sm={6}
-                    md={4}
-                    lg={3}
-                    xl={2}
+      <StaticQuery
+        query={graphql`
+          {
+            countries {
+              regions: continents {
+                code
+                name
+                countries {
+                  code
+                }
+              }
+            }
+            superteam {
+              players {
+                id
+                name
+                ign
+                image
+                country
+                team {
+                  id
+                  name
+                  logo
+                }
+                statistics {
+                  id
+                  rating
+                  percentile
+                  kdRatio
+                  damagePerRound
+                  headshots
+                  week
+                  year
+                }
+              }
+            }
+          }
+        `}
+        render={data => {
+          const {players} = data.superteam;
+          const countries = Array.from(
+            new Set(players.map(player => player.country))
+          );
+          const regions = data.countries.regions.filter(region =>
+            region.countries.some(country => countries.includes(country.code))
+          );
+
+          const selectedPlayers = players
+            .filter(this.isPlayerSelected)
+            .sort(
+              (a, b) => this.getSelectedIndex(a) - this.getSelectedIndex(b)
+            );
+
+          let filteredPlayers = players;
+          if (this.state.region) {
+            const region = regions.find(({code}) => code === this.state.region);
+
+            filteredPlayers = filteredPlayers.filter(player =>
+              region.countries.some(country => country.code === player.country)
+            );
+          }
+
+          const isTeamFull = this.state.selectedPlayers.length >= TEAM_SIZE;
+          return (
+            <Fragment>
+              <Container>
+                <Header>
+                  <CheckoutButton players={selectedPlayers} />
+                </Header>
+                <Regions>
+                  <Region
+                    selected={!this.state.region}
+                    value={null}
+                    onClick={this.onRegionClick}
                   >
-                    <PlayerCard
-                      disabled={
-                        !isSelected &&
-                        (isTeamFull ||
-                          this.state.budget < getPlayerCost(player))
-                      }
-                      player={player}
-                      onClick={this.onPlayerCardClick}
-                      selected={isSelected}
-                    />
+                    All players
+                  </Region>
+                  {regions.map(region => (
+                    <Region
+                      key={region.code}
+                      selected={this.state.region === region.code}
+                      value={region.code}
+                      onClick={this.onRegionClick}
+                    >
+                      {region.name}
+                    </Region>
+                  ))}
+                </Regions>
+                <GridWrapper>
+                  <Grid container spacing={gridSpacing}>
+                    {filteredPlayers.map(player => {
+                      const isSelected = this.isPlayerSelected(player);
+                      return (
+                        <Grid
+                          item
+                          key={player.id}
+                          xs={12}
+                          sm={6}
+                          md={4}
+                          lg={3}
+                          xl={2}
+                        >
+                          <PlayerCard
+                            disabled={
+                              !isSelected &&
+                              (isTeamFull ||
+                                this.props.budget - this.state.amountSpent <
+                                  getPlayerCost(player))
+                            }
+                            player={player}
+                            onClick={this.onPlayerCardClick}
+                            selected={isSelected}
+                          />
+                        </Grid>
+                      );
+                    })}
                   </Grid>
-                );
-              })}
-            </Grid>
-          </GridWrapper>
-          <TeamFooter
-            budget={this.state.budget}
-            onPlayerCardClick={this.onPlayerCardClick}
-            players={selectedPlayers}
-          />
-        </Container>
-      </Fragment>
+                </GridWrapper>
+                <TeamFooter
+                  budget={this.props.budget}
+                  amountSpent={this.state.amountSpent}
+                  onPlayerCardClick={this.onPlayerCardClick}
+                  players={selectedPlayers}
+                />
+              </Container>
+            </Fragment>
+          );
+        }}
+      />
     );
   }
 }
 
 // withUser is needed for user updates to bubble all the way down to the header
-export default withUser(TeamBuilder);
+export default withUser(TeamBuilderInner);
