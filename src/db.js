@@ -48,21 +48,7 @@ export const Entry = sequelize.define('entry', {
   name: Sequelize.STRING
 });
 
-const Selection = sequelize.define(
-  'selection',
-  {
-    id: {
-      type: Sequelize.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    }
-  },
-  {
-    paranoid: true
-  }
-);
-
 User.hasMany(Entry);
 Entry.belongsTo(User);
-Entry.belongsToMany(Player, {through: Selection});
-Player.belongsToMany(Entry, {through: Selection});
+Entry.belongsToMany(Player, {through: 'selections'});
+Player.belongsToMany(Entry, {through: 'selections'});

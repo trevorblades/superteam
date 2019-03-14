@@ -1,6 +1,5 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
 import {Entry, Player, Statistic, Team} from './db';
-import {Op} from 'sequelize';
 
 export const typeDefs = gql`
   type Player {
@@ -63,6 +62,7 @@ export const typeDefs = gql`
 
   type Mutation {
     createEntry(name: String!, playerIds: [String]!): Entry
+    updateEntry(id: ID!, playerIds: [String]!): Entry
   }
 `;
 
@@ -118,7 +118,7 @@ export const resolvers = {
       }
 
       return user.getEntries({
-        order: [['id', 'desc']]
+        order: [['createdAt', 'desc']]
       });
     },
     standings: () => Entry.findAll({limit: 24})
@@ -131,17 +131,27 @@ export const resolvers = {
 
       const entry = await Entry.create({name: args.name});
       await entry.setUser(user);
+      await entry.setPlayers(args.playerIds);
+      return entry;
+    },
+    async updateEntry(parent, args, {user}) {
+      if (!user) {
+        throw new AuthenticationError('Unauthorized');
+      }
 
-      const players = await Player.findAll({
+      const [entry] = await user.getEntries({
         where: {
-          id: {
-            [Op.in]: args.playerIds
-          }
+          id: args.id
         }
       });
 
-      await entry.setPlayers(players);
-      return entry;
+      if (!entry) {
+        throw new UserInputError('Entry not found');
+      }
+
+      await entry.setPlayers(args.playerIds);
+      entry.changed('updatedAt', true);
+      return entry.save();
     }
   }
 };
