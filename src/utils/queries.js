@@ -60,3 +60,12 @@ export const GET_ENTRY = gql`
   }
   ${EntryFragment}
 `;
+
+export const UPDATE_ENTRY = gql`
+  mutation UpdateEntry($id: ID!, $playerIds: [String]!) {
+    updateEntry(id: $id, playerIds: $playerIds) {
+      ...EntryFragment
+    }
+  }
+  ${EntryFragment}
+`;

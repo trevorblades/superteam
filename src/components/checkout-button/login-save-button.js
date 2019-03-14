@@ -1,10 +1,10 @@
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import React from 'react';
+import SaveButton from '../save-button';
 import TwitterLogin from '../twitter-login';
 import styled from '@emotion/styled';
 import {FaTwitter} from 'react-icons/fa';
-import {MdCheck} from 'react-icons/md';
 import {TWITTER_BLUE} from '../../utils/constants';
 import {withTheme} from '@material-ui/core/styles';
 
@@ -21,19 +21,14 @@ const StyledButton = withTheme()(
   })
 );
 
-export default function SaveButton(props) {
+export default function LoginSaveButton(props) {
   if (props.user) {
     return (
-      <Button
-        variant="contained"
-        color="primary"
+      <SaveButton
         disabled={props.disabled}
         className={props.className}
         type="submit"
-      >
-        <MdCheck size={20} style={{marginRight: 8}} />
-        Save team
-      </Button>
+      />
     );
   }
 
@@ -54,7 +49,7 @@ export default function SaveButton(props) {
   );
 }
 
-SaveButton.propTypes = {
+LoginSaveButton.propTypes = {
   user: PropTypes.object,
   disabled: PropTypes.bool,
   className: PropTypes.string

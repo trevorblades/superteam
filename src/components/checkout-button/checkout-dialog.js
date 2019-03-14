@@ -3,11 +3,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import LoginSaveButton from './login-save-button';
 import MoneyRow, {MoneyCell} from './money-row';
 import PlayerAvatar from '../player-avatar';
 import PropTypes from 'prop-types';
 import React from 'react';
-import SaveButton from './save-button';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -127,7 +127,7 @@ function CheckoutDialog(props) {
               componentize login/save buttons to consume injected className prop
               more info: https://bit.ly/2SJyiXD
             */}
-            <SaveButton user={props.user} disabled={loading} />
+            <LoginSaveButton user={props.user} disabled={loading} />
           </DialogActions>
         </form>
       )}
