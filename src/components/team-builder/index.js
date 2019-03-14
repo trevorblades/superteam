@@ -6,7 +6,6 @@ import Region from './region';
 import TeamFooter from './team-footer';
 import getPlayerCost from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
-import withUser from '../with-user';
 import {TEAM_SIZE, TOTAL_BUDGET} from '../../utils/constants';
 import {withTheme} from '@material-ui/core/styles';
 
@@ -43,7 +42,7 @@ const Regions = withTheme()(
   })
 );
 
-class TeamBuilder extends Component {
+export default class TeamBuilder extends Component {
   static propTypes = {
     budget: PropTypes.number,
     players: PropTypes.array.isRequired,
@@ -78,7 +77,6 @@ class TeamBuilder extends Component {
       );
     }
 
-    const isTeamFull = this.props.selectedPlayers.length >= TEAM_SIZE;
     return (
       <Fragment>
         <Regions>
@@ -109,7 +107,7 @@ class TeamBuilder extends Component {
                   <PlayerCard
                     disabled={
                       !isSelected &&
-                      (isTeamFull ||
+                      (this.props.selectedPlayers.length >= TEAM_SIZE ||
                         this.props.budget - this.props.amountSpent <
                           getPlayerCost(player))
                     }
@@ -132,6 +130,3 @@ class TeamBuilder extends Component {
     );
   }
 }
-
-// withUser is needed for user updates to bubble all the way down to the header
-export default withUser(TeamBuilder);

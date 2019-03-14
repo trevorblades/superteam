@@ -11,6 +11,7 @@ import TeamBuilderWrapper from '../components/team-builder-wrapper';
 import getEntryFinancials from '../utils/get-entry-financials';
 import {GET_ENTRY, UPDATE_ENTRY} from '../utils/queries';
 import {Mutation, Query} from 'react-apollo';
+import {TEAM_SIZE} from '../utils/constants';
 import {navigate} from 'gatsby';
 
 export default function Edit(props) {
@@ -40,33 +41,36 @@ export default function Edit(props) {
               amountSpent={playerValue}
               selectedPlayers={data.entry.players.map(player => player.id)}
             >
-              {teamBuilderProps => (
-                <Fragment>
-                  <Header>
-                    <Mutation
-                      mutation={UPDATE_ENTRY}
-                      variables={{
-                        id: data.entry.id,
-                        playerIds: teamBuilderProps.selectedPlayers.map(
-                          player => player.id
-                        )
-                      }}
-                      onCompleted={data =>
-                        navigate(`/entries/${data.updateEntry.id}`)
-                      }
-                    >
-                      {(updateEntry, {loading}) => (
-                        <SaveButton
-                          style={{marginLeft: 16}}
-                          onClick={updateEntry}
-                          disabled={loading}
-                        />
-                      )}
-                    </Mutation>
-                  </Header>
-                  <TeamBuilder {...teamBuilderProps} budget={totalValue} />
-                </Fragment>
-              )}
+              {teamBuilderProps => {
+                const {selectedPlayers} = teamBuilderProps;
+                return (
+                  <Fragment>
+                    <Header>
+                      <Mutation
+                        mutation={UPDATE_ENTRY}
+                        variables={{
+                          id: data.entry.id,
+                          playerIds: selectedPlayers.map(player => player.id)
+                        }}
+                        onCompleted={data =>
+                          navigate(`/entries/${data.updateEntry.id}`)
+                        }
+                      >
+                        {(updateEntry, {loading}) => (
+                          <SaveButton
+                            style={{marginLeft: 16}}
+                            onClick={updateEntry}
+                            disabled={
+                              loading || selectedPlayers.length < TEAM_SIZE
+                            }
+                          />
+                        )}
+                      </Mutation>
+                    </Header>
+                    <TeamBuilder {...teamBuilderProps} budget={totalValue} />
+                  </Fragment>
+                );
+              }}
             </TeamBuilderWrapper>
           </Layout>
         );

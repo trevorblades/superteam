@@ -12,7 +12,45 @@ const Container = styled.div(cover(), {
   overflow: 'auto'
 });
 
-class Wrapper extends Component {
+const query = graphql`
+  {
+    countries {
+      regions: continents {
+        code
+        name
+        countries {
+          code
+        }
+      }
+    }
+    superteam {
+      players {
+        id
+        name
+        ign
+        image
+        country
+        team {
+          id
+          name
+          logo
+        }
+        statistics {
+          id
+          rating
+          percentile
+          kdRatio
+          damagePerRound
+          headshots
+          week
+          year
+        }
+      }
+    }
+  }
+`;
+
+class TeamBuilderWrapper extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
     amountSpent: PropTypes.number,
@@ -56,43 +94,7 @@ class Wrapper extends Component {
   render() {
     return (
       <StaticQuery
-        query={graphql`
-          {
-            countries {
-              regions: continents {
-                code
-                name
-                countries {
-                  code
-                }
-              }
-            }
-            superteam {
-              players {
-                id
-                name
-                ign
-                image
-                country
-                team {
-                  id
-                  name
-                  logo
-                }
-                statistics {
-                  id
-                  rating
-                  percentile
-                  kdRatio
-                  damagePerRound
-                  headshots
-                  week
-                  year
-                }
-              }
-            }
-          }
-        `}
+        query={query}
         render={data => {
           const {players} = data.superteam;
           const countries = Array.from(
@@ -126,4 +128,4 @@ class Wrapper extends Component {
 }
 
 // withUser is needed for user updates to bubble all the way down to the header
-export default withUser(Wrapper);
+export default withUser(TeamBuilderWrapper);
