@@ -1,3 +1,4 @@
+import Colophon from '../colophon';
 import FinanceText from './finance-text';
 import LastUpdated from '../last-updated';
 import Paper from '@material-ui/core/Paper';
@@ -7,7 +8,7 @@ import React, {Component} from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import styled from '@emotion/styled';
 import {CARD_ASPECT_RATIO, TEAM_SIZE} from '../../utils/constants';
-import {MdUpdate} from 'react-icons/md';
+import {MdCopyright, MdUpdate} from 'react-icons/md';
 import {withTheme} from '@material-ui/core/styles';
 
 const Container = styled(Paper)({
@@ -40,13 +41,19 @@ const Player = withTheme()(
   }))
 );
 
-const StyledUpdateIcon = withTheme()(
-  styled(MdUpdate)(({theme}) => ({
-    fill: theme.palette.text.secondary,
-    cursor: 'help',
+const Icons = withTheme()(
+  styled.div(({theme}) => ({
+    display: 'flex',
     position: 'absolute',
     bottom: 8,
-    left: 8
+    left: 8,
+    color: theme.palette.text.secondary,
+    svg: {
+      cursor: 'help',
+      ':not(:last-child)': {
+        marginRight: 4
+      }
+    }
   }))
 );
 
@@ -108,9 +115,14 @@ export default class TeamFooter extends Component {
           from={this.props.budget - this.state.prevAmountSpent}
           to={this.props.budget - this.props.amountSpent}
         />
-        <Tooltip title={<LastUpdated />}>
-          <StyledUpdateIcon size={20} />
-        </Tooltip>
+        <Icons>
+          <Tooltip title={<Colophon />}>
+            <MdCopyright size={20} />
+          </Tooltip>
+          <Tooltip title={<LastUpdated />}>
+            <MdUpdate size={20} />
+          </Tooltip>
+        </Icons>
       </Container>
     );
   }
