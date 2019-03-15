@@ -1,5 +1,6 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
-import {Entry, Player, Statistic, Team} from './db';
+import {Entry, Player, Selection, Statistic, Team} from './db';
+import {Op} from 'sequelize';
 
 export const typeDefs = gql`
   type Player {
@@ -75,7 +76,10 @@ export const resolvers = {
       })
   },
   Entry: {
-    players: parent => parent.getPlayers()
+    players: async parent => {
+      const selections = await parent.getSelections();
+      return Promise.all(selections.map(selection => selection.getPlayer()));
+    }
   },
   Query: {
     team: (parent, args) => Team.findByPk(args.id),
@@ -131,7 +135,13 @@ export const resolvers = {
 
       const entry = await Entry.create({name: args.name});
       await entry.setUser(user);
-      await entry.setPlayers(args.playerIds);
+
+      const selections = await Selection.bulkCreate(
+        args.playerIds.map(playerId => ({playerId})),
+        {returning: true}
+      );
+
+      await entry.setSelections(selections);
       return entry;
     },
     async updateEntry(parent, args, {user}) {
@@ -149,7 +159,30 @@ export const resolvers = {
         throw new UserInputError('Entry not found');
       }
 
-      await entry.setPlayers(args.playerIds);
+      await Selection.destroy({
+        where: {
+          entryId: entry.id,
+          playerId: {
+            [Op.notIn]: args.playerIds
+          }
+        }
+      });
+
+      const existingPlayers = await entry
+        .getSelections()
+        .then(selections => selections.map(selection => selection.playerId));
+
+      await Selection.bulkCreate(
+        args.playerIds
+          .map(Number)
+          .filter(playerId => !existingPlayers.includes(playerId))
+          .map(playerId => ({
+            playerId,
+            entryId: entry.id
+          })),
+        {returning: true}
+      );
+
       entry.changed('updatedAt', true);
       return entry.save();
     }

@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';
 
 export const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  logging: false
+  // logging: false
 });
 
 export const Player = sequelize.define('player', {
@@ -50,5 +50,20 @@ export const Entry = sequelize.define('entry', {
 
 User.hasMany(Entry);
 Entry.belongsTo(User);
-Entry.belongsToMany(Player, {through: 'selections'});
-Player.belongsToMany(Entry, {through: 'selections'});
+
+export const Selection = sequelize.define(
+  'selection',
+  {
+    id: {
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    }
+  },
+  {paranoid: true}
+);
+
+Selection.belongsTo(Player);
+Selection.belongsTo(Entry);
+Player.hasMany(Selection);
+Entry.hasMany(Selection);
