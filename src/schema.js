@@ -48,7 +48,14 @@ export const typeDefs = gql`
     name: String
     createdAt: String
     user: User
-    players: [Player]
+    selections: [Selection]
+  }
+
+  type Selection {
+    id: ID
+    createdAt: String
+    deletedAt: String
+    player: Player
   }
 
   type Query {
@@ -76,10 +83,14 @@ export const resolvers = {
       })
   },
   Entry: {
-    players: async parent => {
-      const selections = await parent.getSelections();
-      return Promise.all(selections.map(selection => selection.getPlayer()));
-    }
+    selections: parent =>
+      parent.getSelections({
+        paranoid: false,
+        order: ['id']
+      })
+  },
+  Selection: {
+    player: parent => parent.getPlayer()
   },
   Query: {
     team: (parent, args) => Team.findByPk(args.id),
