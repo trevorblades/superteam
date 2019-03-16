@@ -16,19 +16,24 @@ export const EntryFragment = gql`
     id
     name
     createdAt
-    players {
+    selections {
       id
-      ign
-      name
-      image
-      team {
+      createdAt
+      deletedAt
+      player {
+        id
+        ign
         name
-        logo
-      }
-      statistics {
-        percentile
-        week
-        year
+        image
+        team {
+          name
+          logo
+        }
+        statistics {
+          percentile
+          week
+          year
+        }
       }
     }
   }

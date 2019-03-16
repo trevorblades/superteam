@@ -16,7 +16,7 @@ import getPlayerCost, {getInitialPlayerCost} from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
 import {GET_ENTRY} from '../../utils/queries';
 import {Query} from 'react-apollo';
-import {getEntryDate} from '../../utils/get-entry-financials';
+import {getEntryDate, getEntryPlayers} from '../../utils/get-entry-financials';
 import {navigate} from 'gatsby';
 import {withStyles} from '@material-ui/core';
 
@@ -81,6 +81,7 @@ class EntryDrawer extends Component {
             }
 
             const {date, week, year} = getEntryDate(data.entry);
+            const players = getEntryPlayers(data.entry);
             return (
               <div>
                 <CardHeader
@@ -94,13 +95,9 @@ class EntryDrawer extends Component {
                     </span>
                   }
                 />
-                <EntryChart
-                  players={data.entry.players}
-                  year={year}
-                  week={week}
-                />
+                <EntryChart players={players} year={year} week={week} />
                 <List>
-                  {data.entry.players.map(player => {
+                  {players.map(player => {
                     const currentValue = getPlayerCost(player);
                     const initialValue = getInitialPlayerCost(
                       week,

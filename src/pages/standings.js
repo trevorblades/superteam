@@ -87,11 +87,16 @@ export const pageQuery = graphql`
         id
         name
         createdAt
-        players {
-          statistics {
-            percentile
-            week
-            year
+        selections {
+          id
+          createdAt
+          deletedAt
+          player {
+            statistics {
+              percentile
+              week
+              year
+            }
           }
         }
       }

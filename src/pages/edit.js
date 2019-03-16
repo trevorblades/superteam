@@ -54,7 +54,9 @@ export default function Edit(props) {
               );
             }
 
-            const {playerValue, totalValue} = getEntryFinancials(data.entry);
+            const {players, playerValue, totalValue} = getEntryFinancials(
+              data.entry
+            );
             return (
               <Fragment>
                 <Helmet>
@@ -62,7 +64,7 @@ export default function Edit(props) {
                 </Helmet>
                 <TeamBuilderWrapper
                   amountSpent={playerValue}
-                  selectedPlayers={data.entry.players.map(player => player.id)}
+                  selectedPlayers={players.map(player => player.id)}
                 >
                   {teamBuilderProps => {
                     const {selectedPlayers} = teamBuilderProps;
