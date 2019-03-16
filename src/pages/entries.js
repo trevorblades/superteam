@@ -2,6 +2,7 @@ import AuthRequired from '../components/auth-required';
 import Button from '@material-ui/core/Button';
 import EntryDrawer from '../components/entry-drawer';
 import FinancialCells, {FinancialHeaders} from '../components/financial-cells';
+import Footer from '../components/footer';
 import Header from '../components/header';
 import Helmet from 'react-helmet';
 import Layout from '../components/layout';
@@ -95,6 +96,7 @@ export default function Entries(props) {
             match={props.location.pathname.match(/^\/entries\/(\d+)\/?$/)}
           />
         </Section>
+        <Footer />
       </AuthRequired>
     </Layout>
   );

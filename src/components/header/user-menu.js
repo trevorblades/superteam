@@ -5,8 +5,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
+import styled from '@emotion/styled';
 import {Link} from 'gatsby';
 import {withApollo} from 'react-apollo';
+
+const StyledAvatar = styled(Avatar)({
+  borderRadius: '50%'
+});
 
 class UserMenu extends Component {
   static propTypes = {
@@ -44,7 +49,7 @@ class UserMenu extends Component {
     return (
       <Fragment>
         <Tooltip title={`Logged in as ${this.props.user.displayName}`}>
-          <Avatar
+          <StyledAvatar
             component={ButtonBase}
             src={this.props.user.profileImage}
             alt={this.props.user.displayName}

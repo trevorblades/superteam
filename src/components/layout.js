@@ -1,7 +1,15 @@
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
-import React, {Fragment} from 'react';
+import React from 'react';
+import styled from '@emotion/styled';
 import {StaticQuery, graphql} from 'gatsby';
+import {cover} from 'polished';
+
+const Container = styled.div(cover(), {
+  display: 'flex',
+  flexDirection: 'column',
+  overflow: 'auto'
+});
 
 export default function Layout(props) {
   return (
@@ -19,7 +27,7 @@ export default function Layout(props) {
       render={data => {
         const {title, description} = data.site.siteMetadata;
         return (
-          <Fragment>
+          <Container>
             <Helmet defaultTitle={title} titleTemplate={`%s - ${title}`}>
               <meta name="description" content={description} />
               <link
@@ -32,7 +40,7 @@ export default function Layout(props) {
               />
             </Helmet>
             {props.children}
-          </Fragment>
+          </Container>
         );
       }}
     />

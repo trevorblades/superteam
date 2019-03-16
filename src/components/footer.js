@@ -1,3 +1,4 @@
+import Colophon from './colophon';
 import LastUpdated from './last-updated';
 import LogoTitle from './logo-title';
 import React from 'react';
@@ -8,7 +9,8 @@ import {withTheme} from '@material-ui/core/styles';
 
 const Container = withTheme()(
   styled.footer(({theme}) => ({
-    padding: `${24}px ${sectionHorizontalPadding}px`,
+    marginTop: 'auto',
+    padding: `${32}px ${sectionHorizontalPadding}px`,
     color: theme.palette.grey[600],
     backgroundColor: theme.palette.grey[100]
   }))
@@ -23,7 +25,7 @@ export default function Footer() {
     <Container>
       <StyledLogoTitle vector color="inherit" />
       <Typography color="inherit">
-        <LastUpdated />
+        <Colophon />. <LastUpdated />
       </Typography>
     </Container>
   );

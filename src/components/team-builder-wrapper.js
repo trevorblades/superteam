@@ -1,16 +1,8 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import getPlayerCost from '../utils/get-player-cost';
-import styled from '@emotion/styled';
 import withUser from './with-user';
 import {StaticQuery, graphql} from 'gatsby';
-import {cover} from 'polished';
-
-const Container = styled.div(cover(), {
-  display: 'flex',
-  flexDirection: 'column',
-  overflow: 'auto'
-});
 
 const query = graphql`
   {
@@ -109,18 +101,14 @@ class TeamBuilderWrapper extends Component {
             .sort(
               (a, b) => this.getSelectedIndex(a) - this.getSelectedIndex(b)
             );
-          return (
-            <Container>
-              {this.props.children({
-                players,
-                regions,
-                selectedPlayers,
-                amountSpent: this.state.amountSpent,
-                onPlayerCardClick: this.onPlayerCardClick,
-                isPlayerSelected: this.isPlayerSelected
-              })}
-            </Container>
-          );
+          return this.props.children({
+            players,
+            regions,
+            selectedPlayers,
+            amountSpent: this.state.amountSpent,
+            onPlayerCardClick: this.onPlayerCardClick,
+            isPlayerSelected: this.isPlayerSelected
+          });
         }}
       />
     );

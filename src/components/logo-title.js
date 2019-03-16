@@ -8,7 +8,8 @@ import {StaticQuery, graphql} from 'gatsby';
 
 const Container = styled.div({
   display: 'flex',
-  alignItems: 'center'
+  alignItems: 'center',
+  paddingRight: 8
 });
 
 const logoStyles = {

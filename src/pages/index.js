@@ -1,3 +1,4 @@
+import Footer from '../components/footer';
 import Header from '../components/header';
 import Layout from '../components/layout';
 import React from 'react';
@@ -19,6 +20,7 @@ export default function Home() {
           thank you
         </Typography>
       </Hero>
+      <Footer />
     </Layout>
   );
 }

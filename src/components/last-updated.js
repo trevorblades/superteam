@@ -15,7 +15,7 @@ export default function LastUpdated() {
       `}
       render={data => {
         const date = new Date(data.site.siteMetadata.lastUpdated);
-        return <span>Last updated {date.toUTCString()}</span>;
+        return <span>Last updated {date.toLocaleDateString()}</span>;
       }}
     />
   );
