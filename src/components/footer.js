@@ -10,7 +10,7 @@ import {withTheme} from '@material-ui/core/styles';
 const Container = withTheme()(
   styled.footer(({theme}) => ({
     marginTop: 'auto',
-    padding: `${32}px ${sectionHorizontalPadding}px`,
+    padding: `${24}px ${sectionHorizontalPadding}px`,
     color: theme.palette.grey[600],
     backgroundColor: theme.palette.grey[100]
   }))

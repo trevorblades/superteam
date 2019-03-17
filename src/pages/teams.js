@@ -22,7 +22,7 @@ import {Query} from 'react-apollo';
 import {Section} from '../components/common';
 
 const title = 'My teams';
-export default function Entries(props) {
+export default function Teams(props) {
   return (
     <Layout>
       <AuthRequired>
@@ -102,6 +102,6 @@ export default function Entries(props) {
   );
 }
 
-Entries.propTypes = {
+Teams.propTypes = {
   location: PropTypes.object.isRequired
 };

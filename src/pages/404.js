@@ -12,7 +12,6 @@ export default function NotFound() {
     <Layout>
       <Header />
       <Hero>
-        <Typography variant="h1">Darn...</Typography>
         <Typography variant="h2" gutterBottom>
           Page not found
         </Typography>
