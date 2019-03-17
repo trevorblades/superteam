@@ -78,7 +78,7 @@ export default function Teams(props) {
                                 component={Link}
                                 variant="outlined"
                                 size="small"
-                                to={`/entries/${entry.id}`}
+                                to={`/teams/${entry.id}`}
                               >
                                 Details
                               </Button>
@@ -93,7 +93,7 @@ export default function Teams(props) {
             }}
           </Query>
           <EntryDrawer
-            match={props.location.pathname.match(/^\/entries\/(\d+)\/?$/)}
+            match={props.location.pathname.match(/^\/teams\/(\S+)\/?$/)}
           />
         </Section>
         <Footer />

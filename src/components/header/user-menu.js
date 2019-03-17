@@ -71,7 +71,7 @@ class UserMenu extends Component {
             horizontal: 'center'
           }}
         >
-          <MenuItem component={Link} to="/entries">
+          <MenuItem component={Link} to="/teams">
             My teams
           </MenuItem>
           <MenuItem>Settings</MenuItem>

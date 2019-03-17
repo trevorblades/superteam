@@ -62,7 +62,7 @@ class EntryDrawer extends Component {
       <Drawer
         anchor="right"
         open={Boolean(this.props.match)}
-        onClose={() => navigate('/entries')}
+        onClose={() => navigate('/teams')}
         classes={{
           paper: this.props.classes.paper
         }}

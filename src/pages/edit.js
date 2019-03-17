@@ -80,7 +80,7 @@ export default function Edit(props) {
                               )
                             }}
                             onCompleted={data =>
-                              navigate(`/entries/${data.updateEntry.id}`)
+                              navigate(`/teams/${data.updateEntry.id}`)
                             }
                           >
                             {(updateEntry, {loading}) => (
