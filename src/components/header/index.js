@@ -76,6 +76,7 @@ const RightActions = styled.div({
 });
 
 const StyledAvatar = styled(Avatar)({
+  borderRadius: '50%',
   color: 'white',
   backgroundColor: TWITTER_BLUE
 });
