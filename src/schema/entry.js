@@ -1,46 +1,17 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
-import {Entry, Player, Selection, Statistic, Team} from './db';
+import {Entry, Selection} from '../db';
 import {Op} from 'sequelize';
 
-export const typeDefs = gql`
-  type Player {
-    id: ID
-    name: String
-    ign: String
-    country: String
-    image: String
-    team: Team
-    statistics: [Statistic]
+export const typeDef = gql`
+  extend type Query {
+    entry(id: ID!): Entry
+    entries: [Entry]
+    standings: [Entry]
   }
 
-  type Statistic {
-    id: ID
-    rating: Float
-    percentile: Float
-    kills: Int
-    deaths: Int
-    kdRatio: Float
-    headshots: Float
-    damagePerRound: Float
-    killsPerRound: Float
-    assistsPerRound: Float
-    deathsPerRound: Float
-    grenadeDamagePerRound: Float
-    week: Int
-    year: Int
-  }
-
-  type Team {
-    id: ID
-    name: String
-    logo: String
-    players: [Player]
-  }
-
-  type User {
-    username: String
-    displayName: String
-    profileImage: String
+  extend type Mutation {
+    createEntry(name: String!, playerIds: [String]!): Entry
+    updateEntry(id: ID!, playerIds: [String]!): Entry
   }
 
   type Entry {
@@ -50,38 +21,9 @@ export const typeDefs = gql`
     user: User
     selections: [Selection]
   }
-
-  type Selection {
-    id: ID
-    createdAt: String
-    deletedAt: String
-    player: Player
-  }
-
-  type Query {
-    team(id: ID!): Team
-    teams: [Team]
-    player(id: ID!): Player
-    players: [Player]
-    entry(id: ID!): Entry
-    entries: [Entry]
-    standings: [Entry]
-  }
-
-  type Mutation {
-    createEntry(name: String!, playerIds: [String]!): Entry
-    updateEntry(id: ID!, playerIds: [String]!): Entry
-  }
 `;
 
 export const resolvers = {
-  Player: {
-    team: parent => parent.getTeam(),
-    statistics: parent =>
-      parent.getStatistics({
-        order: [['year', 'desc'], ['week', 'desc']]
-      })
-  },
   Entry: {
     selections: parent =>
       parent.getSelections({
@@ -89,27 +31,7 @@ export const resolvers = {
         order: ['id']
       })
   },
-  Selection: {
-    player: parent => parent.getPlayer()
-  },
   Query: {
-    team: (parent, args) => Team.findByPk(args.id),
-    teams: () => Team.findAll(),
-    player: (parent, args) => Player.findByPk(args.id),
-    players: () =>
-      Player.findAll({
-        include: [
-          {
-            model: Statistic,
-            attributes: []
-          }
-        ],
-        order: [
-          [Statistic, 'year', 'desc'],
-          [Statistic, 'week', 'desc'],
-          [Statistic, 'percentile', 'desc']
-        ]
-      }),
     entry: async (parent, args, {user}) => {
       if (!user) {
         throw new AuthenticationError('Unauthorized');
@@ -136,6 +58,7 @@ export const resolvers = {
         order: [['createdAt', 'desc']]
       });
     },
+    // TODO: reconsider how this works...
     standings: () => Entry.findAll({limit: 24})
   },
   Mutation: {

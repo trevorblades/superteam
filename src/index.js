@@ -3,12 +3,12 @@ import express from 'express';
 import http from 'http';
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
+import schema from './schema';
 import session from 'express-session';
 import socketio from 'socket.io';
 import {ApolloServer} from 'apollo-server-express';
 import {Strategy as TwitterStrategy} from 'passport-twitter';
 import {User, sequelize} from './db';
-import {resolvers, typeDefs} from './schema';
 
 const app = express();
 const server = http.createServer(app);
@@ -73,8 +73,7 @@ app.get('/twitter/callback', twitterAuth, (req, res) => {
 });
 
 const apolloServer = new ApolloServer({
-  typeDefs,
-  resolvers,
+  schema,
   introspection: true,
   async context({req}) {
     try {
