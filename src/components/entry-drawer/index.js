@@ -24,6 +24,10 @@ import {Query} from 'react-apollo';
 import {navigate} from 'gatsby';
 import {withStyles} from '@material-ui/core';
 
+const Container = styled.div({
+  padding: 8
+});
+
 const StyledLoadingIndicator = styled(LoadingIndicator)({
   margin: 'auto'
 });
@@ -81,7 +85,11 @@ class EntryDrawer extends Component {
             if (loading) {
               return <StyledLoadingIndicator />;
             } else if (error) {
-              return <Typography color="error">{error.message}</Typography>;
+              return (
+                <Container>
+                  <Typography color="error">{error.message}</Typography>
+                </Container>
+              );
             }
 
             const {date, week, year, transactions} = getEntryFinancials(
@@ -89,7 +97,7 @@ class EntryDrawer extends Component {
             );
             const players = getEntryPlayers(data.entry);
             return (
-              <div>
+              <Container>
                 <CardHeader
                   title={data.entry.name}
                   subheader={
@@ -137,7 +145,7 @@ class EntryDrawer extends Component {
                   <Typography variant="h6">Transaction history</Typography>
                   <TransactionList transactions={transactions} />
                 </CardContent>
-              </div>
+              </Container>
             );
           }}
         </Query>
@@ -149,8 +157,7 @@ class EntryDrawer extends Component {
 export default withStyles(
   theme => ({
     paper: {
-      width: 400,
-      padding: 8
+      width: 400
     },
     createdAt: {
       fontWeight: 'bold',

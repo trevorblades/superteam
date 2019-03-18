@@ -5,11 +5,16 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
 import formatMoney from '../../utils/format-money';
+import styled from '@emotion/styled';
+
+const StyledList = styled(List)({
+  backgroundColor: 'white'
+});
 
 export default function TransactionList(props) {
   let lastSubheader;
   return (
-    <List dense disablePadding>
+    <StyledList dense disablePadding>
       {props.transactions.map(transaction => {
         let renderSubheader = false;
         const date = transaction.date.toLocaleDateString();
@@ -38,7 +43,7 @@ export default function TransactionList(props) {
           </Fragment>
         );
       })}
-    </List>
+    </StyledList>
   );
 }
 
