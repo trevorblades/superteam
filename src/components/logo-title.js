@@ -14,7 +14,7 @@ const Container = styled.div({
 
 const logoStyles = {
   width: 40,
-  marginRight: 4
+  marginRight: 8
 };
 
 const StyledImage = styled.img(logoStyles);
