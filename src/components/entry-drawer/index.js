@@ -1,3 +1,4 @@
+import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Diff from '../diff';
 import Drawer from '@material-ui/core/Drawer';
@@ -10,13 +11,16 @@ import LoadingIndicator from '../loading-indicator';
 import PlayerAvatar from '../player-avatar';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import TransactionList from './transaction-list';
 import Typography from '@material-ui/core/Typography';
 import formatMoney from '../../utils/format-money';
+import getEntryFinancials, {
+  getEntryPlayers
+} from '../../utils/get-entry-financials';
 import getPlayerCost, {getInitialPlayerCost} from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
 import {GET_ENTRY} from '../../utils/queries';
 import {Query} from 'react-apollo';
-import {getEntryDate, getEntryPlayers} from '../../utils/get-entry-financials';
 import {navigate} from 'gatsby';
 import {withStyles} from '@material-ui/core';
 
@@ -80,7 +84,9 @@ class EntryDrawer extends Component {
               return <Typography color="error">{error.message}</Typography>;
             }
 
-            const {date, week, year} = getEntryDate(data.entry);
+            const {date, week, year, transactions} = getEntryFinancials(
+              data.entry
+            );
             const players = getEntryPlayers(data.entry);
             return (
               <div>
@@ -127,6 +133,10 @@ class EntryDrawer extends Component {
                     );
                   })}
                 </List>
+                <CardContent>
+                  <Typography variant="h6">Transaction history</Typography>
+                  <TransactionList transactions={transactions} />
+                </CardContent>
               </div>
             );
           }}
