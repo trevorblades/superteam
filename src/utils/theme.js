@@ -4,6 +4,13 @@ const headingStyles = {
 };
 
 module.exports = {
+  overrides: {
+    MuiTypography: {
+      overline: {
+        fontWeight: 700
+      }
+    }
+  },
   palette: {
     primary: {
       main: '#0000ff'
