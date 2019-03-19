@@ -19,7 +19,7 @@ app.use(passport.initialize());
 
 app.use(
   cors({
-    origin: 'http://localhost:8000'
+    origin: process.env.ALLOWED_ORIGIN
   })
 );
 
