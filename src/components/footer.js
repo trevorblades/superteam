@@ -23,7 +23,7 @@ const Container = withTheme()(
 );
 
 const StyledLogoTitle = styled(LogoTitle)({
-  marginLeft: -8
+  marginLeft: -4
 });
 
 const StyledNav = styled.nav({
