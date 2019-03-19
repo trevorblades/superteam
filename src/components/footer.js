@@ -14,6 +14,7 @@ const Container = withTheme()(
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
+    flexShrink: 0,
     marginTop: 'auto',
     padding: `${24}px ${sectionHorizontalPadding}px`,
     color: theme.palette.grey[600],
