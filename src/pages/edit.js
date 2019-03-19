@@ -1,5 +1,4 @@
 import AuthRequired from '../components/auth-required';
-import Header from '../components/header';
 import Helmet from 'react-helmet';
 import Layout from '../components/layout';
 import LoadingIndicator from '../components/loading-indicator';
@@ -8,7 +7,6 @@ import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
 import SaveButton from '../components/save-button';
 import TeamBuilder from '../components/team-builder';
-import TeamBuilderWrapper from '../components/team-builder-wrapper';
 import Typography from '@material-ui/core/Typography';
 import getEntryFinancials from '../utils/get-entry-financials';
 import styled from '@emotion/styled';
@@ -42,15 +40,12 @@ export default function Edit(props) {
 
             if (error) {
               return (
-                <Fragment>
-                  <Header />
-                  <Section>
-                    <Typography variant="h2" gutterBottom>
-                      Error
-                    </Typography>
-                    <Typography variant="body1">{error.message}</Typography>
-                  </Section>
-                </Fragment>
+                <Section>
+                  <Typography variant="h2" gutterBottom>
+                    Error
+                  </Typography>
+                  <Typography variant="body1">{error.message}</Typography>
+                </Section>
               );
             }
 
@@ -62,46 +57,31 @@ export default function Edit(props) {
                 <Helmet>
                   <title>{data.entry.name}</title>
                 </Helmet>
-                <TeamBuilderWrapper
+                <TeamBuilder
                   amountSpent={playerValue}
                   selectedPlayers={players.map(player => player.id)}
-                >
-                  {teamBuilderProps => {
-                    const {selectedPlayers} = teamBuilderProps;
-                    return (
-                      <Fragment>
-                        <Header>
-                          <Mutation
-                            mutation={UPDATE_ENTRY}
-                            variables={{
-                              id: data.entry.id,
-                              playerIds: selectedPlayers.map(
-                                player => player.id
-                              )
-                            }}
-                            onCompleted={data =>
-                              navigate(`/teams/${data.updateEntry.id}`)
-                            }
-                          >
-                            {(updateEntry, {loading}) => (
-                              <SaveButton
-                                style={{marginLeft: 16}}
-                                onClick={updateEntry}
-                                disabled={
-                                  loading || selectedPlayers.length < TEAM_SIZE
-                                }
-                              />
-                            )}
-                          </Mutation>
-                        </Header>
-                        <TeamBuilder
-                          {...teamBuilderProps}
-                          budget={totalValue}
+                  budget={totalValue}
+                  action={players => (
+                    <Mutation
+                      mutation={UPDATE_ENTRY}
+                      variables={{
+                        id: data.entry.id,
+                        playerIds: players.map(player => player.id)
+                      }}
+                      onCompleted={data =>
+                        navigate(`/teams/${data.updateEntry.id}`)
+                      }
+                    >
+                      {(updateEntry, {loading}) => (
+                        <SaveButton
+                          style={{marginLeft: 16}}
+                          onClick={updateEntry}
+                          disabled={loading || players.length < TEAM_SIZE}
                         />
-                      </Fragment>
-                    );
-                  }}
-                </TeamBuilderWrapper>
+                      )}
+                    </Mutation>
+                  )}
+                />
               </Fragment>
             );
           }}

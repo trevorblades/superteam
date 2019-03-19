@@ -16,12 +16,12 @@ import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
 import getPlayerCost, {getTotalPlayerCost} from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
-import withUser from '../with-user';
 import {CREATE_ENTRY, LIST_ENTRIES} from '../../utils/queries';
 import {FaChevronLeft} from 'react-icons/fa';
 import {Mutation} from 'react-apollo';
 import {TOTAL_BUDGET} from '../../utils/constants';
 import {navigate} from 'gatsby';
+import {withUser} from '../with-user';
 
 const PlayerCell = styled.div({
   display: 'flex',

@@ -1,3 +1,4 @@
+import Header from './header';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -39,6 +40,7 @@ export default function Layout(props) {
                 href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/155/earth-globe-americas_1f30e.png"
               />
             </Helmet>
+            <Header />
             {props.children}
           </Container>
         );

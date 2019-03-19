@@ -1,7 +1,6 @@
 import Fab from '@material-ui/core/Fab';
 import Footer from '../components/footer';
 import Grid from '@material-ui/core/Grid';
-import Header from '../components/header';
 import Layout from '../components/layout';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
@@ -21,7 +20,6 @@ const StyledHero = styled(Hero)({
 export default function Home() {
   return (
     <Layout>
-      <Header />
       <StyledHero>
         <Grid container>
           <Grid item xs={12} sm={6}>

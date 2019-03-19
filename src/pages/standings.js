@@ -1,6 +1,5 @@
 import FinancialCells, {FinancialHeaders} from '../components/financial-cells';
 import Footer from '../components/footer';
-import Header from '../components/header';
 import Helmet from 'react-helmet';
 import Layout from '../components/layout';
 import PropTypes from 'prop-types';
@@ -37,7 +36,6 @@ export default function Standings(props) {
       <Helmet>
         <title>Standings</title>
       </Helmet>
-      <Header />
       <Section>
         <Typography variant="h3" gutterBottom>
           Standings

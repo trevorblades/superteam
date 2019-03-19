@@ -1,31 +1,18 @@
-import Header from './header';
-import Helmet from 'react-helmet';
-import NoSsr from '@material-ui/core/NoSsr';
 import PropTypes from 'prop-types';
-import React, {Fragment} from 'react';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import withUser from './with-user';
 import {Section} from './common';
+import {withUser} from './with-user';
 
 function AuthRequired(props) {
+  if (props.user) {
+    return props.children;
+  }
+
   return (
-    <Fragment>
-      <Helmet>
-        <meta name="robots" content="noindex" />
-      </Helmet>
-      <NoSsr>
-        {props.user ? (
-          props.children
-        ) : (
-          <Fragment>
-            <Header />
-            <Section>
-              <Typography>No user plz login</Typography>
-            </Section>
-          </Fragment>
-        )}
-      </NoSsr>
-    </Fragment>
+    <Section>
+      <Typography>No user plz login</Typography>
+    </Section>
   );
 }
 
