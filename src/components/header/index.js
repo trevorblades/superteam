@@ -91,11 +91,6 @@ const MobileNav = withTheme()(
   }))
 );
 
-const RightActions = styled.div({
-  display: 'flex',
-  marginLeft: 'auto'
-});
-
 const StyledAvatar = styled(Avatar)({
   color: 'white',
   backgroundColor: TWITTER_BLUE
