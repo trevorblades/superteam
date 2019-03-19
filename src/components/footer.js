@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
 import withProps from 'recompose/withProps';
 import {Link} from 'gatsby';
-import {sectionHorizontalPadding} from './common';
+import {sectionPadding} from './common';
 import {withTheme} from '@material-ui/core/styles';
 
 const Container = withTheme()(
@@ -16,7 +16,7 @@ const Container = withTheme()(
     justifyContent: 'space-between',
     flexShrink: 0,
     marginTop: 'auto',
-    padding: `${24}px ${sectionHorizontalPadding}px`,
+    padding: `${24}px ${sectionPadding}px`,
     color: theme.palette.grey[600],
     backgroundColor: theme.palette.grey[100]
   }))

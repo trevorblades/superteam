@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
 
-export const Hero = styled.section({
-  padding: `${96}px ${72}px`
+export const sectionPadding = 56;
+export const Section = styled.section({
+  padding: sectionPadding
 });
 
-export const sectionHorizontalPadding = 48;
-export const Section = styled.section({
-  padding: `${56}px ${sectionHorizontalPadding}px`
+const heroPadding = 96;
+export const Hero = styled(Section)({
+  paddingTop: heroPadding,
+  paddingBottom: heroPadding
 });

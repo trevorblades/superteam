@@ -1,6 +1,6 @@
 import AppBar from '@material-ui/core/AppBar';
-import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import Avatar from '@material-ui/core/Avatar'; // eslint-disable-line sort-imports-es6-autofix/sort-imports-es6
 import LogoTitle from '../logo-title';
 import NoSsr from 'react-no-ssr';
 import React from 'react';
@@ -75,7 +75,6 @@ const RightActions = styled.div({
 });
 
 const StyledAvatar = styled(Avatar)({
-  borderRadius: '50%',
   color: 'white',
   backgroundColor: TWITTER_BLUE
 });
