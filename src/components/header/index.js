@@ -1,5 +1,6 @@
 import AppBar from '@material-ui/core/AppBar';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import IconButton from '@material-ui/core/IconButton';
 import LogoTitle from '../logo-title';
 import NoSsr from 'react-no-ssr';
 import React from 'react';
@@ -16,21 +17,33 @@ import withProps from 'recompose/withProps';
 import {Avatar} from '@material-ui/core';
 import {FaTwitter} from 'react-icons/fa';
 import {Link} from 'gatsby';
+import {MdMenu} from 'react-icons/md';
 import {TWITTER_BLUE} from '../../utils/constants';
 import {withTheme} from '@material-ui/core/styles';
 
-const StyledLogoTitle = styled(LogoTitle)({
-  pointerEvents: 'none',
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)'
-});
+const StyledLogoTitle = withTheme()(
+  styled(LogoTitle)(({theme}) => ({
+    marginRight: 'auto',
+    pointerEvents: 'none',
+    [theme.breakpoints.up('md')]: {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)'
+    }
+  }))
+);
 
-const Nav = styled.nav({
-  display: 'flex',
-  alignSelf: 'stretch'
-});
+const Nav = withTheme()(
+  styled.nav(({theme}) => ({
+    display: 'flex',
+    alignSelf: 'stretch',
+    marginRight: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
+  }))
+);
 
 const NavItem = compose(
   withTheme(),
@@ -69,6 +82,15 @@ const NavLink = mapProps(({className, ...props}) => ({
   getProps: isActive(className)
 }))(Link);
 
+const MobileNav = withTheme()(
+  styled(IconButton)(({theme}) => ({
+    marginLeft: -12,
+    [theme.breakpoints.up('md')]: {
+      display: 'none'
+    }
+  }))
+);
+
 const RightActions = styled.div({
   display: 'flex',
   marginLeft: 'auto'
@@ -95,32 +117,33 @@ export default function Header() {
           </NavItem>
           {/* <NavItem color="textSecondary">DOTA 2</NavItem> */}
         </Nav>
+        <MobileNav>
+          <MdMenu />
+        </MobileNav>
         <StyledLogoTitle />
-        <RightActions>
-          <NoSsr>
-            <WithUser>
-              {({user}) =>
-                user ? (
-                  <UserMenu user={user} />
-                ) : (
-                  <TwitterLogin>
-                    {({pending, startAuth}) => (
-                      <Tooltip title="Log in with Twitter">
-                        <StyledAvatar
-                          component={ButtonBase}
-                          onClick={startAuth}
-                          disabled={pending}
-                        >
-                          <FaTwitter size={20} />
-                        </StyledAvatar>
-                      </Tooltip>
-                    )}
-                  </TwitterLogin>
-                )
-              }
-            </WithUser>
-          </NoSsr>
-        </RightActions>
+        <NoSsr>
+          <WithUser>
+            {({user}) =>
+              user ? (
+                <UserMenu user={user} />
+              ) : (
+                <TwitterLogin>
+                  {({pending, startAuth}) => (
+                    <Tooltip title="Log in with Twitter">
+                      <StyledAvatar
+                        component={ButtonBase}
+                        onClick={startAuth}
+                        disabled={pending}
+                      >
+                        <FaTwitter size={20} />
+                      </StyledAvatar>
+                    </Tooltip>
+                  )}
+                </TwitterLogin>
+              )
+            }
+          </WithUser>
+        </NoSsr>
       </Toolbar>
     </AppBar>
   );
