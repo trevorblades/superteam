@@ -34,7 +34,7 @@ const StyledImage = withTheme()(
     display: 'block',
     width: '100%',
     maxWidth: 600,
-    margin: `${sectionPadding * -2}px auto 0`,
+    margin: `${sectionPadding * -2}px auto ${sectionPadding * -1}px`,
     [theme.breakpoints.down('sm')]: {
       marginTop: sectionPadding
     }
@@ -80,6 +80,7 @@ export default function Home() {
                 increase or decrease in value. Every three months, we&apos;ll
                 award the 10 players with the best return on investment.
               </Typography>
+              <Typography variant="overline">This quarter</Typography>
               <Typography variant="body1">
                 This quarter&apos;s prize is a HyperX Cloud Stinger headset. I
                 mean, check that thing out 🤯
