@@ -1,6 +1,5 @@
 import AppBar from '@material-ui/core/AppBar';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import Avatar from '@material-ui/core/Avatar'; // eslint-disable-line sort-imports-es6-autofix/sort-imports-es6
 import LogoTitle from '../logo-title';
 import NoSsr from 'react-no-ssr';
 import React from 'react';
@@ -14,6 +13,7 @@ import compose from 'recompose/compose';
 import mapProps from 'recompose/mapProps';
 import styled from '@emotion/styled';
 import withProps from 'recompose/withProps';
+import {Avatar} from '@material-ui/core';
 import {FaTwitter} from 'react-icons/fa';
 import {Link} from 'gatsby';
 import {TWITTER_BLUE} from '../../utils/constants';

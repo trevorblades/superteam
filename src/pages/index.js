@@ -8,6 +8,7 @@ import headset from '../assets/images/headset.png';
 import playing from '../assets/images/playing.jpg';
 import styled from '@emotion/styled';
 import {Hero, Section, sectionPadding} from '../components/common';
+import {Link} from 'gatsby';
 import {MdAdd} from 'react-icons/md';
 import {withTheme} from '@material-ui/core/styles';
 
@@ -54,7 +55,12 @@ export default function Home() {
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt.
               </Typography>
-              <Fab variant="extended" color="primary">
+              <Fab
+                variant="extended"
+                color="primary"
+                component={Link}
+                to="/create"
+              >
                 <MdAdd size={24} style={{marginRight: 8}} />
                 Create a team
               </Fab>

@@ -1,10 +1,10 @@
 import ButtonBase from '@material-ui/core/ButtonBase';
-import Avatar from '@material-ui/core/Avatar'; // eslint-disable-line sort-imports-es6-autofix/sort-imports-es6
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
+import {Avatar} from '@material-ui/core';
 import {Link} from 'gatsby';
 import {withApollo} from 'react-apollo';
 
