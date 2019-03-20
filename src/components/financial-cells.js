@@ -2,7 +2,7 @@ import Diff from './diff';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
 import TableCell from '@material-ui/core/TableCell';
-import formatMoney from '../utils/format-money';
+import {formatMoney} from '../utils/format';
 
 export function FinancialHeaders() {
   return (

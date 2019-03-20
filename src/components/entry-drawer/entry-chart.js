@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import chroma from 'chroma-js';
-import formatMoney from '../../utils/format-money';
 import getPlayerCost, {percentileToCost} from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
 import {ResponsiveLine} from '@nivo/line';
 import {darken, lighten} from 'polished';
+import {formatMoney} from '../../utils/format';
 import {withTheme} from '@material-ui/core';
 
 const Container = styled.div({

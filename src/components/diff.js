@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import formatMoney from '../utils/format-money';
+import {formatMoney} from '../utils/format';
 import {withTheme} from '@material-ui/core/styles';
 
 function Diff(props) {

@@ -13,7 +13,6 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import TransactionList from './transaction-list';
 import Typography from '@material-ui/core/Typography';
-import formatMoney from '../../utils/format-money';
 import getEntryFinancials, {
   getEntryPlayers
 } from '../../utils/get-entry-financials';
@@ -21,6 +20,7 @@ import getPlayerCost, {getInitialPlayerCost} from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
 import {GET_ENTRY} from '../../utils/queries';
 import {Query} from 'react-apollo';
+import {formatDate, formatMoney} from '../../utils/format';
 import {navigate} from 'gatsby';
 import {withStyles} from '@material-ui/core';
 
@@ -104,7 +104,7 @@ class EntryDrawer extends Component {
                     <span>
                       Created{' '}
                       <span className={this.props.classes.createdAt}>
-                        {date.toLocaleDateString()}
+                        {formatDate(date)}
                       </span>
                     </span>
                   }
