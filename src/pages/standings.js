@@ -30,7 +30,9 @@ export default function Standings(props) {
     {}
   );
 
-  const diffs = Object.keys(counts).map(Number);
+  const diffs = Object.keys(counts)
+    .map(Number)
+    .sort((a, b) => b - a);
   return (
     <Layout>
       <Helmet>
