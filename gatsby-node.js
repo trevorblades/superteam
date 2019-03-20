@@ -1,7 +1,7 @@
 exports.createPages = ({actions}) => {
   actions.createRedirect({
     fromPath: '/edit/',
-    toPath: '/create',
+    toPath: '/create/',
     isPermanent: true,
     redirectInBrowser: true
   });
