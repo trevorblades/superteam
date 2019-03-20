@@ -18,8 +18,8 @@ import Typography from '@material-ui/core/Typography';
 import getEntryFinancials from '../utils/get-entry-financials';
 import {LIST_ENTRIES} from '../utils/queries';
 import {Link} from 'gatsby';
+import {PageWrapper, Section} from '../components/common';
 import {Query} from 'react-apollo';
-import {Section} from '../components/common';
 
 const title = 'My teams';
 export default function Teams(props) {
@@ -30,78 +30,82 @@ export default function Teams(props) {
       </Helmet>
       <NoSsr>
         <AuthRequired>
+          <Helmet>
+            <title>{title}</title>
+          </Helmet>
           <Section>
-            <Helmet>
-              <title>{title}</title>
-            </Helmet>
-            <Typography variant="h3" gutterBottom>
-              {title}
-            </Typography>
-            <Query query={LIST_ENTRIES}>
-              {({data, loading, error}) => {
-                if (loading) {
-                  return <LoadingIndicator />;
-                } else if (error) {
-                  return <Typography color="error">{error.message}</Typography>;
-                }
+            <PageWrapper>
+              <Typography variant="h3" gutterBottom>
+                {title}
+              </Typography>
+              <Query query={LIST_ENTRIES}>
+                {({data, loading, error}) => {
+                  if (loading) {
+                    return <LoadingIndicator />;
+                  } else if (error) {
+                    return (
+                      <Typography color="error">{error.message}</Typography>
+                    );
+                  }
 
-                return (
-                  <Fragment>
-                    <Table padding="none">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Team name</TableCell>
-                          <FinancialHeaders />
-                          <TableCell align="right">Created</TableCell>
-                          <TableCell align="right">Actions</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {data.entries.map(entry => {
-                          const {date, ...financials} = getEntryFinancials(
-                            entry
-                          );
-                          return (
-                            <TableRow key={entry.id}>
-                              <TableCell>{entry.name}</TableCell>
-                              <FinancialCells {...financials} />
-                              <TableCell align="right">
-                                {date.toLocaleDateString()}
-                              </TableCell>
-                              <TableCell align="right">
-                                <Button
-                                  component={Link}
-                                  size="small"
-                                  to={`/edit/${entry.id}`}
-                                  style={{
-                                    marginRight: 8
-                                  }}
-                                >
-                                  Edit
-                                </Button>
-                                <Button
-                                  component={Link}
-                                  variant="outlined"
-                                  size="small"
-                                  to={`/teams/${entry.id}`}
-                                >
-                                  Details
-                                </Button>
-                              </TableCell>
-                            </TableRow>
-                          );
-                        })}
-                      </TableBody>
-                    </Table>
-                  </Fragment>
-                );
-              }}
-            </Query>
-            <EntryDrawer
-              match={props.location.pathname.match(/^\/teams\/(\S+)\/?$/)}
-            />
+                  return (
+                    <Fragment>
+                      <Table padding="none">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Team name</TableCell>
+                            <FinancialHeaders />
+                            <TableCell align="right">Created</TableCell>
+                            <TableCell align="right">Actions</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {data.entries.map(entry => {
+                            const {date, ...financials} = getEntryFinancials(
+                              entry
+                            );
+                            return (
+                              <TableRow key={entry.id}>
+                                <TableCell>{entry.name}</TableCell>
+                                <FinancialCells {...financials} />
+                                <TableCell align="right">
+                                  {date.toLocaleDateString()}
+                                </TableCell>
+                                <TableCell align="right">
+                                  <Button
+                                    component={Link}
+                                    size="small"
+                                    to={`/edit/${entry.id}`}
+                                    style={{
+                                      marginRight: 8
+                                    }}
+                                  >
+                                    Edit
+                                  </Button>
+                                  <Button
+                                    component={Link}
+                                    variant="outlined"
+                                    size="small"
+                                    to={`/teams/${entry.id}`}
+                                  >
+                                    Details
+                                  </Button>
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
+                        </TableBody>
+                      </Table>
+                    </Fragment>
+                  );
+                }}
+              </Query>
+            </PageWrapper>
           </Section>
           <Footer />
+          <EntryDrawer
+            match={props.location.pathname.match(/^\/teams\/(\S+)\/?$/)}
+          />
         </AuthRequired>
       </NoSsr>
     </Layout>

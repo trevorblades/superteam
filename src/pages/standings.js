@@ -11,7 +11,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import getEntryFinancials from '../utils/get-entry-financials';
-import {Section} from '../components/common';
+import {PageWrapper, Section} from '../components/common';
 import {graphql} from 'gatsby';
 
 export default function Standings(props) {
@@ -37,37 +37,39 @@ export default function Standings(props) {
         <title>Standings</title>
       </Helmet>
       <Section>
-        <Typography variant="h3" gutterBottom>
-          Standings
-        </Typography>
-        <Table padding="none">
-          <TableHead>
-            <TableRow>
-              <TableCell>Rank</TableCell>
-              <TableCell>Team name</TableCell>
-              <FinancialHeaders />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {entries.map(entry => {
-              return (
-                <TableRow key={entry.id}>
-                  <TableCell>
-                    {counts[entry.diff] > 1 ? 'T' : ''}
-                    {diffs.indexOf(entry.diff) + 1}
-                  </TableCell>
-                  <TableCell>{entry.name}</TableCell>
-                  <FinancialCells
-                    diff={entry.diff}
-                    playerValue={entry.playerValue}
-                    cash={entry.cash}
-                    totalValue={entry.totalValue}
-                  />
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+        <PageWrapper>
+          <Typography variant="h3" gutterBottom>
+            Standings
+          </Typography>
+          <Table padding="none">
+            <TableHead>
+              <TableRow>
+                <TableCell>Rank</TableCell>
+                <TableCell>Team name</TableCell>
+                <FinancialHeaders />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {entries.map(entry => {
+                return (
+                  <TableRow key={entry.id}>
+                    <TableCell>
+                      {counts[entry.diff] > 1 ? 'T' : ''}
+                      {diffs.indexOf(entry.diff) + 1}
+                    </TableCell>
+                    <TableCell>{entry.name}</TableCell>
+                    <FinancialCells
+                      diff={entry.diff}
+                      playerValue={entry.playerValue}
+                      cash={entry.cash}
+                      totalValue={entry.totalValue}
+                    />
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </PageWrapper>
       </Section>
       <Footer />
     </Layout>

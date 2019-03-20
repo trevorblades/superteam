@@ -7,15 +7,10 @@ import Typography from '@material-ui/core/Typography';
 import headset from '../assets/images/headset.png';
 import playing from '../assets/images/playing.jpg';
 import styled from '@emotion/styled';
-import {Hero, Section, sectionPadding} from '../components/common';
+import {Hero, PageWrapper, Section, sectionPadding} from '../components/common';
 import {Link} from 'gatsby';
 import {MdAdd} from 'react-icons/md';
 import {withTheme} from '@material-ui/core/styles';
-
-const PageWrapper = styled.div({
-  maxWidth: 1200,
-  margin: '0 auto'
-});
 
 const StyledHero = styled(Hero)({
   color: 'white',
@@ -73,17 +68,29 @@ export default function Home() {
           <Grid container>
             <Grid item sm={12} md={6}>
               <Typography variant="h3" gutterBottom>
-                Win cool prizes!
+                Win cool prizes
               </Typography>
               <Typography variant="body1" paragraph>
                 Each week, player values will be updated, and your team will
-                increase or decrease in value. Every three months, we&apos;ll
-                award the 10 players with the best return on investment.
+                increase or decrease in value. At the end of every quarte (three
+                months), the top 10 players with the best return on investment
+                will win a prize.
               </Typography>
               <Typography variant="overline">This quarter</Typography>
               <Typography variant="body1">
-                This quarter&apos;s prize is a HyperX Cloud Stinger headset. I
-                mean, check that thing out 🤯
+                This quarter&apos;s prize is the{' '}
+                <strong>HyperX Cloud Stinger</strong> headset. It features
+                90-degree rotating ear cups, volume control, and a
+                swivel-to-mute noise-cancellation microphone. Learn more about
+                the HyperX Cloud Stinger{' '}
+                <a
+                  href="https://www.hyperxgaming.com/us/headsets/cloud-stinger-gaming-headset"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  here
+                </a>
+                .
               </Typography>
             </Grid>
             <Grid item sm={12} md={6}>

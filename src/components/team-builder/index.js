@@ -5,8 +5,8 @@ import React, {Component, Fragment} from 'react';
 import Region from './region';
 import TeamFooter from './team-footer';
 import getPlayerCost from '../../utils/get-player-cost';
-import merge from 'lodash/merge';
 import styled from '@emotion/styled';
+import {PageWrapper} from '../common';
 import {StaticQuery, graphql} from 'gatsby';
 import {TEAM_SIZE, TOTAL_BUDGET} from '../../utils/constants';
 import {withTheme} from '@material-ui/core/styles';
@@ -31,23 +31,23 @@ const Subheader = withTheme()(
     }, {});
 
     return {
-      display: 'flex',
-      flexShrink: 0,
       margin: `${halfGridSpacing}px 0 ${-halfGridSpacing}px`,
-      paddingTop: halfGridSpacing,
-      paddingBottom: halfGridSpacing,
+      padding: `${halfGridSpacing}px ${gridSpacing}px`,
       position: 'sticky',
       backgroundColor: theme.palette.background.default,
       top: minHeight,
       zIndex: 1,
-      ...merge(styles, theme.mixins.gutters())
+      ...styles
     };
   })
 );
 
+const StyledPageWrapper = styled(PageWrapper)({
+  display: 'flex'
+});
+
 const Regions = styled.nav({
   display: 'flex',
-  marginLeft: 16,
   marginRight: 'auto'
 });
 
@@ -168,56 +168,60 @@ export default class TeamBuilder extends Component {
           return (
             <Fragment>
               <Subheader>
-                <Regions>
-                  <Region
-                    selected={!this.state.region}
-                    value={null}
-                    onClick={this.onRegionClick}
-                  >
-                    All players
-                  </Region>
-                  {regions.map(region => (
+                <StyledPageWrapper>
+                  <Regions>
                     <Region
-                      key={region.code}
-                      selected={this.state.region === region.code}
-                      value={region.code}
+                      selected={!this.state.region}
+                      value={null}
                       onClick={this.onRegionClick}
                     >
-                      {region.name}
+                      All players
                     </Region>
-                  ))}
-                </Regions>
-                {this.props.action(selectedPlayers)}
+                    {regions.map(region => (
+                      <Region
+                        key={region.code}
+                        selected={this.state.region === region.code}
+                        value={region.code}
+                        onClick={this.onRegionClick}
+                      >
+                        {region.name}
+                      </Region>
+                    ))}
+                  </Regions>
+                  {this.props.action(selectedPlayers)}
+                </StyledPageWrapper>
               </Subheader>
               <GridWrapper>
-                <Grid container spacing={gridSpacing}>
-                  {filteredPlayers.map(player => {
-                    const isSelected = this.isPlayerSelected(player);
-                    return (
-                      <Grid
-                        item
-                        key={player.id}
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        lg={3}
-                        xl={2}
-                      >
-                        <PlayerCard
-                          disabled={
-                            !isSelected &&
-                            (selectedPlayers.length >= TEAM_SIZE ||
-                              this.props.budget - this.state.amountSpent <
-                                getPlayerCost(player))
-                          }
-                          player={player}
-                          onClick={this.onPlayerCardClick}
-                          selected={isSelected}
-                        />
-                      </Grid>
-                    );
-                  })}
-                </Grid>
+                <PageWrapper>
+                  <Grid container spacing={gridSpacing}>
+                    {filteredPlayers.map(player => {
+                      const isSelected = this.isPlayerSelected(player);
+                      return (
+                        <Grid
+                          item
+                          key={player.id}
+                          xs={12}
+                          sm={6}
+                          md={4}
+                          lg={3}
+                          xl={2}
+                        >
+                          <PlayerCard
+                            disabled={
+                              !isSelected &&
+                              (selectedPlayers.length >= TEAM_SIZE ||
+                                this.props.budget - this.state.amountSpent <
+                                  getPlayerCost(player))
+                            }
+                            player={player}
+                            onClick={this.onPlayerCardClick}
+                            selected={isSelected}
+                          />
+                        </Grid>
+                      );
+                    })}
+                  </Grid>
+                </PageWrapper>
               </GridWrapper>
               <TeamFooter
                 budget={this.props.budget}

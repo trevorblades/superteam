@@ -6,21 +6,23 @@ import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
 import withProps from 'recompose/withProps';
 import {Link} from 'gatsby';
-import {sectionPadding} from './common';
+import {PageWrapper, sectionPadding} from './common';
 import {withTheme} from '@material-ui/core/styles';
 
 const Container = withTheme()(
   styled.footer(({theme}) => ({
-    display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    flexShrink: 0,
     marginTop: 'auto',
     padding: `${24}px ${sectionPadding}px`,
     color: theme.palette.grey[600],
     backgroundColor: theme.palette.grey[100]
   }))
 );
+
+const StyledPageWrapper = styled(PageWrapper)({
+  display: 'flex',
+  alignItems: 'flex-start',
+  justifyContent: 'space-between'
+});
 
 const StyledLogoTitle = styled(LogoTitle)({
   marginLeft: -4
@@ -63,68 +65,70 @@ const NavLink = styled(Text)({
 export default function Footer() {
   return (
     <Container>
-      <div>
-        <StyledLogoTitle vector color="inherit" />
-        <Text variant="caption">
-          <Colophon />. <LastUpdated />
-        </Text>
-      </div>
-      <StyledNav>
-        <NavGroup>
-          <NavSubheader>Get around</NavSubheader>
-          <NavItem>
-            <NavLink component={Link} to="/">
-              Home
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink component={Link} to="/create">
-              Create
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink component={Link} to="/standings">
-              Standings
-            </NavLink>
-          </NavItem>
-        </NavGroup>
-        <NavGroup>
-          <NavSubheader>Learn</NavSubheader>
-          <NavItem>
-            <NavLink component={Link} to="/about">
-              About
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink component={Link} to="/how-it-works">
-              How it works
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink component={Link} to="/terms">
-              Terms & conditions
-            </NavLink>
-          </NavItem>
-        </NavGroup>
-        <NavGroup>
-          <NavSubheader>Connect</NavSubheader>
-          <NavItem>
-            <NavLink component="a" href="https://twitter.com/superteamgg">
-              Twitter
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink component="a" href="https://instagram.com/superteamgg">
-              Instagram
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink component="a" href="https://facebook.com/superteamgg">
-              Facebook
-            </NavLink>
-          </NavItem>
-        </NavGroup>
-      </StyledNav>
+      <StyledPageWrapper>
+        <div>
+          <StyledLogoTitle vector color="inherit" />
+          <Text variant="caption">
+            <Colophon />. <LastUpdated />
+          </Text>
+        </div>
+        <StyledNav>
+          <NavGroup>
+            <NavSubheader>Get around</NavSubheader>
+            <NavItem>
+              <NavLink component={Link} to="/">
+                Home
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink component={Link} to="/create">
+                Create
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink component={Link} to="/standings">
+                Standings
+              </NavLink>
+            </NavItem>
+          </NavGroup>
+          <NavGroup>
+            <NavSubheader>Learn</NavSubheader>
+            <NavItem>
+              <NavLink component={Link} to="/about">
+                About
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink component={Link} to="/how-it-works">
+                How it works
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink component={Link} to="/terms">
+                Terms & conditions
+              </NavLink>
+            </NavItem>
+          </NavGroup>
+          <NavGroup>
+            <NavSubheader>Connect</NavSubheader>
+            <NavItem>
+              <NavLink component="a" href="https://twitter.com/superteamgg">
+                Twitter
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink component="a" href="https://instagram.com/superteamgg">
+                Instagram
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink component="a" href="https://facebook.com/superteamgg">
+                Facebook
+              </NavLink>
+            </NavItem>
+          </NavGroup>
+        </StyledNav>
+      </StyledPageWrapper>
     </Container>
   );
 }
