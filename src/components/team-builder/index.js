@@ -6,15 +6,14 @@ import Region from './region';
 import TeamFooter from './team-footer';
 import getPlayerCost from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
+import {GRID_SPACING, TEAM_SIZE, TOTAL_BUDGET} from '../../utils/constants';
 import {PageWrapper} from '../common';
 import {StaticQuery, graphql} from 'gatsby';
-import {TEAM_SIZE, TOTAL_BUDGET} from '../../utils/constants';
 import {withTheme} from '@material-ui/core/styles';
 
-const gridSpacing = 40;
-const halfGridSpacing = gridSpacing / 2;
+const halfGridSpacing = GRID_SPACING / 2;
 const GridWrapper = styled.div({
-  padding: gridSpacing
+  padding: GRID_SPACING
 });
 
 const Subheader = withTheme()(
@@ -32,7 +31,7 @@ const Subheader = withTheme()(
 
     return {
       margin: `${halfGridSpacing}px 0 ${-halfGridSpacing}px`,
-      padding: `${halfGridSpacing}px ${gridSpacing}px`,
+      padding: `${halfGridSpacing}px ${GRID_SPACING}px`,
       position: 'sticky',
       backgroundColor: theme.palette.background.default,
       top: minHeight,
@@ -193,7 +192,7 @@ export default class TeamBuilder extends Component {
               </Subheader>
               <GridWrapper>
                 <PageWrapper>
-                  <Grid container spacing={gridSpacing}>
+                  <Grid container spacing={GRID_SPACING}>
                     {filteredPlayers.map(player => {
                       const isSelected = this.isPlayerSelected(player);
                       return (

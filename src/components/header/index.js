@@ -16,17 +16,16 @@ import styled from '@emotion/styled';
 import withProps from 'recompose/withProps';
 import {Avatar} from '@material-ui/core';
 import {FaTwitter} from 'react-icons/fa';
+import {GRID_SPACING, TWITTER_BLUE} from '../../utils/constants';
 import {Link} from 'gatsby';
 import {MdMenu} from 'react-icons/md';
 import {PageWrapper} from '../common';
-import {TWITTER_BLUE} from '../../utils/constants';
 import {withTheme} from '@material-ui/core/styles';
 
 const StyledToolbar = withTheme()(
   styled(Toolbar)(({theme}) => ({
     [theme.breakpoints.up('md')]: {
-      paddingLeft: 40,
-      paddingRight: 40
+      padding: `0 ${GRID_SPACING}px`
     }
   }))
 );
