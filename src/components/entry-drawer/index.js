@@ -102,7 +102,7 @@ class EntryDrawer extends Component {
                   title={data.entry.name}
                   subheader={
                     <span>
-                      Created{' '}
+                      Created on{' '}
                       <span className={this.props.classes.createdAt}>
                         {formatDate(date)}
                       </span>
