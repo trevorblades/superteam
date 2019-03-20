@@ -6,6 +6,7 @@ import Footer from '../components/footer';
 import Helmet from 'react-helmet';
 import Layout from '../components/layout';
 import LoadingIndicator from '../components/loading-indicator';
+import NoIndex from '../components/no-index';
 import NoSsr from '@material-ui/core/NoSsr';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
@@ -25,9 +26,7 @@ const title = 'My teams';
 export default function Teams(props) {
   return (
     <Layout>
-      <Helmet>
-        <meta name="robots" content="noindex" />
-      </Helmet>
+      <NoIndex />
       <NoSsr>
         <AuthRequired>
           <Helmet>

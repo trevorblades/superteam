@@ -2,7 +2,8 @@ import AuthRequired from '../components/auth-required';
 import Helmet from 'react-helmet';
 import Layout from '../components/layout';
 import LoadingIndicator from '../components/loading-indicator';
-import NotFound from './404';
+import NoIndex from '../components/no-index';
+import NoSsr from '@material-ui/core/NoSsr';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
 import SaveButton from '../components/save-button';
@@ -24,69 +25,70 @@ const StyledLoadingIndicator = styled(LoadingIndicator)({
 });
 
 export default function Edit(props) {
-  const match = props.location.pathname.match(/^\/edit\/(\d+)\/?$/);
-  if (!match) {
-    return <NotFound />;
-  }
-
+  // we don't need to make sure this is truthy because...
+  // we're redirecting /edit to /create in static/_redirects
+  const match = props.location.pathname.match(/^\/edit\/(\S+)\/?$/);
   return (
     <Layout>
-      <AuthRequired>
-        <Query query={GET_ENTRY} variables={{id: match[1]}}>
-          {({data, loading, error}) => {
-            if (loading) {
-              return <StyledLoadingIndicator />;
-            }
+      <NoIndex />
+      <NoSsr>
+        <AuthRequired>
+          <Query query={GET_ENTRY} variables={{id: match[1]}}>
+            {({data, loading, error}) => {
+              if (loading) {
+                return <StyledLoadingIndicator />;
+              }
 
-            if (error) {
-              return (
-                <Section>
-                  <Typography variant="h2" gutterBottom>
-                    Error
-                  </Typography>
-                  <Typography variant="body1">{error.message}</Typography>
-                </Section>
+              if (error) {
+                return (
+                  <Section>
+                    <Typography variant="h2" gutterBottom>
+                      Error
+                    </Typography>
+                    <Typography variant="body1">{error.message}</Typography>
+                  </Section>
+                );
+              }
+
+              const {players, playerValue, totalValue} = getEntryFinancials(
+                data.entry
               );
-            }
-
-            const {players, playerValue, totalValue} = getEntryFinancials(
-              data.entry
-            );
-            return (
-              <Fragment>
-                <Helmet>
-                  <title>{data.entry.name}</title>
-                </Helmet>
-                <TeamBuilder
-                  amountSpent={playerValue}
-                  selectedPlayers={players.map(player => player.id)}
-                  budget={totalValue}
-                  action={players => (
-                    <Mutation
-                      mutation={UPDATE_ENTRY}
-                      variables={{
-                        id: data.entry.id,
-                        playerIds: players.map(player => player.id)
-                      }}
-                      onCompleted={data =>
-                        navigate(`/teams/${data.updateEntry.id}`)
-                      }
-                    >
-                      {(updateEntry, {loading}) => (
-                        <SaveButton
-                          style={{marginLeft: 16}}
-                          onClick={updateEntry}
-                          disabled={loading || players.length < TEAM_SIZE}
-                        />
-                      )}
-                    </Mutation>
-                  )}
-                />
-              </Fragment>
-            );
-          }}
-        </Query>
-      </AuthRequired>
+              return (
+                <Fragment>
+                  <Helmet>
+                    <title>{data.entry.name}</title>
+                  </Helmet>
+                  <TeamBuilder
+                    amountSpent={playerValue}
+                    selectedPlayers={players.map(player => player.id)}
+                    budget={totalValue}
+                    action={players => (
+                      <Mutation
+                        mutation={UPDATE_ENTRY}
+                        variables={{
+                          id: data.entry.id,
+                          playerIds: players.map(player => player.id)
+                        }}
+                        onCompleted={data =>
+                          navigate(`/teams/${data.updateEntry.id}`)
+                        }
+                      >
+                        {(updateEntry, {loading}) => (
+                          <SaveButton
+                            style={{marginLeft: 16}}
+                            onClick={updateEntry}
+                            disabled={loading || players.length < TEAM_SIZE}
+                          />
+                        )}
+                      </Mutation>
+                    )}
+                  />
+                </Fragment>
+              );
+            }}
+          </Query>
+        </AuthRequired>
+      </NoSsr>
     </Layout>
   );
 }
