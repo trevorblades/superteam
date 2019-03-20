@@ -99,8 +99,8 @@ export default function Footer() {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink component={Link} to="/how-it-works">
-                How it works
+              <NavLink component={Link} to="/how-to-play">
+                How to play
               </NavLink>
             </NavItem>
             <NavItem>
