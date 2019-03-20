@@ -10,6 +10,8 @@ import styled from '@emotion/styled';
 import {Hero, PageWrapper, Section, sectionPadding} from '../components/common';
 import {Link} from 'gatsby';
 import {MdAdd} from 'react-icons/md';
+import {TOTAL_BUDGET} from '../utils/constants';
+import {formatMoney} from '../utils/format';
 import {withTheme} from '@material-ui/core/styles';
 
 const StyledHero = styled(Hero)({
@@ -47,8 +49,10 @@ export default function Home() {
                 Build the team of your dreams
               </Typography>
               <Typography variant="body1" color="inherit" paragraph>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt.
+                Given a {formatMoney(TOTAL_BUDGET)} budget, you must assemble a
+                team of current and future CS:GO superstars. Their values will
+                change over time based on LAN tournament performances, and your
+                team will see gains or losses.
               </Typography>
               <Fab
                 variant="extended"
