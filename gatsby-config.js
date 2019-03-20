@@ -14,6 +14,7 @@ module.exports = {
     'gatsby-plugin-emotion',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-svgr',
+    'gatsby-plugin-netlify',
     {
       resolve: 'gatsby-source-graphql',
       options: {

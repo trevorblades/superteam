@@ -33,60 +33,62 @@ export default function Edit(props) {
       <NoIndex />
       <NoSsr>
         <AuthRequired>
-          <Query query={GET_ENTRY} variables={{id: match[1]}}>
-            {({data, loading, error}) => {
-              if (loading) {
-                return <StyledLoadingIndicator />;
-              }
+          {match && (
+            <Query query={GET_ENTRY} variables={{id: match[1]}}>
+              {({data, loading, error}) => {
+                if (loading) {
+                  return <StyledLoadingIndicator />;
+                }
 
-              if (error) {
-                return (
-                  <Section>
-                    <Typography variant="h2" gutterBottom>
-                      Error
-                    </Typography>
-                    <Typography variant="body1">{error.message}</Typography>
-                  </Section>
+                if (error) {
+                  return (
+                    <Section>
+                      <Typography variant="h2" gutterBottom>
+                        Error
+                      </Typography>
+                      <Typography variant="body1">{error.message}</Typography>
+                    </Section>
+                  );
+                }
+
+                const {players, playerValue, totalValue} = getEntryFinancials(
+                  data.entry
                 );
-              }
-
-              const {players, playerValue, totalValue} = getEntryFinancials(
-                data.entry
-              );
-              return (
-                <Fragment>
-                  <Helmet>
-                    <title>{data.entry.name}</title>
-                  </Helmet>
-                  <TeamBuilder
-                    amountSpent={playerValue}
-                    selectedPlayers={players.map(player => player.id)}
-                    budget={totalValue}
-                    action={players => (
-                      <Mutation
-                        mutation={UPDATE_ENTRY}
-                        variables={{
-                          id: data.entry.id,
-                          playerIds: players.map(player => player.id)
-                        }}
-                        onCompleted={data =>
-                          navigate(`/teams/${data.updateEntry.id}`)
-                        }
-                      >
-                        {(updateEntry, {loading}) => (
-                          <SaveButton
-                            style={{marginLeft: 16}}
-                            onClick={updateEntry}
-                            disabled={loading || players.length < TEAM_SIZE}
-                          />
-                        )}
-                      </Mutation>
-                    )}
-                  />
-                </Fragment>
-              );
-            }}
-          </Query>
+                return (
+                  <Fragment>
+                    <Helmet>
+                      <title>{data.entry.name}</title>
+                    </Helmet>
+                    <TeamBuilder
+                      amountSpent={playerValue}
+                      selectedPlayers={players.map(player => player.id)}
+                      budget={totalValue}
+                      action={players => (
+                        <Mutation
+                          mutation={UPDATE_ENTRY}
+                          variables={{
+                            id: data.entry.id,
+                            playerIds: players.map(player => player.id)
+                          }}
+                          onCompleted={data =>
+                            navigate(`/teams/${data.updateEntry.id}`)
+                          }
+                        >
+                          {(updateEntry, {loading}) => (
+                            <SaveButton
+                              style={{marginLeft: 16}}
+                              onClick={updateEntry}
+                              disabled={loading || players.length < TEAM_SIZE}
+                            />
+                          )}
+                        </Mutation>
+                      )}
+                    />
+                  </Fragment>
+                );
+              }}
+            </Query>
+          )}
         </AuthRequired>
       </NoSsr>
     </Layout>
