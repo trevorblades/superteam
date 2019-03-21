@@ -6,13 +6,12 @@ import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
 import withProps from 'recompose/withProps';
 import {Link} from 'gatsby';
-import {PageWrapper, sectionPadding} from './common';
+import {PageWrapper, getSectionStyles} from './common';
 import {withTheme} from '@material-ui/core/styles';
 
 const Container = withTheme()(
-  styled.footer(({theme}) => ({
+  styled.footer(getSectionStyles(24), ({theme}) => ({
     marginTop: 'auto',
-    padding: `${24}px ${sectionPadding}px`,
     color: theme.palette.grey[600],
     backgroundColor: theme.palette.grey[100]
   }))
@@ -28,11 +27,16 @@ const StyledLogoTitle = styled(LogoTitle)({
   marginLeft: -4
 });
 
-const StyledNav = styled.nav({
-  display: 'flex',
-  alignItems: 'flex-start',
-  marginBottom: 8
-});
+const StyledNav = withTheme()(
+  styled.nav(({theme}) => ({
+    display: 'flex',
+    alignItems: 'flex-start',
+    marginBottom: 8,
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
+  }))
+);
 
 const NavGroup = styled.ul({
   margin: 0,

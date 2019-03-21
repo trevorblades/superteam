@@ -26,16 +26,36 @@ const PrizesSection = styled(Section)({
   position: 'relative'
 });
 
+function getImageStyles(key) {
+  const padding = sectionPadding[key];
+  return {
+    height: `calc(100% + ${padding}px)`,
+    top: -padding
+  };
+}
+
 const StyledImage = withTheme()(
-  styled.img(({theme}) => ({
-    display: 'block',
-    width: '100%',
-    maxWidth: 600,
-    margin: `${sectionPadding * -2}px auto ${sectionPadding * -1}px`,
-    [theme.breakpoints.down('sm')]: {
-      marginTop: sectionPadding
-    }
-  }))
+  styled.img(getImageStyles('lg'), ({theme}) => {
+    return {
+      width: '50%',
+      maxWidth: 640,
+      position: 'absolute',
+      left: '50%',
+      objectFit: 'cover',
+      objectPosition: 'top left',
+      [theme.breakpoints.down('md')]: getImageStyles('md'),
+      [theme.breakpoints.down('sm')]: {
+        width: 300,
+        height: 'auto',
+        objectFit: 'initial',
+        position: 'static',
+        float: 'right'
+      },
+      [theme.breakpoints.down('xs')]: {
+        display: 'none'
+      }
+    };
+  })
 );
 
 export default function Home() {
@@ -74,6 +94,7 @@ export default function Home() {
               <Typography variant="h3" gutterBottom>
                 Win cool prizes
               </Typography>
+              <StyledImage src={headset} />
               <Typography variant="body1" paragraph>
                 Each week, player values will be updated, and your team will
                 increase or decrease in value. At the end of every quarte (three
@@ -81,7 +102,7 @@ export default function Home() {
                 will win a prize.
               </Typography>
               <Typography variant="overline">This quarter</Typography>
-              <Typography variant="body1">
+              <Typography>
                 This quarter&apos;s prize is the{' '}
                 <strong>HyperX Cloud Stinger</strong> headset. It features
                 90-degree rotating ear cups, volume control, and a
@@ -96,9 +117,6 @@ export default function Home() {
                 </a>
                 .
               </Typography>
-            </Grid>
-            <Grid item sm={12} md={6}>
-              <StyledImage src={headset} />
             </Grid>
           </Grid>
         </PageWrapper>
