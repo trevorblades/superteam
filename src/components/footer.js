@@ -23,7 +23,7 @@ const StyledPageWrapper = withTheme()(
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     [theme.breakpoints.down('sm')]: {
-      display: 'block'
+      flexDirection: 'column-reverse'
     }
   }))
 );
@@ -36,12 +36,10 @@ const StyledNav = withTheme()(
   styled.nav(({theme}) => ({
     display: 'flex',
     alignItems: 'flex-start',
+    flexWrap: 'wrap',
     marginBottom: 8,
     [theme.breakpoints.down('sm')]: {
-      marginTop: 8
-    },
-    [theme.breakpoints.down('xs')]: {
-      flexDirection: 'column'
+      marginBottom: 16
     }
   }))
 );

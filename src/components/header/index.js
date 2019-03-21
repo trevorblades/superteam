@@ -1,5 +1,6 @@
 import AppBar from '@material-ui/core/AppBar';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import LogoTitle from '../logo-title';
 import NoSsr from 'react-no-ssr';
@@ -32,13 +33,11 @@ const StyledToolbar = withTheme()(
 
 const StyledPageWrapper = styled(PageWrapper)({
   display: 'flex',
-  alignItems: 'center',
-  height: '100%'
+  alignSelf: 'stretch'
 });
 
 const StyledLogoTitle = withTheme()(
   styled(LogoTitle)(({theme}) => ({
-    marginRight: 'auto',
     pointerEvents: 'none',
     [theme.breakpoints.up('md')]: {
       position: 'absolute',
@@ -49,17 +48,11 @@ const StyledLogoTitle = withTheme()(
   }))
 );
 
-const Nav = withTheme()(
-  styled.nav(({theme}) => ({
-    display: 'flex',
-    alignSelf: 'stretch',
-    marginLeft: -8,
-    marginRight: 'auto',
-    [theme.breakpoints.down('sm')]: {
-      display: 'none'
-    }
-  }))
-);
+const Nav = styled.nav({
+  display: 'flex',
+  height: '100%',
+  marginLeft: -8
+});
 
 const NavItem = compose(
   withTheme(),
@@ -100,19 +93,24 @@ const NavLink = mapProps(({className, ...props}) => ({
   getProps: isActive(className)
 }))(Link);
 
+const MobileNavWrapper = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  height: '100%'
+});
+
 const MobileNav = withTheme()(
   styled(IconButton)(({theme}) => ({
-    [theme.breakpoints.up('md')]: {
-      display: 'none'
-    },
     [theme.breakpoints.only('xs')]: {
       marginLeft: -8
     }
   }))
 );
 
-const RightAction = withTheme()(
+const Action = withTheme()(
   styled.div(({theme}) => ({
+    margin: 'auto',
+    marginRight: 0,
     [theme.breakpoints.only('sm')]: {
       marginRight: 16
     },
@@ -132,24 +130,30 @@ export default function Header() {
     <AppBar position="sticky" color="inherit" elevation={0}>
       <StyledToolbar>
         <StyledPageWrapper>
-          <Nav>
-            <NavItem component={NavLink} to="/">
-              Home
-            </NavItem>
-            <NavItem component={NavLink} to="/create">
-              Create team
-            </NavItem>
-            <NavItem component={NavLink} to="/standings">
-              Standings
-            </NavItem>
-            {/* <NavItem color="textSecondary">DOTA 2</NavItem> */}
-          </Nav>
-          <MobileNav>
-            <MdMenu />
-          </MobileNav>
+          <Hidden smDown implementation="css">
+            <Nav>
+              <NavItem component={NavLink} to="/">
+                Home
+              </NavItem>
+              <NavItem component={NavLink} to="/create">
+                Create team
+              </NavItem>
+              <NavItem component={NavLink} to="/standings">
+                Standings
+              </NavItem>
+              {/* <NavItem color="textSecondary">DOTA 2</NavItem> */}
+            </Nav>
+          </Hidden>
+          <Hidden mdUp implementation="css">
+            <MobileNavWrapper>
+              <MobileNav>
+                <MdMenu />
+              </MobileNav>
+            </MobileNavWrapper>
+          </Hidden>
           <StyledLogoTitle />
           <NoSsr>
-            <RightAction>
+            <Action>
               <WithUser>
                 {({user}) =>
                   user ? (
@@ -171,7 +175,7 @@ export default function Header() {
                   )
                 }
               </WithUser>
-            </RightAction>
+            </Action>
           </NoSsr>
         </StyledPageWrapper>
       </StyledToolbar>

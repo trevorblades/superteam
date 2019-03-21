@@ -1,8 +1,11 @@
 import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
+import MenuItem from '@material-ui/core/MenuItem';
 import PlayerCard from './player-card';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Region from './region';
+import Select from '@material-ui/core/Select';
 import TeamFooter from './team-footer';
 import getPlayerCost from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
@@ -46,8 +49,11 @@ const StyledPageWrapper = styled(PageWrapper)({
 });
 
 const Regions = styled.nav({
-  display: 'flex',
-  marginRight: 'auto'
+  display: 'flex'
+});
+
+const Action = styled.div({
+  marginLeft: 'auto'
 });
 
 const query = graphql`
@@ -93,7 +99,7 @@ export default class TeamBuilder extends Component {
     budget: PropTypes.number,
     amountSpent: PropTypes.number,
     selectedPlayers: PropTypes.array,
-    action: PropTypes.func.isRequired
+    children: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -107,12 +113,12 @@ export default class TeamBuilder extends Component {
     this.state = {
       amountSpent: props.amountSpent,
       selectedPlayers: props.selectedPlayers,
-      region: null
+      region: ''
     };
   }
 
-  onRegionClick = region => {
-    this.setState({region});
+  onRegionChange = event => {
+    this.selectRegion(event.target.value);
   };
 
   onPlayerCardClick = player => {
@@ -128,6 +134,10 @@ export default class TeamBuilder extends Component {
           : [...prevState.selectedPlayers, player.id]
       };
     });
+  };
+
+  selectRegion = region => {
+    this.setState({region});
   };
 
   isPlayerSelected = player => this.getSelectedIndex(player) > -1;
@@ -168,26 +178,42 @@ export default class TeamBuilder extends Component {
             <Fragment>
               <Subheader>
                 <StyledPageWrapper>
-                  <Regions>
-                    <Region
-                      selected={!this.state.region}
-                      value={null}
-                      onClick={this.onRegionClick}
-                    >
-                      All players
-                    </Region>
-                    {regions.map(region => (
+                  <Hidden smDown implementation="css">
+                    <Regions>
                       <Region
-                        key={region.code}
-                        selected={this.state.region === region.code}
-                        value={region.code}
-                        onClick={this.onRegionClick}
+                        selected={!this.state.region}
+                        value=""
+                        onClick={this.selectRegion}
                       >
-                        {region.name}
+                        All players
                       </Region>
-                    ))}
-                  </Regions>
-                  {this.props.action(selectedPlayers)}
+                      {regions.map(region => (
+                        <Region
+                          key={region.code}
+                          selected={this.state.region === region.code}
+                          value={region.code}
+                          onClick={this.selectRegion}
+                        >
+                          {region.name}
+                        </Region>
+                      ))}
+                    </Regions>
+                  </Hidden>
+                  <Hidden mdUp implementation="css">
+                    <Select
+                      displayEmpty
+                      value={this.state.region}
+                      onChange={this.onRegionChange}
+                    >
+                      <MenuItem value="">All players</MenuItem>
+                      {regions.map(region => (
+                        <MenuItem key={region.code} value={region.code}>
+                          {region.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Hidden>
+                  <Action>{this.props.children(selectedPlayers)}</Action>
                 </StyledPageWrapper>
               </Subheader>
               <GridWrapper>

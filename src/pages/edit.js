@@ -63,7 +63,8 @@ export default function Edit(props) {
                       amountSpent={playerValue}
                       selectedPlayers={players.map(player => player.id)}
                       budget={totalValue}
-                      action={players => (
+                    >
+                      {players => (
                         <Mutation
                           mutation={UPDATE_ENTRY}
                           variables={{
@@ -83,7 +84,7 @@ export default function Edit(props) {
                           )}
                         </Mutation>
                       )}
-                    />
+                    </TeamBuilder>
                   </Fragment>
                 );
               }}

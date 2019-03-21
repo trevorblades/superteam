@@ -1,6 +1,7 @@
 import Fab from '@material-ui/core/Fab';
 import Footer from '../components/footer';
 import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
 import Layout from '../components/layout';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
@@ -50,9 +51,6 @@ const StyledImage = withTheme()(
         objectFit: 'initial',
         position: 'static',
         float: 'right'
-      },
-      [theme.breakpoints.down('xs')]: {
-        display: 'none'
       }
     };
   })
@@ -94,7 +92,9 @@ export default function Home() {
               <Typography variant="h3" gutterBottom>
                 Win cool prizes
               </Typography>
-              <StyledImage src={headset} />
+              <Hidden only="xs" implementation="css">
+                <StyledImage src={headset} />
+              </Hidden>
               <Typography variant="body1" paragraph>
                 Each week, player values will be updated, and your team will
                 increase or decrease in value. At the end of every quarte (three

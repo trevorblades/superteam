@@ -10,7 +10,9 @@ export default function Create() {
       <Helmet>
         <title>Create a team</title>
       </Helmet>
-      <TeamBuilder action={players => <CheckoutButton players={players} />} />
+      <TeamBuilder>
+        {players => <CheckoutButton players={players} />}
+      </TeamBuilder>
     </Layout>
   );
 }
