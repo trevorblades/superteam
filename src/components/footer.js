@@ -17,11 +17,16 @@ const Container = withTheme()(
   }))
 );
 
-const StyledPageWrapper = styled(PageWrapper)({
-  display: 'flex',
-  alignItems: 'flex-start',
-  justifyContent: 'space-between'
-});
+const StyledPageWrapper = withTheme()(
+  styled(PageWrapper)(({theme}) => ({
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('sm')]: {
+      display: 'block'
+    }
+  }))
+);
 
 const StyledLogoTitle = styled(LogoTitle)({
   marginLeft: -4
@@ -33,7 +38,10 @@ const StyledNav = withTheme()(
     alignItems: 'flex-start',
     marginBottom: 8,
     [theme.breakpoints.down('sm')]: {
-      display: 'none'
+      marginTop: 8
+    },
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column'
     }
   }))
 );
