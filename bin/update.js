@@ -1,4 +1,5 @@
 #!/usr/bin/env node -r esm -r dotenv/config
+import axios from 'axios';
 import getISOWeek from 'date-fns/getISOWeek';
 import getISOWeekYear from 'date-fns/getISOWeekYear';
 import {HLTV} from 'hltv';
@@ -146,4 +147,14 @@ update().then(async ({newPlayers, updatedPlayers}) => {
   await sequelize.close();
   console.log(`${newPlayers} players added`);
   console.log(`${updatedPlayers} players updated`);
+
+  if (process.env.NODE_ENV === 'production') {
+    console.log('Triggering Netlify build...');
+    try {
+      await axios.post(process.env.NETLIFY_BUILD_HOOK);
+      console.log('Build triggered!');
+    } catch (error) {
+      console.error(error);
+    }
+  }
 });

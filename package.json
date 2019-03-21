@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "apollo-server-express": "^2.4.8",
+    "axios": "^0.18.0",
     "cors": "^2.8.5",
     "date-fns": "^2.0.0-alpha.27",
     "esm": "^3.2.10",
