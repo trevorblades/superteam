@@ -37,15 +37,15 @@ const StyledNav = withTheme()(
     display: 'flex',
     alignItems: 'flex-start',
     flexWrap: 'wrap',
-    marginBottom: 8,
     [theme.breakpoints.down('sm')]: {
-      marginBottom: 16
+      marginBottom: 8
     }
   }))
 );
 
 const NavGroup = styled.ul({
   margin: 0,
+  marginBottom: 8,
   paddingLeft: 0,
   ':not(:last-child)': {
     marginRight: 48

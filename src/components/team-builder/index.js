@@ -49,7 +49,8 @@ const StyledPageWrapper = styled(PageWrapper)({
 });
 
 const Regions = styled.nav({
-  display: 'flex'
+  display: 'flex',
+  height: '100%'
 });
 
 const Action = styled.div({
