@@ -16,6 +16,11 @@ module.exports = {
     'gatsby-plugin-svgr',
     'gatsby-plugin-netlify',
     {
+      resolve: 'gatsby-plugin-google-analytics',
+      trackingId: 'UA-136591171-1',
+      anonymize: true
+    },
+    {
       resolve: 'gatsby-source-graphql',
       options: {
         typeName: 'Countries',
