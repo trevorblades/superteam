@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import headset from '../assets/images/headset.png';
-import hero from '../assets/images/hero.jpg';
+import hero from '../assets/images/hero2.jpg';
 import styled from '@emotion/styled';
 import {Hero, PageWrapper, Section, sectionPadding} from '../components/common';
 import {Link, graphql} from 'gatsby';
