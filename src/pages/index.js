@@ -17,10 +17,12 @@ import {cover} from 'polished';
 import {withTheme} from '@material-ui/core/styles';
 
 const StyledHero = styled(Hero)({
+  flexShrink: 0,
   color: 'white',
   backgroundImage: `url(${hero})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
+  overflow: 'hidden',
   position: 'relative'
 });
 
@@ -31,10 +33,10 @@ const PlayerCards = styled.div({
 });
 
 const PlayerCardWrapper = styled.div({
-  transform: 'translateX(-25%) rotate(-10deg)',
+  transform: 'translate(-20%, -5%) rotate(-10deg)',
   ':not(:last-child)': {
     ...cover(),
-    transform: 'translateX(25%) rotate(10deg)'
+    transform: 'translate(35%, 5%) rotate(12deg)'
   }
 });
 
@@ -166,7 +168,7 @@ Home.propTypes = {
 export const query = graphql`
   {
     superteam {
-      player1: player(id: "7592") {
+      player1: player(id: "7398") {
         ...PlayerFragment
       }
       player2: player(id: "7687") {
