@@ -105,7 +105,11 @@ export default function Home(props) {
                     <PlayerCard player={props.data.superteam.player1} />
                   </PlayerCardWrapper>
                   <PlayerCardWrapper>
-                    <PlayerCard raised player={props.data.superteam.player2} />
+                    <PlayerCard
+                      raised
+                      selected
+                      player={props.data.superteam.player2}
+                    />
                   </PlayerCardWrapper>
                 </PlayerCards>
               </Hidden>
