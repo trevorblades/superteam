@@ -107,6 +107,7 @@ export default function Home(props) {
                   <PlayerCardWrapper>
                     <PlayerCard
                       raised
+                      static
                       selected
                       player={props.data.superteam.player2}
                     />

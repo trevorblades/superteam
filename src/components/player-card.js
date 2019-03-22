@@ -127,6 +127,7 @@ export default class PlayerCard extends PureComponent {
   static propTypes = {
     raised: PropTypes.bool,
     disabled: PropTypes.bool,
+    static: PropTypes.bool,
     player: PropTypes.object.isRequired,
     onClick: PropTypes.func,
     selected: PropTypes.bool,
@@ -185,6 +186,7 @@ export default class PlayerCard extends PureComponent {
                 <StatusText>
                   <Transition
                     native
+                    immediate={this.props.static}
                     items={this.props.selected}
                     initial={{
                       position: 'absolute',
