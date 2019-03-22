@@ -1,7 +1,7 @@
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
 import MenuItem from '@material-ui/core/MenuItem';
-import PlayerCard from './player-card';
+import PlayerCard from '../player-card';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Region from './region';
@@ -56,44 +56,6 @@ const Regions = styled.nav({
 const Action = styled.div({
   marginLeft: 'auto'
 });
-
-const query = graphql`
-  {
-    countries {
-      regions: continents {
-        code
-        name
-        countries {
-          code
-        }
-      }
-    }
-    superteam {
-      players {
-        id
-        name
-        ign
-        image
-        country
-        team {
-          id
-          name
-          logo
-        }
-        statistics {
-          id
-          rating
-          percentile
-          kdRatio
-          damagePerRound
-          headshots
-          week
-          year
-        }
-      }
-    }
-  }
-`;
 
 export default class TeamBuilder extends Component {
   static propTypes = {
@@ -262,3 +224,22 @@ export default class TeamBuilder extends Component {
     );
   }
 }
+
+const query = graphql`
+  {
+    countries {
+      regions: continents {
+        code
+        name
+        countries {
+          code
+        }
+      }
+    }
+    superteam {
+      players {
+        ...PlayerFragment
+      }
+    }
+  }
+`;

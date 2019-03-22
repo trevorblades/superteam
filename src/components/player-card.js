@@ -8,12 +8,13 @@ import emojiFlags from 'emoji-flags';
 import mapProps from 'recompose/mapProps';
 import styled from '@emotion/styled';
 import withProps from 'recompose/withProps';
-import {CARD_ASPECT_RATIO} from '../../utils/constants';
+import {CARD_ASPECT_RATIO} from '../utils/constants';
 import {Transition, animated} from 'react-spring/renderprops';
-import {classes} from '../../utils/scale';
+import {classes} from '../utils/scale';
 import {cover, transparentize} from 'polished';
-import {formatMoney} from '../../utils/format';
-import {percentileToCost} from '../../utils/get-player-cost';
+import {formatMoney} from '../utils/format';
+import {graphql} from 'gatsby';
+import {percentileToCost} from '../utils/get-player-cost';
 
 const StyledCard = styled(Card)(props => ({
   paddingTop: `${(1 / CARD_ASPECT_RATIO) * 100}%`,
@@ -124,10 +125,11 @@ function linearGradient(color, direction) {
 
 export default class PlayerCard extends PureComponent {
   static propTypes = {
+    raised: PropTypes.bool,
     disabled: PropTypes.bool,
     player: PropTypes.object.isRequired,
-    onClick: PropTypes.func.isRequired,
-    selected: PropTypes.bool.isRequired,
+    onClick: PropTypes.func,
+    selected: PropTypes.bool,
     mini: PropTypes.bool
   };
 
@@ -158,6 +160,7 @@ export default class PlayerCard extends PureComponent {
     const color = classes(statistic.percentile).hex();
     return (
       <StyledCard
+        raised={this.props.raised}
         disabled={this.props.disabled}
         style={{
           backgroundImage: linearGradient(color, 'to bottom')
@@ -169,7 +172,7 @@ export default class PlayerCard extends PureComponent {
           }}
         />
         <StyledCardActionArea
-          disabled={this.props.disabled}
+          disabled={!this.props.onClick || this.props.disabled}
           onClick={this.onClick}
         >
           {this.props.mini ? (
@@ -252,3 +255,26 @@ export default class PlayerCard extends PureComponent {
     );
   }
 }
+
+export const query = graphql`
+  fragment PlayerFragment on Superteam_Player {
+    id
+    name
+    ign
+    image
+    country
+    team {
+      name
+      logo
+    }
+    statistics {
+      rating
+      percentile
+      kdRatio
+      damagePerRound
+      headshots
+      week
+      year
+    }
+  }
+`;

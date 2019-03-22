@@ -82,7 +82,7 @@ Standings.propTypes = {
   data: PropTypes.object.isRequired
 };
 
-export const pageQuery = graphql`
+export const query = graphql`
   {
     superteam {
       entries: standings {

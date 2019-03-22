@@ -3,24 +3,39 @@ import Footer from '../components/footer';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
 import Layout from '../components/layout';
+import PlayerCard from '../components/player-card';
+import PropTypes from 'prop-types';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import headset from '../assets/images/headset.png';
-import playing from '../assets/images/playing.jpg';
+import hero from '../assets/images/hero.jpg';
 import styled from '@emotion/styled';
 import {Hero, PageWrapper, Section, sectionPadding} from '../components/common';
-import {Link} from 'gatsby';
+import {Link, graphql} from 'gatsby';
 import {MdAdd} from 'react-icons/md';
-import {TOTAL_BUDGET} from '../utils/constants';
-import {formatMoney} from '../utils/format';
+import {cover} from 'polished';
 import {withTheme} from '@material-ui/core/styles';
 
 const StyledHero = styled(Hero)({
   color: 'white',
-  backgroundImage: `url(${playing})`,
+  backgroundImage: `url(${hero})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   position: 'relative'
+});
+
+const PlayerCards = styled.div({
+  width: 300,
+  margin: '0 auto',
+  position: 'relative'
+});
+
+const PlayerCardWrapper = styled.div({
+  transform: 'translateX(-25%) rotate(-10deg)',
+  ':not(:last-child)': {
+    ...cover(),
+    transform: 'translateX(25%) rotate(10deg)'
+  }
 });
 
 const PrizesSection = styled(Section)({
@@ -56,31 +71,44 @@ const StyledImage = withTheme()(
   })
 );
 
-export default function Home() {
+export default function Home(props) {
   return (
     <Layout>
       <StyledHero>
         <PageWrapper>
-          <Grid container>
+          <Grid container alignItems="center">
             <Grid item sm={12} md={6}>
-              <Typography variant="h2" color="inherit" gutterBottom>
-                Build the team of your dreams
+              <Typography variant="h2" color="secondary" gutterBottom>
+                Free{' '}
+                <span style={{color: 'white'}}>
+                  fantasy CS:GO esports contest
+                </span>
               </Typography>
               <Typography variant="body1" color="inherit" paragraph>
-                Given a {formatMoney(TOTAL_BUDGET)} budget, you must assemble a
-                team of current and future CS:GO superstars. Their values will
-                change over time based on LAN tournament performances, and your
-                team will see gains or losses.
+                Build a team of current and future CS:GO superstars and win
+                prizes based on your team&apos;s quarterly performance.
               </Typography>
               <Fab
                 variant="extended"
-                color="primary"
+                color="secondary"
                 component={Link}
                 to="/create"
               >
                 <MdAdd size={24} style={{marginRight: 8}} />
                 Create a team
               </Fab>
+            </Grid>
+            <Grid item md={6}>
+              <Hidden smDown implementation="css">
+                <PlayerCards>
+                  <PlayerCardWrapper>
+                    <PlayerCard player={props.data.superteam.player1} />
+                  </PlayerCardWrapper>
+                  <PlayerCardWrapper>
+                    <PlayerCard raised player={props.data.superteam.player2} />
+                  </PlayerCardWrapper>
+                </PlayerCards>
+              </Hidden>
             </Grid>
           </Grid>
         </PageWrapper>
@@ -125,3 +153,20 @@ export default function Home() {
     </Layout>
   );
 }
+
+Home.propTypes = {
+  data: PropTypes.object.isRequired
+};
+
+export const query = graphql`
+  {
+    superteam {
+      player1: player(id: "7592") {
+        ...PlayerFragment
+      }
+      player2: player(id: "7687") {
+        ...PlayerFragment
+      }
+    }
+  }
+`;

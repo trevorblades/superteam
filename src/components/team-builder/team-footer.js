@@ -2,7 +2,7 @@ import Colophon from '../colophon';
 import FinanceText from './finance-text';
 import LastUpdated from '../last-updated';
 import Paper from '@material-ui/core/Paper';
-import PlayerCard from './player-card';
+import PlayerCard from '../player-card';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
