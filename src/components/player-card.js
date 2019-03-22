@@ -123,6 +123,10 @@ function linearGradient(color, direction) {
   return `linear-gradient(${[direction, color, transparentize(1, color)]})`;
 }
 
+function getStatus(selected, cost) {
+  return selected ? '✅ Acquired' : formatMoney(cost);
+}
+
 export default class PlayerCard extends PureComponent {
   static propTypes = {
     raised: PropTypes.bool,
@@ -184,44 +188,41 @@ export default class PlayerCard extends PureComponent {
             <Fragment>
               <Status>
                 <StatusText>
-                  <Transition
-                    native
-                    immediate={this.props.static}
-                    items={this.props.selected}
-                    initial={{
-                      position: 'absolute',
-                      transform: 'translateY(0%)'
-                    }}
-                    from={{
-                      opacity: 0,
-                      position: 'absolute',
-                      transform: 'translateY(0%)'
-                    }}
-                    enter={{
-                      opacity: 1,
-                      transform: 'translateY(0%)'
-                    }}
-                    leave={{
-                      opacity: 0,
-                      transform: 'translateY(-100%)'
-                    }}
-                  >
-                    {selected =>
-                      selected
-                        ? style => (
-                            <animated.span style={style}>
-                              ✅ Acquired
-                            </animated.span>
-                          )
-                        : style => (
-                            <animated.span style={style}>
-                              {formatMoney(cost)}
-                            </animated.span>
-                          )
-                    }
-                  </Transition>
-                  {/* this is needed because the two statuses are position: absolute */}
-                  &nbsp;{' '}
+                  {this.props.static ? (
+                    getStatus(this.props.selected, cost)
+                  ) : (
+                    <Fragment>
+                      <Transition
+                        native
+                        items={this.props.selected}
+                        initial={{
+                          position: 'absolute',
+                          transform: 'translateY(0%)'
+                        }}
+                        from={{
+                          opacity: 0,
+                          position: 'absolute',
+                          transform: 'translateY(0%)'
+                        }}
+                        enter={{
+                          opacity: 1,
+                          transform: 'translateY(0%)'
+                        }}
+                        leave={{
+                          opacity: 0,
+                          transform: 'translateY(-100%)'
+                        }}
+                      >
+                        {selected => style => (
+                          <animated.span style={style}>
+                            {getStatus(selected, cost)}
+                          </animated.span>
+                        )}
+                      </Transition>
+                      {/* space needed because the text is positioned absolutely */}
+                      &nbsp;
+                    </Fragment>
+                  )}
                 </StatusText>
               </Status>
               {this.renderStatistics(statistic)}

@@ -102,7 +102,7 @@ export default function Home(props) {
               <Hidden smDown implementation="css">
                 <PlayerCards>
                   <PlayerCardWrapper>
-                    <PlayerCard player={props.data.superteam.player1} />
+                    <PlayerCard static player={props.data.superteam.player1} />
                   </PlayerCardWrapper>
                   <PlayerCardWrapper>
                     <PlayerCard
