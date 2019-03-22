@@ -1,6 +1,7 @@
 import Fab from '@material-ui/core/Fab';
 import Footer from '../components/footer';
 import Grid from '@material-ui/core/Grid';
+import Helmet from 'react-helmet';
 import Hidden from '@material-ui/core/Hidden';
 import Layout from '../components/layout';
 import PlayerCard from '../components/player-card';
@@ -76,15 +77,15 @@ const StyledImage = withTheme()(
 export default function Home(props) {
   return (
     <Layout>
+      <Helmet>
+        <title>Free fantasy esports</title>
+      </Helmet>
       <StyledHero>
         <PageWrapper>
           <Grid container alignItems="center">
             <Grid item sm={12} md={6}>
               <Typography variant="h2" color="secondary" gutterBottom>
-                Free{' '}
-                <span style={{color: 'white'}}>
-                  fantasy CS:GO esports contest
-                </span>
+                Free <span style={{color: 'white'}}>fantasy CS:GO esports</span>
               </Typography>
               <Typography variant="body1" color="inherit" paragraph>
                 Build a team of current and future CS:GO superstars and win
