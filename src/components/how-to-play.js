@@ -1,7 +1,10 @@
+import Fab from '@material-ui/core/Fab';
 import React, {Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
 import howToPlay from '../assets/images/how-to-play.png';
 import styled from '@emotion/styled';
+import {Link} from 'gatsby';
+import {MdAdd} from 'react-icons/md';
 import {PageWrapper, Section} from './common';
 import {TOTAL_BUDGET} from '../utils/constants';
 import {formatMoney} from '../utils/format';
@@ -37,6 +40,17 @@ export default function HowToPlay() {
             change. The object of the game is to amass the greatest gain in
             value at the end of each quarter.
           </Typography>
+          <div align="center">
+            <Fab
+              variant="extended"
+              color="primary"
+              component={Link}
+              to="/create"
+            >
+              <MdAdd size={24} style={{marginRight: 8}} />
+              Create a team
+            </Fab>
+          </div>
         </PageWrapper>
       </Section>
     </Fragment>
