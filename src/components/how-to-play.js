@@ -30,15 +30,33 @@ export default function HowToPlay() {
           <Typography variant="body1" paragraph>
             When you create a team, you will start with a budget of{' '}
             {formatMoney(TOTAL_BUDGET)} to spend on players, each one priced
-            differently depending on their recent tournament performance. Click
-            on a player card to acquire that player and repeat until you have a
-            full 5-person team.
+            differently based on their{' '}
+            <a
+              href="https://www.hltv.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              HLTV
+            </a>{' '}
+            rating at recent LAN events. Simply click on a player card to
+            acquire that player and repeat until you have a full 5-person team.
+            You must be strategic with your spending and decide how you want to
+            spread your team&apos;s talent around.
           </Typography>
           <StyledImage src={howToPlay} alt="select players and win" />
           <Typography variant="body1" paragraph>
             As players compete in events during the year, their values will
-            change. The object of the game is to amass the greatest gain in
-            value at the end of each quarter.
+            increase and decrease. The object of the game is to build a team
+            that yields the best{' '}
+            <a
+              href="https://en.wikipedia.org/wiki/Return_on_investment"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              return on investment
+            </a>{' '}
+            at the end of each quarter. You <strong>are allowed</strong> to swap
+            players on your team at any time.
           </Typography>
           <div align="center">
             <Fab
