@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import {withTheme} from '@material-ui/core/styles';
 
-export const sectionPadding = {
+const sectionPadding = {
   lg: 56,
   md: 48,
   sm: 40,
@@ -42,8 +42,8 @@ export const Hero = withTheme()(
   )
 );
 
-export const PageWrapper = styled.div({
+export const PageWrapper = styled.div(props => ({
   width: '100%',
-  maxWidth: 1280,
+  maxWidth: props.mini ? 900 : 1280,
   margin: '0 auto'
-});
+}));

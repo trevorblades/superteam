@@ -104,13 +104,13 @@ export default function Footer() {
           <NavGroup>
             <NavSubheader>Learn</NavSubheader>
             <NavItem>
-              <NavLink component={Link} to="/about">
-                About
+              <NavLink component={Link} to="/#how-to-play">
+                How to play
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink component={Link} to="/how-to-play">
-                How to play
+              <NavLink component={Link} to="/#prizes">
+                Prizes
               </NavLink>
             </NavItem>
             <NavItem>

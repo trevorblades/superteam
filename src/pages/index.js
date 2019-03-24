@@ -1,21 +1,22 @@
+import Divider from '@material-ui/core/Divider';
 import Fab from '@material-ui/core/Fab';
 import Footer from '../components/footer';
 import Grid from '@material-ui/core/Grid';
 import Helmet from 'react-helmet';
 import Hidden from '@material-ui/core/Hidden';
+import HowToPlay from '../components/how-to-play';
 import Layout from '../components/layout';
 import PlayerCard from '../components/player-card';
+import Prizes from '../components/prizes';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import headset from '../assets/images/headset.png';
 import hero from '../assets/images/hero2.jpg';
 import styled from '@emotion/styled';
-import {Hero, PageWrapper, Section, sectionPadding} from '../components/common';
+import {Hero, PageWrapper} from '../components/common';
 import {Link, graphql} from 'gatsby';
 import {MdAdd} from 'react-icons/md';
 import {cover} from 'polished';
-import {withTheme} from '@material-ui/core/styles';
 
 const StyledHero = styled(Hero)({
   flexShrink: 0,
@@ -41,39 +42,6 @@ const PlayerCardWrapper = styled.div({
   }
 });
 
-const PrizesSection = styled(Section)({
-  position: 'relative'
-});
-
-function getImageStyles(key) {
-  const padding = sectionPadding[key];
-  return {
-    height: `calc(100% + ${padding}px)`,
-    top: -padding
-  };
-}
-
-const StyledImage = withTheme()(
-  styled.img(getImageStyles('lg'), ({theme}) => {
-    return {
-      width: '50%',
-      maxWidth: 640,
-      position: 'absolute',
-      left: '50%',
-      objectFit: 'cover',
-      objectPosition: 'top left',
-      [theme.breakpoints.down('md')]: getImageStyles('md'),
-      [theme.breakpoints.down('sm')]: {
-        width: 300,
-        height: 'auto',
-        objectFit: 'initial',
-        position: 'static',
-        float: 'right'
-      }
-    };
-  })
-);
-
 export default function Home(props) {
   return (
     <Layout>
@@ -87,7 +55,7 @@ export default function Home(props) {
               <Typography variant="h2" color="secondary" gutterBottom>
                 Free <span style={{color: 'white'}}>fantasy CS:GO esports</span>
               </Typography>
-              <Typography variant="body1" color="inherit" paragraph>
+              <Typography variant="body1" paragraph color="inherit">
                 Build a team of current and future CS:GO superstars and win
                 prizes based on your team&apos;s quarterly performance.
               </Typography>
@@ -121,42 +89,9 @@ export default function Home(props) {
           </Grid>
         </PageWrapper>
       </StyledHero>
-      <PrizesSection>
-        <PageWrapper>
-          <Grid container>
-            <Grid item sm={12} md={6}>
-              <Typography variant="h3" gutterBottom>
-                Win cool prizes
-              </Typography>
-              <Hidden only="xs" implementation="css">
-                <StyledImage src={headset} />
-              </Hidden>
-              <Typography variant="body1" paragraph>
-                Each week, player values will be updated, and your team will
-                increase or decrease in value. At the end of every quarte (three
-                months), the top 10 players with the best return on investment
-                will win a prize.
-              </Typography>
-              <Typography variant="overline">This quarter</Typography>
-              <Typography>
-                This quarter&apos;s prize is the{' '}
-                <strong>HyperX Cloud Stinger</strong> headset. It features
-                90-degree rotating ear cups, volume control, and a
-                swivel-to-mute noise-cancellation microphone. Learn more about
-                the HyperX Cloud Stinger{' '}
-                <a
-                  href="https://www.hyperxgaming.com/us/headsets/cloud-stinger-gaming-headset"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  here
-                </a>
-                .
-              </Typography>
-            </Grid>
-          </Grid>
-        </PageWrapper>
-      </PrizesSection>
+      <HowToPlay />
+      <Divider />
+      <Prizes />
       <Footer />
     </Layout>
   );
