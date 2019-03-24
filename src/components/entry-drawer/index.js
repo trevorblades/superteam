@@ -22,7 +22,13 @@ import {GET_ENTRY} from '../../utils/queries';
 import {Query} from 'react-apollo';
 import {formatDate, formatMoney} from '../../utils/format';
 import {navigate} from 'gatsby';
-import {withStyles} from '@material-ui/core';
+import {withStyles, withTheme} from '@material-ui/core/styles';
+
+const StyledDrawer = withStyles({
+  paper: {
+    width: 400
+  }
+})(Drawer);
 
 const Container = styled.div({
   padding: 8
@@ -31,6 +37,13 @@ const Container = styled.div({
 const StyledLoadingIndicator = styled(LoadingIndicator)({
   margin: 'auto'
 });
+
+const CreatedAt = withTheme()(
+  styled.span(({theme}) => ({
+    fontWeight: 700,
+    color: theme.palette.primary.main
+  }))
+);
 
 const StyledListItemText = styled(ListItemText)({
   paddingRight: 0
@@ -44,9 +57,8 @@ const PlayerValue = styled.span({
   marginLeft: 'auto'
 });
 
-class EntryDrawer extends Component {
+export default class EntryDrawer extends Component {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
     match: PropTypes.array
   };
 
@@ -67,13 +79,10 @@ class EntryDrawer extends Component {
 
   render() {
     return (
-      <Drawer
+      <StyledDrawer
         anchor="right"
         open={Boolean(this.props.match)}
         onClose={() => navigate('/teams')}
-        classes={{
-          paper: this.props.classes.paper
-        }}
       >
         <Query
           query={GET_ENTRY}
@@ -102,10 +111,7 @@ class EntryDrawer extends Component {
                   title={data.entry.name}
                   subheader={
                     <span>
-                      Created on{' '}
-                      <span className={this.props.classes.createdAt}>
-                        {formatDate(date)}
-                      </span>
+                      Created on <CreatedAt>{formatDate(date)}</CreatedAt>
                     </span>
                   }
                 />
@@ -149,20 +155,7 @@ class EntryDrawer extends Component {
             );
           }}
         </Query>
-      </Drawer>
+      </StyledDrawer>
     );
   }
 }
-
-export default withStyles(
-  theme => ({
-    paper: {
-      width: 400
-    },
-    createdAt: {
-      fontWeight: 'bold',
-      color: theme.palette.primary.light
-    }
-  }),
-  {withTheme: true}
-)(EntryDrawer);
