@@ -1,8 +1,8 @@
 import ButtonBase from '@material-ui/core/ButtonBase';
-import Menu from '@material-ui/core/Menu';
+import MenuButton from '../menu-button';
 import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import {Avatar} from '@material-ui/core';
 import {Link} from 'gatsby';
@@ -12,22 +12,6 @@ class UserMenu extends Component {
   static propTypes = {
     client: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired
-  };
-
-  state = {
-    anchorEl: null
-  };
-
-  openMenu = event => {
-    this.setState({
-      anchorEl: event.target
-    });
-  };
-
-  closeMenu = () => {
-    this.setState({
-      anchorEl: null
-    });
   };
 
   logout = () => {
@@ -42,37 +26,24 @@ class UserMenu extends Component {
 
   render() {
     return (
-      <Fragment>
-        <Tooltip title={`Logged in as ${this.props.user.displayName}`}>
-          <Avatar
-            component={ButtonBase}
-            src={this.props.user.profileImage}
-            alt={this.props.user.displayName}
-            onClick={this.openMenu}
-          />
-        </Tooltip>
-        <Menu
-          disableRestoreFocus
-          disableAutoFocusItem
-          anchorEl={this.state.anchorEl}
-          open={Boolean(this.state.anchorEl)}
-          onClose={this.closeMenu}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'center'
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'center'
-          }}
-        >
-          <MenuItem component={Link} to="/teams">
-            My teams
-          </MenuItem>
-          <MenuItem>Settings</MenuItem>
-          <MenuItem onClick={this.logout}>Log out</MenuItem>
-        </Menu>
-      </Fragment>
+      <MenuButton
+        renderButton={openMenu => (
+          <Tooltip title={`Logged in as ${this.props.user.displayName}`}>
+            <Avatar
+              component={ButtonBase}
+              src={this.props.user.profileImage}
+              alt={this.props.user.displayName}
+              onClick={openMenu}
+            />
+          </Tooltip>
+        )}
+      >
+        <MenuItem component={Link} to="/teams">
+          My teams
+        </MenuItem>
+        <MenuItem>Settings</MenuItem>
+        <MenuItem onClick={this.logout}>Log out</MenuItem>
+      </MenuButton>
     );
   }
 }

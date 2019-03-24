@@ -7,6 +7,7 @@ import styled from '@emotion/styled';
 import withProps from 'recompose/withProps';
 import {Link} from 'gatsby';
 import {PageWrapper, getSectionStyles} from './common';
+import {navItems} from './header';
 import {withTheme} from '@material-ui/core/styles';
 
 const Container = withTheme()(
@@ -85,21 +86,13 @@ export default function Footer() {
         <StyledNav>
           <NavGroup>
             <NavSubheader>Get around</NavSubheader>
-            <NavItem>
-              <NavLink component={Link} to="/">
-                Home
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink component={Link} to="/create">
-                Create
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink component={Link} to="/standings">
-                Standings
-              </NavLink>
-            </NavItem>
+            {navItems.map(navItem => (
+              <NavItem key={navItem.path}>
+                <NavLink component={Link} to={navItem.path}>
+                  {navItem.title}
+                </NavLink>
+              </NavItem>
+            ))}
           </NavGroup>
           <NavGroup>
             <NavSubheader>Learn</NavSubheader>

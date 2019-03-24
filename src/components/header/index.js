@@ -1,8 +1,8 @@
 import AppBar from '@material-ui/core/AppBar';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
 import LogoTitle from '../logo-title';
+import MobileNav from './mobile-nav';
 import NoSsr from 'react-no-ssr';
 import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -19,7 +19,6 @@ import {Avatar} from '@material-ui/core';
 import {FaTwitter} from 'react-icons/fa';
 import {GRID_SPACING, TWITTER_BLUE} from '../../utils/constants';
 import {Link} from 'gatsby';
-import {MdMenu} from 'react-icons/md';
 import {PageWrapper} from '../common';
 import {withTheme} from '@material-ui/core/styles';
 
@@ -99,14 +98,6 @@ const MobileNavWrapper = styled.div({
   height: '100%'
 });
 
-const MobileNav = withTheme()(
-  styled(IconButton)(({theme}) => ({
-    [theme.breakpoints.only('xs')]: {
-      marginLeft: -8
-    }
-  }))
-);
-
 const Action = withTheme()(
   styled.div(({theme}) => ({
     margin: 'auto',
@@ -125,6 +116,21 @@ const StyledAvatar = styled(Avatar)({
   backgroundColor: TWITTER_BLUE
 });
 
+export const navItems = [
+  {
+    path: '/',
+    title: 'Home'
+  },
+  {
+    path: '/create',
+    title: 'Create team'
+  },
+  {
+    path: '/standings',
+    title: 'Standings'
+  }
+];
+
 export default function Header() {
   return (
     <AppBar position="sticky" color="inherit" elevation={0}>
@@ -132,23 +138,20 @@ export default function Header() {
         <StyledPageWrapper>
           <Hidden smDown implementation="css">
             <Nav>
-              <NavItem component={NavLink} to="/">
-                Home
-              </NavItem>
-              <NavItem component={NavLink} to="/create">
-                Create team
-              </NavItem>
-              <NavItem component={NavLink} to="/standings">
-                Standings
-              </NavItem>
-              {/* <NavItem color="textSecondary">DOTA 2</NavItem> */}
+              {navItems.map(navItem => (
+                <NavItem
+                  component={NavLink}
+                  to={navItem.path}
+                  key={navItem.path}
+                >
+                  {navItem.title}
+                </NavItem>
+              ))}
             </Nav>
           </Hidden>
           <Hidden mdUp implementation="css">
             <MobileNavWrapper>
-              <MobileNav>
-                <MdMenu />
-              </MobileNav>
+              <MobileNav items={navItems} />
             </MobileNavWrapper>
           </Hidden>
           <StyledLogoTitle />
