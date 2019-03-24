@@ -1,8 +1,7 @@
 import getISOWeek from 'date-fns/getISOWeek';
 import getISOWeekYear from 'date-fns/getISOWeekYear';
-import sum from './sum';
 import {TOTAL_BUDGET} from './constants';
-import {getInitialPlayerCost, getTotalPlayerCost} from './get-player-cost';
+import {getInitialPlayerCost, getTotalPlayerCost, sum} from './get-player-cost';
 
 export function getEntryDate(entry) {
   const [selection] = entry.selections;
