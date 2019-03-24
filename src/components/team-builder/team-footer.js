@@ -6,6 +6,7 @@ import PlayerCard from '../player-card';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
 import {CARD_ASPECT_RATIO, TEAM_SIZE} from '../../utils/constants';
 import {MdCopyright, MdUpdate} from 'react-icons/md';
@@ -40,6 +41,13 @@ const Player = withTheme()(
     }
   }))
 );
+
+const PlayerNumber = styled(Typography)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: '100%'
+});
 
 const Icons = withTheme()(
   styled.div(({theme}) => ({
@@ -92,22 +100,22 @@ export default class TeamFooter extends Component {
           {this.props.players
             .concat(emptyPlayers)
             .slice(0, TEAM_SIZE)
-            .map((player, index) => {
-              if (player) {
-                return (
-                  <Player key={player.id}>
-                    <PlayerCard
-                      selected
-                      mini
-                      onClick={this.props.onPlayerCardClick}
-                      player={player}
-                    />
-                  </Player>
-                );
-              }
-
-              return <Player key={index} />;
-            })}
+            .map((player, index) => (
+              <Player key={index}>
+                {player ? (
+                  <PlayerCard
+                    selected
+                    mini
+                    onClick={this.props.onPlayerCardClick}
+                    player={player}
+                  />
+                ) : (
+                  <PlayerNumber variant="h6" color="textSecondary">
+                    {index + 1}
+                  </PlayerNumber>
+                )}
+              </Player>
+            ))}
         </Players>
         <FinanceText
           colored
