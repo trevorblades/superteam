@@ -52,23 +52,21 @@ export default function Standings(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {entries.map(entry => {
-                return (
-                  <TableRow key={entry.id}>
-                    <TableCell>
-                      {counts[entry.diff] > 1 ? 'T' : ''}
-                      {diffs.indexOf(entry.diff) + 1}
-                    </TableCell>
-                    <TableCell>{entry.name}</TableCell>
-                    <FinancialCells
-                      diff={entry.diff}
-                      playerValue={entry.playerValue}
-                      cash={entry.cash}
-                      totalValue={entry.totalValue}
-                    />
-                  </TableRow>
-                );
-              })}
+              {entries.map(entry => (
+                <TableRow key={entry.id}>
+                  <TableCell>
+                    {counts[entry.diff] > 1 ? 'T' : ''}
+                    {diffs.indexOf(entry.diff) + 1}
+                  </TableCell>
+                  <TableCell>{entry.name}</TableCell>
+                  <FinancialCells
+                    diff={entry.diff}
+                    playerValue={entry.playerValue}
+                    totalValue={entry.totalValue}
+                    initialValue={entry.initialValue}
+                  />
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </PageWrapper>
