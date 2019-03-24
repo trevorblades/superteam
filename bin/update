@@ -2,6 +2,7 @@
 import axios from 'axios';
 import getISOWeek from 'date-fns/getISOWeek';
 import getISOWeekYear from 'date-fns/getISOWeekYear';
+import parseArgs from 'minimist';
 import {HLTV} from 'hltv';
 import {Player, Statistic, Team, sequelize} from '../src/db';
 
@@ -148,7 +149,8 @@ update().then(async ({newPlayers, updatedPlayers}) => {
   console.log(`${newPlayers} players added`);
   console.log(`${updatedPlayers} players updated`);
 
-  if (process.env.NODE_ENV === 'production') {
+  const args = parseArgs(process.argv);
+  if (args['trigger-deploy']) {
     console.log('Triggering Netlify build...');
     try {
       await axios.post(process.env.NETLIFY_BUILD_HOOK);
