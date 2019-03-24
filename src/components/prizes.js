@@ -31,30 +31,25 @@ const PrizeWrapper = withTheme()(
   }))
 );
 
-const Footnote = styled(Typography)({
-  display: 'list-item'
-});
-
 const prizes = {
   20: {
     name: 'Superteam',
     type: 'sticker pack',
     image: stickers,
-    footnote: '5 stickers, est. value USD $5',
+    note: 'Five 3-inch stickers',
     color: rare
   },
   10: {
     name: 'SteelSeries QcK Edge',
     type: 'mousepad',
     image: mousepad,
-    footnote: 'Large size, est. value USD $20',
+    note: 'Large size',
     color: epic
   },
   5: {
     name: 'HyperX Cloud Stinger',
     type: 'headset',
     image: headset,
-    footnote: 'Est. value USD $60',
     color: legendary
   }
 };
@@ -88,9 +83,16 @@ export default function Prizes() {
                     <Typography variant="h5" gutterBottom>
                       Top {key}
                     </Typography>
-                    <Typography paragraph>
+                    <Typography>
                       {prize.name} {prize.type}
-                      <sup>{index + 1}</sup>
+                    </Typography>
+
+                    <Typography
+                      paragraph
+                      variant="caption"
+                      color="textSecondary"
+                    >
+                      {prize.note ? prize.note : <span>&nbsp;</span>}
                     </Typography>
                     <StyledImage src={prize.image} />
                     {index > 0 && (
@@ -108,20 +110,6 @@ export default function Prizes() {
             })}
           </Grid>
         </GridWrapper>
-        <PageWrapper mini>
-          <ol>
-            {prizeKeys.map(key => (
-              <Footnote
-                key={key}
-                component="li"
-                variant="caption"
-                color="textSecondary"
-              >
-                {prizes[key].footnote}
-              </Footnote>
-            ))}
-          </ol>
-        </PageWrapper>
       </Section>
     </Fragment>
   );
