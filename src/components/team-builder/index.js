@@ -12,7 +12,7 @@ import styled from '@emotion/styled';
 import {GRID_SPACING, TEAM_SIZE, TOTAL_BUDGET} from '../../utils/constants';
 import {PageWrapper} from '../common';
 import {StaticQuery, graphql} from 'gatsby';
-import {withTheme} from '@material-ui/core/styles';
+import {withStyles, withTheme} from '@material-ui/core/styles';
 
 const halfGridSpacing = GRID_SPACING / 2;
 const GridWrapper = styled.div({
@@ -52,6 +52,18 @@ const Regions = styled.nav({
   display: 'flex',
   height: '100%'
 });
+
+const StyledSelect = withStyles(theme => ({
+  select: {
+    ...theme.typography.h6,
+    paddingTop: 0,
+    paddingBottom: 0
+  }
+}))(
+  styled(Select)({
+    height: '100%'
+  })
+);
 
 const Action = styled.div({
   marginLeft: 'auto'
@@ -148,7 +160,7 @@ export default class TeamBuilder extends Component {
                         value=""
                         onClick={this.selectRegion}
                       >
-                        All players
+                        All regions
                       </Region>
                       {regions.map(region => (
                         <Region
@@ -163,18 +175,18 @@ export default class TeamBuilder extends Component {
                     </Regions>
                   </Hidden>
                   <Hidden mdUp implementation="css">
-                    <Select
+                    <StyledSelect
                       displayEmpty
                       value={this.state.region}
                       onChange={this.onRegionChange}
                     >
-                      <MenuItem value="">All players</MenuItem>
+                      <MenuItem value="">All regions</MenuItem>
                       {regions.map(region => (
                         <MenuItem key={region.code} value={region.code}>
                           {region.name}
                         </MenuItem>
                       ))}
-                    </Select>
+                    </StyledSelect>
                   </Hidden>
                   <Action>{this.props.children(selectedPlayers)}</Action>
                 </StyledPageWrapper>
