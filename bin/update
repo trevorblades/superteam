@@ -1,4 +1,4 @@
-#!/usr/bin/env node -r esm -r dotenv/config
+#!/usr/bin/env node -r esm
 import axios from 'axios';
 import getISOWeek from 'date-fns/getISOWeek';
 import getISOWeekYear from 'date-fns/getISOWeekYear';
