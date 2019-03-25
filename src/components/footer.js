@@ -73,6 +73,12 @@ const NavLink = styled(Text)({
   }
 });
 
+const ExternalLink = withProps({
+  component: 'a',
+  target: '_blank',
+  rel: 'noopener noreferrer'
+})(NavLink);
+
 export default function Footer() {
   return (
     <Container>
@@ -115,19 +121,19 @@ export default function Footer() {
           <NavGroup>
             <NavSubheader>Connect</NavSubheader>
             <NavItem>
-              <NavLink component="a" href="https://twitter.com/superteamgg">
+              <ExternalLink href="https://twitter.com/superteamgg">
                 Twitter
-              </NavLink>
+              </ExternalLink>
             </NavItem>
             <NavItem>
-              <NavLink component="a" href="https://instagram.com/superteamgg">
+              <ExternalLink href="https://instagram.com/superteamgg">
                 Instagram
-              </NavLink>
+              </ExternalLink>
             </NavItem>
             <NavItem>
-              <NavLink component="a" href="https://facebook.com/superteamgg">
+              <ExternalLink href="https://facebook.com/superteamgg">
                 Facebook
-              </NavLink>
+              </ExternalLink>
             </NavItem>
           </NavGroup>
         </StyledNav>
