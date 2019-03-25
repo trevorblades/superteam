@@ -15,6 +15,10 @@ const StyledListItem = withTheme()(
   }))
 );
 
+const contest = 'Superteam Quarterly Challenge #1';
+const sponsor = 'Superteam';
+const address = '3965 Triumph St., Burnaby, BC, Canada V56 1Y9';
+const email = 'support@superteam.gg';
 const md = `
   ### Official contest rules
 
@@ -22,9 +26,9 @@ const md = `
   PURCHASE OR PAYMENT OF ANY KIND WILL NOT INCREASE YOUR CHANCES OF
   WINNING. VOID WHERE PROHIBITED OR RESTRICTED BY LAW.
 
-  1. PROMOTION DESCRIPTION: The Superteam Quarterly Challenge #1 ("Contest") begins on April 1, 2019 at 12 am PT and ends on July 1, 2019 at 12 am PT: (the "Promotion Period").
+  1. PROMOTION DESCRIPTION: The ${contest} ("Contest") begins on April 1, 2019 at 12 am PT and ends on July 1, 2019 at 12 am PT: (the "Promotion Period").
 
-    The sponsor of this Contest is Superteam ("Sponsor"). By participating in the Contest, each Entrant unconditionally accepts and agrees to comply with and abide by these Official Rules and the decisions of Sponsor, which shall be final and binding in all respects. Sponsor is responsible for the collection, submission or processing of Entries and the overall administration of the Contest. Entrants should look solely to Sponsor with any questions, comments or problems related to the Contest. Sponsor may be reached by email at support@superteam.gg during the Promotion Period.
+    The sponsor of this Contest is ${sponsor} ("Sponsor"). By participating in the Contest, each Entrant unconditionally accepts and agrees to comply with and abide by these Official Rules and the decisions of Sponsor, which shall be final and binding in all respects. Sponsor is responsible for the collection, submission or processing of Entries and the overall administration of the Contest. Entrants should look solely to Sponsor with any questions, comments or problems related to the Contest. Sponsor may be reached by email at ${email} during the Promotion Period.
 
   2. ELIGIBILITY: Open to legal residents of USA and Canada who are 16 (the "Entrant"). Sponsor, and their respective parents, subsidiaries, affiliates, distributors, retailers, sales representatives, advertising and promotion agencies and each of their respective officers, directors and employees (the "Promotion Entities"), are ineligible to enter the Contest or win a prize. Household Members and Immediate Family Members of such individuals are also not eligible to enter or win. "Household Members" shall mean those people who share the same residence at least three months a year. "Immediate Family Members" shall mean parents, step-parents, legal guardians, children, step-children, siblings, step-siblings, or spouses. This Contest is subject to all applicable federal, state and local laws and regulations and is void where prohibited or restricted by law.
 
@@ -58,9 +62,9 @@ const md = `
 
   9. SOCIAL NETWORK DISCLAIMER: A Twitter account may be required to enter. If you don’t already have a Twitter account, visit twitter.com to create one. It is free to create an account. This promotion is in no way sponsored, endorsed or administered by, or associated with Twitter. You understand that you are providing your information to the Sponsor and not to Twitter. By participating via the Twitter platform, participants are also subject to Twitter’s data policy and terms of use, which can be found at https://twitter.com/privacy and https://twitter.com/tos.
 
-  10. WINNER LIST/OFFICIAL RULES: To obtain a copy of the Winner List or a copy of these Official Rules, send your request along with a stamped, self-addressed envelope to Superteam cc: Superteam Q2 2019 at 3965 Triumph St., Burnaby, BC, Canada V56 1Y9. Requests for the names of the winners must be received no later than 3 months  after the Promotion Period has ended. For accessing a Winner List online, visit https://superteam.gg/standings. The winner list will be posted after winner confirmation is complete.
+  10. WINNER LIST/OFFICIAL RULES: To obtain a copy of the Winner List or a copy of these Official Rules, send your request along with a stamped, self-addressed envelope to ${sponsor} cc: ${contest} at ${address}. Requests for the names of the winners must be received no later than 3 months  after the Promotion Period has ended. For accessing a Winner List online, visit https://superteam.gg/standings. The winner list will be posted after winner confirmation is complete.
 
-  11. SPONSOR: Superteam, 3965 Triumph St., Burnaby, BC, Canada V56 1Y9, support@superteam.gg
+  11. SPONSOR: ${sponsor}, ${address}, ${email}
 `;
 
 function getHeadingOverride(variant) {
