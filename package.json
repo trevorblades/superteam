@@ -31,6 +31,7 @@
     "isomorphic-fetch": "^2.2.1",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.11",
+    "markdown-to-jsx": "^6.9.3",
     "polished": "^3.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.3",

@@ -107,8 +107,8 @@ export default function Footer() {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink component={Link} to="/terms">
-                Terms & conditions
+              <NavLink component={Link} to="/rules">
+                Official rules
               </NavLink>
             </NavItem>
           </NavGroup>

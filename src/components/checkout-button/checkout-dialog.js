@@ -150,8 +150,8 @@ class CheckoutDialog extends Component {
                 label={
                   <span>
                     I have read and agree with the{' '}
-                    <a href="/terms" target="_blank" rel="noopener noreferrer">
-                      terms and conditions
+                    <a href="/rules" target="_blank" rel="noopener noreferrer">
+                      official contest rules
                     </a>
                     .
                   </span>
