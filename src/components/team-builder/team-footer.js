@@ -34,7 +34,7 @@ const Player = withTheme()(
     width: playerWidth,
     height: playerWidth / CARD_ASPECT_RATIO,
     borderRadius: theme.shape.borderRadius,
-    boxShadow: `inset 0 0 0 1px ${theme.palette.divider}`,
+    boxShadow: `inset 0 0 0 1px ${theme.palette.text.hint}`,
     backgroundColor: theme.palette.background.default,
     ':not(:last-child)': {
       marginRight: 12
