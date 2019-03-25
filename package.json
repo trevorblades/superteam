@@ -1,6 +1,6 @@
 {
   "engines": {
-    "node": "10"
+    "node": "11"
   },
   "scripts": {
     "pretest": "eslint bin/update src",
