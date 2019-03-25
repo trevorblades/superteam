@@ -16,6 +16,15 @@ module.exports = {
     'gatsby-plugin-svgr',
     'gatsby-plugin-netlify',
     {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        path: `${__dirname}/src/pages`,
+        name: 'markdown-pages'
+      }
+    },
+    'gatsby-transformer-remark',
+    'gatsby-plugin-markdown-pages',
+    {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
         trackingId: 'UA-136591171-1',

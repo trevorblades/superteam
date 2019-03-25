@@ -117,6 +117,11 @@ export default function Footer() {
                 Official rules
               </NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink component={Link} to="/privacy">
+                Privacy policy
+              </NavLink>
+            </NavItem>
           </NavGroup>
           <NavGroup>
             <NavSubheader>Connect</NavSubheader>
