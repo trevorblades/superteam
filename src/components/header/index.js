@@ -3,7 +3,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Hidden from '@material-ui/core/Hidden';
 import LogoTitle from '../logo-title';
 import MobileNav from './mobile-nav';
-import NoSsr from 'react-no-ssr';
+import NoSsr from '@material-ui/core/NoSsr';
 import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
