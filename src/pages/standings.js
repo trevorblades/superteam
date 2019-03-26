@@ -48,7 +48,7 @@ export default function Standings(props) {
               <TableRow>
                 <TableCell>Rank</TableCell>
                 <TableCell>Team name</TableCell>
-                <FinancialHeaders />
+                <FinancialHeaders hideCash />
               </TableRow>
             </TableHead>
             <TableBody>
