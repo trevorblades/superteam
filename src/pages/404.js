@@ -3,7 +3,6 @@ import Layout from '../components/layout';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import {Hero, PageWrapper} from '../components/common';
-import {Link} from 'gatsby';
 
 // TODO: provide links to actions, like "create a team" etc.
 export default function NotFound() {
@@ -12,10 +11,10 @@ export default function NotFound() {
       <Hero>
         <PageWrapper centered>
           <Typography variant="h2" gutterBottom>
-            Page not found
+            404 Door stuck
           </Typography>
           <Typography variant="body1">
-            Try starting over from <Link to="/">home</Link>.
+            We couldn&apos;t find that page 😕
           </Typography>
         </PageWrapper>
       </Hero>
