@@ -89,6 +89,15 @@ export default function Teams(props) {
                     );
                   }
 
+                  if (!data.entries.length) {
+                    return (
+                      <Typography variant="h5" color="textSecondary">
+                        No teams yet! Click <Link to="/create">here</Link> to
+                        get started 🚀
+                      </Typography>
+                    );
+                  }
+
                   const primary = data.entries.find(entry => entry.primary);
                   return (
                     <Fragment>
