@@ -151,10 +151,10 @@ update().then(async ({newPlayers, updatedPlayers}) => {
 
   const args = parseArgs(process.argv);
   if (args['trigger-deploy']) {
-    console.log('Triggering Netlify build...');
+    console.log('Triggering Netlify deploy...');
     try {
       await axios.post(process.env.NETLIFY_BUILD_HOOK);
-      console.log('Build triggered!');
+      console.log('Deploy triggered!');
     } catch (error) {
       console.error(error);
     }
