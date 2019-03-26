@@ -9,15 +9,34 @@ import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import styled from '@emotion/styled';
 import {FaRegStar, FaStar} from 'react-icons/fa';
+import {LIST_ENTRIES, SET_PRIMARY_ENTRY} from '../utils/queries';
+import {Mutation} from 'react-apollo';
 
 const StyledCheckbox = styled(Checkbox)(props => ({
   marginLeft: -12,
   cursor: props.checked && 'default'
 }));
 
+function updateEntries(cache, {data}) {
+  const {entries} = cache.readQuery({query: LIST_ENTRIES});
+  cache.writeQuery({
+    query: LIST_ENTRIES,
+    data: {
+      entries: entries.map(entry =>
+        entry.id === data.setPrimaryEntry.id
+          ? entry
+          : {
+              ...entry,
+              primary: false
+            }
+      )
+    }
+  });
+}
+
 export default class PrimaryCheckbox extends Component {
   static propTypes = {
-    value: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     checked: PropTypes.bool.isRequired
   };
@@ -38,10 +57,6 @@ export default class PrimaryCheckbox extends Component {
     this.setState({
       dialogOpen: false
     });
-  };
-
-  confirm = () => {
-    console.log(this.props.value);
   };
 
   render() {
@@ -68,12 +83,25 @@ export default class PrimaryCheckbox extends Component {
               primary team?
             </DialogContentText>
           </DialogContent>
-          <DialogActions>
-            <Button onClick={this.closeDialog}>No</Button>
-            <Button color="primary" onClick={this.confirm}>
-              Yes
-            </Button>
-          </DialogActions>
+          <Mutation
+            mutation={SET_PRIMARY_ENTRY}
+            variables={{id: this.props.id}}
+            update={updateEntries}
+            onCompleted={this.closeDialog}
+          >
+            {(setPrimaryEntry, {loading}) => (
+              <DialogActions>
+                <Button onClick={this.closeDialog}>No</Button>
+                <Button
+                  disabled={loading}
+                  color="primary"
+                  onClick={setPrimaryEntry}
+                >
+                  Yes
+                </Button>
+              </DialogActions>
+            )}
+          </Mutation>
         </Dialog>
       </Fragment>
     );

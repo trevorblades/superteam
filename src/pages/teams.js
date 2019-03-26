@@ -149,7 +149,7 @@ export default function Teams(props) {
                             <TableRow key={entry.id}>
                               <TableCell>
                                 <PrimaryCheckbox
-                                  value={entry.id}
+                                  id={entry.id}
                                   name={entry.name}
                                   checked={entry.primary}
                                 />

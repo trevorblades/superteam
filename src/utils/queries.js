@@ -75,3 +75,12 @@ export const UPDATE_ENTRY = gql`
   }
   ${EntryFragment}
 `;
+
+export const SET_PRIMARY_ENTRY = gql`
+  mutation SetPrimaryEntry($id: ID!) {
+    setPrimaryEntry(id: $id) {
+      ...EntryFragment
+    }
+  }
+  ${EntryFragment}
+`;
