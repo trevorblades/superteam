@@ -29,14 +29,19 @@ import getEntryFinancials, {
 import styled from '@emotion/styled';
 import withProps from 'recompose/withProps';
 import {EmptyPlayerCard, PageWrapper, Section} from '../components/common';
+import {FaStar} from 'react-icons/fa';
 import {LIST_ENTRIES} from '../utils/queries';
 import {Link} from 'gatsby';
-import {MdShowChart, MdStar} from 'react-icons/md';
+import {MdShowChart} from 'react-icons/md';
 import {Query} from 'react-apollo';
 import {withTheme} from '@material-ui/core/styles';
 
+const StyledPageWrapper = styled(PageWrapper)({
+  padding: `${8}px 0`
+});
+
 const StyledStar = withTheme()(
-  styled(MdStar)(({theme}) => ({
+  styled(FaStar)(({theme}) => ({
     display: 'block',
     fill: theme.palette.primary.main
   }))
@@ -87,10 +92,10 @@ export default function Teams(props) {
                   const primary = data.entries.find(entry => entry.primary);
                   return (
                     <Fragment>
-                      <PageWrapper mini>
-                        <Card elevation={0}>
+                      <StyledPageWrapper mini>
+                        <Card elevation={20}>
                           <CardHeader
-                            avatar={<StyledStar size={36} />}
+                            avatar={<StyledStar size={32} />}
                             title={primary.name}
                             titleTypographyProps={{
                               variant: 'h6'
@@ -129,7 +134,7 @@ export default function Teams(props) {
                             </Grid>
                           </CardContent>
                         </Card>
-                      </PageWrapper>
+                      </StyledPageWrapper>
                       <br />
                       <Table padding="none">
                         <TableHead>

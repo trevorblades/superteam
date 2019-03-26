@@ -16,8 +16,8 @@ const StyledImage = styled.img({
   margin: `${16}px auto`
 });
 
-const GridWrapper = styled(PageWrapper)({
-  padding: `${16}px 0`
+const StyledPageWrapper = styled(PageWrapper)({
+  paddingTop: 16
 });
 
 const PrizeWrapper = withTheme()(
@@ -73,7 +73,7 @@ export default function Prizes() {
             this quarter&apos;s prizes! 👀
           </Typography>
         </PageWrapper>
-        <GridWrapper>
+        <StyledPageWrapper centered>
           <Grid container justify="center" spacing={32}>
             {prizeKeys.map((key, index, array) => {
               const prize = prizes[key];
@@ -109,7 +109,7 @@ export default function Prizes() {
               );
             })}
           </Grid>
-        </GridWrapper>
+        </StyledPageWrapper>
       </Section>
     </Fragment>
   );

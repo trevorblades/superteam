@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import styled from '@emotion/styled';
-import {MdStar, MdStarBorder} from 'react-icons/md';
+import {FaRegStar, FaStar} from 'react-icons/fa';
 
 const StyledCheckbox = styled(Checkbox)(props => ({
   marginLeft: -12,
@@ -50,8 +50,8 @@ export default class PrimaryCheckbox extends Component {
         <StyledCheckbox
           color="primary"
           disableRipple={this.props.checked}
-          icon={<MdStarBorder />}
-          checkedIcon={<MdStar />}
+          icon={<FaRegStar size={24} />}
+          checkedIcon={<FaStar size={24} />}
           checked={this.props.checked}
           onChange={this.onChange}
         />
