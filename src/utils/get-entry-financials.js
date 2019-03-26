@@ -71,6 +71,7 @@ export default function getEntryFinancials(entry) {
     players,
     playerValue,
     totalValue,
+    cash,
     transactions,
     initialValue,
     diff: totalValue - (initialValue + initialCash)

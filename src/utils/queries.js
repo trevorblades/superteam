@@ -15,6 +15,7 @@ export const EntryFragment = gql`
   fragment EntryFragment on Entry {
     id
     name
+    primary
     createdAt
     selections {
       id
