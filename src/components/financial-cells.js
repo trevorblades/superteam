@@ -2,6 +2,7 @@ import Diff from './diff';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
 import TableCell from '@material-ui/core/TableCell';
+import Tooltip from '@material-ui/core/Tooltip';
 import round from 'lodash/round';
 import {formatMoney} from '../utils/format';
 
@@ -12,7 +13,11 @@ export function FinancialHeaders(props) {
       {!props.hideCash && <TableCell align="right">Cash</TableCell>}
       <TableCell align="right">Total</TableCell>
       <TableCell align="right">Diff</TableCell>
-      <TableCell align="right">ROI</TableCell>
+      <TableCell align="right">
+        <Tooltip title="Return on investment">
+          <span>ROI</span>
+        </Tooltip>
+      </TableCell>
     </Fragment>
   );
 }
