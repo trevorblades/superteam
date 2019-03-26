@@ -17,6 +17,7 @@ export const typeDef = gql`
   type Entry {
     id: ID
     name: String
+    primary: Boolean
     createdAt: String
     user: User
     selections: [Selection]
@@ -59,7 +60,12 @@ export const resolvers = {
       });
     },
     // TODO: reconsider how this works...
-    standings: () => Entry.findAll({limit: 24})
+    standings: () =>
+      Entry.findAll({
+        where: {
+          primary: true
+        }
+      })
   },
   Mutation: {
     async createEntry(parent, args, {user}) {
@@ -67,8 +73,17 @@ export const resolvers = {
         throw new AuthenticationError('Unauthorized');
       }
 
-      const entry = await Entry.create({name: args.name});
-      await entry.setUser(user);
+      const hasEntries = await Entry.count({
+        where: {
+          userId: user.id
+        }
+      });
+
+      const entry = await Entry.create({
+        name: args.name,
+        primary: !hasEntries,
+        userId: user.id
+      });
 
       const selections = await Selection.bulkCreate(
         args.playerIds.map(playerId => ({playerId})),

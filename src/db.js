@@ -45,7 +45,8 @@ export const User = sequelize.define('user', {
 });
 
 export const Entry = sequelize.define('entry', {
-  name: Sequelize.STRING
+  name: Sequelize.STRING,
+  primary: Sequelize.BOOLEAN
 });
 
 User.hasMany(Entry);
