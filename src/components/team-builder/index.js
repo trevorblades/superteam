@@ -152,7 +152,7 @@ export default class TeamBuilder extends Component {
           return (
             <Fragment>
               <Subheader>
-                <StyledPageWrapper>
+                <StyledPageWrapper centered>
                   <Hidden smDown implementation="css">
                     <Regions>
                       <Region
@@ -192,7 +192,7 @@ export default class TeamBuilder extends Component {
                 </StyledPageWrapper>
               </Subheader>
               <GridWrapper>
-                <PageWrapper>
+                <PageWrapper centered>
                   <Grid container spacing={GRID_SPACING}>
                     {filteredPlayers.map(player => {
                       const isSelected = this.isPlayerSelected(player);

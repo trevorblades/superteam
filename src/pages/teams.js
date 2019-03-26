@@ -1,5 +1,6 @@
 import AuthRequired from '../components/auth-required';
 import Button from '@material-ui/core/Button';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -12,21 +13,25 @@ import Layout from '../components/layout';
 import LoadingIndicator from '../components/loading-indicator';
 import NoIndex from '../components/no-index';
 import NoSsr from '@material-ui/core/NoSsr';
+import PlayerCard from '../components/player-card';
 import PrimaryCheckbox from '../components/primary-checkbox';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {Fragment} from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import getEntryFinancials from '../utils/get-entry-financials';
+import getEntryFinancials, {
+  getEntryPlayers
+} from '../utils/get-entry-financials';
 import styled from '@emotion/styled';
+import withProps from 'recompose/withProps';
+import {EmptyPlayerCard, PageWrapper, Section} from '../components/common';
 import {LIST_ENTRIES} from '../utils/queries';
 import {Link} from 'gatsby';
-import {MdStar} from 'react-icons/md';
-import {PageWrapper, Section} from '../components/common';
+import {MdShowChart, MdStar} from 'react-icons/md';
 import {Query} from 'react-apollo';
 import {withTheme} from '@material-ui/core/styles';
 
@@ -36,6 +41,23 @@ const StyledStar = withTheme()(
     fill: theme.palette.primary.main
   }))
 );
+
+const PlayerGridItem = withProps({
+  item: true,
+  md: 2,
+  sm: 3,
+  xs: 4
+})(Grid);
+
+const EmptyCardWrapper = styled(ButtonBase)({
+  width: '100%',
+  height: '100%'
+});
+
+const StyledEmptyPlayerCard = styled(EmptyPlayerCard)({
+  width: '100%',
+  height: '100%'
+});
 
 const title = 'My teams';
 export default function Teams(props) {
@@ -48,7 +70,7 @@ export default function Teams(props) {
             <title>{title}</title>
           </Helmet>
           <Section>
-            <PageWrapper>
+            <PageWrapper centered>
               <Typography variant="h3" gutterBottom>
                 {title}
               </Typography>
@@ -64,47 +86,9 @@ export default function Teams(props) {
 
                   const primary = data.entries.find(entry => entry.primary);
                   return (
-                    <Grid container spacing={24}>
-                      <Grid item md={8} xs={12}>
-                        <Table padding="none">
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>Team name</TableCell>
-                              <FinancialHeaders />
-                              <TableCell align="right">Actions</TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            {data.entries.map(entry => (
-                              <TableRow key={entry.id}>
-                                <TableCell>
-                                  <PrimaryCheckbox
-                                    value={entry.id}
-                                    name={entry.name}
-                                    checked={entry.primary}
-                                  />
-                                  {entry.name}
-                                </TableCell>
-                                <FinancialCells
-                                  {...getEntryFinancials(entry)}
-                                />
-                                <TableCell align="right">
-                                  <Button
-                                    component={Link}
-                                    variant="outlined"
-                                    size="small"
-                                    to={`/teams/${entry.id}`}
-                                  >
-                                    Details
-                                  </Button>
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                          </TableBody>
-                        </Table>
-                      </Grid>
-                      <Grid item md={4} sm={8} xs={12}>
-                        <Card>
+                    <Fragment>
+                      <PageWrapper mini>
+                        <Card elevation={0}>
                           <CardHeader
                             avatar={<StyledStar size={36} />}
                             title={primary.name}
@@ -114,11 +98,74 @@ export default function Teams(props) {
                             subheader="Primary team"
                           />
                           <CardContent>
-                            <Typography>Test</Typography>
+                            <Grid container spacing={16}>
+                              {getEntryPlayers(primary).map(player => (
+                                <PlayerGridItem key={player.id}>
+                                  <PlayerCard
+                                    mini
+                                    static
+                                    selected
+                                    player={player}
+                                  />
+                                </PlayerGridItem>
+                              ))}
+                              <PlayerGridItem>
+                                <EmptyCardWrapper
+                                  component={Link}
+                                  to={`/teams/${primary.id}`}
+                                >
+                                  <StyledEmptyPlayerCard>
+                                    <MdShowChart size={32} />
+                                    <Typography
+                                      variant="overline"
+                                      color="inherit"
+                                      style={{marginBottom: -8}}
+                                    >
+                                      Details
+                                    </Typography>
+                                  </StyledEmptyPlayerCard>
+                                </EmptyCardWrapper>
+                              </PlayerGridItem>
+                            </Grid>
                           </CardContent>
                         </Card>
-                      </Grid>
-                    </Grid>
+                      </PageWrapper>
+                      <br />
+                      <Table padding="none">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Team name</TableCell>
+                            <FinancialHeaders />
+                            <TableCell align="right">Actions</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {data.entries.map(entry => (
+                            <TableRow key={entry.id}>
+                              <TableCell>
+                                <PrimaryCheckbox
+                                  value={entry.id}
+                                  name={entry.name}
+                                  checked={entry.primary}
+                                />
+                                {entry.name}
+                              </TableCell>
+                              <FinancialCells {...getEntryFinancials(entry)} />
+                              <TableCell align="right">
+                                <Button
+                                  component={Link}
+                                  variant="outlined"
+                                  size="small"
+                                  to={`/teams/${entry.id}`}
+                                >
+                                  Details
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </Fragment>
                   );
                 }}
               </Query>

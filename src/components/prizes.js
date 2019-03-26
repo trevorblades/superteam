@@ -61,7 +61,7 @@ export default function Prizes() {
     <Fragment>
       <a name="prizes" />
       <Section>
-        <PageWrapper mini>
+        <PageWrapper mini centered>
           <Typography variant="h3" gutterBottom>
             Earn prizes
           </Typography>

@@ -45,5 +45,18 @@ export const Hero = withTheme()(
 export const PageWrapper = styled.div(props => ({
   width: '100%',
   maxWidth: props.mini ? 900 : 1280,
-  margin: '0 auto'
+  margin: props.centered && '0 auto'
 }));
+
+export const EmptyPlayerCard = withTheme()(
+  styled.div(({theme}) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: theme.shape.borderRadius,
+    boxShadow: `inset 0 0 0 1px ${theme.palette.text.hint}`,
+    color: theme.palette.text.secondary,
+    backgroundColor: theme.palette.background.default
+  }))
+);

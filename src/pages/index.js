@@ -49,7 +49,7 @@ export default function Home(props) {
         <title>Free fantasy esports</title>
       </Helmet>
       <StyledHero>
-        <PageWrapper>
+        <PageWrapper centered>
           <Grid container alignItems="center">
             <Grid item sm={12} md={6}>
               <Typography variant="h2" color="secondary" gutterBottom>

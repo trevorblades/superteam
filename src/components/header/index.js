@@ -135,7 +135,7 @@ export default function Header() {
   return (
     <AppBar position="sticky" color="inherit" elevation={0}>
       <StyledToolbar>
-        <StyledPageWrapper>
+        <StyledPageWrapper centered>
           <Hidden smDown implementation="css">
             <Nav>
               {navItems.map(navItem => (

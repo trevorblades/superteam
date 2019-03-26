@@ -9,6 +9,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
 import {CARD_ASPECT_RATIO, TEAM_SIZE} from '../../utils/constants';
+import {EmptyPlayerCard} from '../common';
 import {MdCopyright, MdUpdate} from 'react-icons/md';
 import {withTheme} from '@material-ui/core/styles';
 
@@ -29,24 +30,16 @@ const Players = styled.div({
 
 const playerWidth = 90;
 const emptyPlayers = Array(TEAM_SIZE).fill(null);
-const Player = withTheme()(
-  styled.div(({theme}) => ({
-    width: playerWidth,
-    height: playerWidth / CARD_ASPECT_RATIO,
-    borderRadius: theme.shape.borderRadius,
-    boxShadow: `inset 0 0 0 1px ${theme.palette.text.hint}`,
-    backgroundColor: theme.palette.background.default,
-    ':not(:last-child)': {
-      marginRight: 12
-    }
-  }))
-);
+const Player = styled(EmptyPlayerCard)({
+  width: playerWidth,
+  height: playerWidth / CARD_ASPECT_RATIO,
+  ':not(:last-child)': {
+    marginRight: 12
+  }
+});
 
-const PlayerNumber = styled(Typography)({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '100%'
+const PlayerCardWrapper = styled.div({
+  alignSelf: 'stretch'
 });
 
 const Icons = withTheme()(
@@ -103,16 +96,18 @@ export default class TeamFooter extends Component {
             .map((player, index) => (
               <Player key={index}>
                 {player ? (
-                  <PlayerCard
-                    selected
-                    mini
-                    onClick={this.props.onPlayerCardClick}
-                    player={player}
-                  />
+                  <PlayerCardWrapper>
+                    <PlayerCard
+                      selected
+                      mini
+                      onClick={this.props.onPlayerCardClick}
+                      player={player}
+                    />
+                  </PlayerCardWrapper>
                 ) : (
-                  <PlayerNumber variant="h6" color="textSecondary">
+                  <Typography variant="h6" color="inherit">
                     {index + 1}
-                  </PlayerNumber>
+                  </Typography>
                 )}
               </Player>
             ))}

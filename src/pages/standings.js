@@ -39,7 +39,7 @@ export default function Standings(props) {
         <title>Standings</title>
       </Helmet>
       <Section>
-        <PageWrapper>
+        <PageWrapper centered>
           <Typography variant="h3" gutterBottom>
             Standings
           </Typography>

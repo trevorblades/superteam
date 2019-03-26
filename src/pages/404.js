@@ -10,7 +10,7 @@ export default function NotFound() {
   return (
     <Layout>
       <Hero>
-        <PageWrapper>
+        <PageWrapper centered>
           <Typography variant="h2" gutterBottom>
             Page not found
           </Typography>
