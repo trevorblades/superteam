@@ -25,6 +25,24 @@ export const typeDef = gql`
   }
 `;
 
+async function getEntryForUser(user, id) {
+  if (!user) {
+    throw new AuthenticationError('Unauthorized');
+  }
+
+  const [entry] = await user.getEntries({
+    where: {
+      id
+    }
+  });
+
+  if (!entry) {
+    throw new UserInputError('Entry not found');
+  }
+
+  return entry;
+}
+
 export const resolvers = {
   Entry: {
     selections: parent =>
@@ -95,20 +113,7 @@ export const resolvers = {
       return entry;
     },
     async updateEntry(parent, args, {user}) {
-      if (!user) {
-        throw new AuthenticationError('Unauthorized');
-      }
-
-      const [entry] = await user.getEntries({
-        where: {
-          id: args.id
-        }
-      });
-
-      if (!entry) {
-        throw new UserInputError('Entry not found');
-      }
-
+      const entry = await getEntryForUser(user, args.id);
       await Selection.destroy({
         where: {
           entryId: entry.id,
@@ -137,20 +142,7 @@ export const resolvers = {
       return entry.save();
     },
     async setPrimaryEntry(parent, args, {user}) {
-      if (!user) {
-        throw new AuthenticationError('Unauthorized');
-      }
-
-      const [entry] = await user.getEntries({
-        where: {
-          id: args.id
-        }
-      });
-
-      if (!entry) {
-        throw new UserInputError('Entry not found');
-      }
-
+      const entry = await getEntryForUser(user, args.id);
       const entries = await user.getEntries({
         where: {
           id: {
