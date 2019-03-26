@@ -134,7 +134,7 @@ class CheckoutDialog extends Component {
                   ))}
                   <MoneyRow label="Total" value={totalCost} />
                   <MoneyRow
-                    label="Remainder"
+                    label="Leftover cash"
                     value={TOTAL_BUDGET - totalCost}
                   />
                 </TableBody>
