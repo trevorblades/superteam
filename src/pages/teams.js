@@ -37,7 +37,7 @@ import {Query} from 'react-apollo';
 import {withTheme} from '@material-ui/core/styles';
 
 const StyledPageWrapper = styled(PageWrapper)({
-  padding: `${8}px 0`
+  padding: `${12}px 0`
 });
 
 const StyledStar = withTheme()(
