@@ -12,6 +12,7 @@ export const typeDef = gql`
   extend type Mutation {
     createEntry(name: String!, playerIds: [String]!): Entry
     updateEntry(id: ID!, playerIds: [String]!): Entry
+    setPrimaryEntry(id: ID!): Entry
   }
 
   type Entry {
@@ -134,6 +135,32 @@ export const resolvers = {
 
       entry.changed('updatedAt', true);
       return entry.save();
+    },
+    async setPrimaryEntry(parent, args, {user}) {
+      if (!user) {
+        throw new AuthenticationError('Unauthorized');
+      }
+
+      const [entry] = await user.getEntries({
+        where: {
+          id: args.id
+        }
+      });
+
+      if (!entry) {
+        throw new UserInputError('Entry not found');
+      }
+
+      const entries = await user.getEntries({
+        where: {
+          id: {
+            [Op.not]: args.id
+          }
+        }
+      });
+
+      await Promise.all(entries.map(entry => entry.update({primary: false})));
+      return entry.update({primary: true});
     }
   }
 };
