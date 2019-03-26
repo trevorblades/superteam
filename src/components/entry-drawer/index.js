@@ -3,6 +3,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Diff from '../diff';
 import Drawer from '@material-ui/core/Drawer';
 import EntryChart from './entry-chart';
+import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -11,6 +12,7 @@ import LoadingIndicator from '../loading-indicator';
 import PlayerAvatar from '../player-avatar';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import Tooltip from '@material-ui/core/Tooltip';
 import TransactionList from './transaction-list';
 import Typography from '@material-ui/core/Typography';
 import getEntryFinancials, {
@@ -19,9 +21,10 @@ import getEntryFinancials, {
 import getPlayerCost, {getInitialPlayerCost} from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
 import {GET_ENTRY} from '../../utils/queries';
+import {Link, navigate} from 'gatsby';
+import {MdEdit} from 'react-icons/md';
 import {Query} from 'react-apollo';
 import {formatDate, formatMoney} from '../../utils/format';
-import {navigate} from 'gatsby';
 import {withStyles, withTheme} from '@material-ui/core/styles';
 
 const StyledDrawer = withStyles({
@@ -113,6 +116,16 @@ export default class EntryDrawer extends Component {
                     <span>
                       Created on <CreatedAt>{formatDate(date)}</CreatedAt>
                     </span>
+                  }
+                  action={
+                    <Tooltip title="Edit team">
+                      <IconButton
+                        component={Link}
+                        to={`/edit/${data.entry.id}`}
+                      >
+                        <MdEdit size={24} />
+                      </IconButton>
+                    </Tooltip>
                   }
                 />
                 <EntryChart players={players} year={year} week={week} />
