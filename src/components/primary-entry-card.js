@@ -1,8 +1,8 @@
 import ButtonBase from '@material-ui/core/ButtonBase';
-import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import PlayerCard from './player-card';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -42,7 +42,7 @@ const StyledEmptyPlayerCard = styled(EmptyPlayerCard)({
 
 export default function PrimaryEntryCard(props) {
   return (
-    <Card elevation={20}>
+    <Paper elevation={20}>
       <CardHeader
         avatar={<StyledStar size={32} />}
         title={props.entry.name}
@@ -74,7 +74,7 @@ export default function PrimaryEntryCard(props) {
           </PlayerGridItem>
         </Grid>
       </CardContent>
-    </Card>
+    </Paper>
   );
 }
 
