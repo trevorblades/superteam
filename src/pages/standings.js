@@ -92,6 +92,7 @@ export const query = graphql`
           createdAt
           deletedAt
           player {
+            id
             statistics {
               percentile
               week

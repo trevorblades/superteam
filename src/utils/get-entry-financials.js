@@ -21,7 +21,6 @@ function getSelectionDate(player, ms) {
 function getTransaction(player, ms, modifier = 1) {
   const {date, week, year} = getSelectionDate(player, ms);
   return {
-    id: player.id + ms,
     date,
     player,
     amount: getInitialPlayerCost(week, year, player) * modifier
