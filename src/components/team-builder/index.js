@@ -197,15 +197,7 @@ export default class TeamBuilder extends Component {
                     {filteredPlayers.map(player => {
                       const isSelected = this.isPlayerSelected(player);
                       return (
-                        <Grid
-                          item
-                          key={player.id}
-                          xs={12}
-                          sm={6}
-                          md={4}
-                          lg={3}
-                          xl={2}
-                        >
+                        <Grid item key={player.id} xs={12} sm={6} md={4} lg={3}>
                           <PlayerCard
                             disabled={
                               !isSelected &&
