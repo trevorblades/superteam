@@ -3,6 +3,7 @@ import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from '@emotion/styled';
+import {Global} from '@emotion/core';
 import {StaticQuery, graphql} from 'gatsby';
 import {cover} from 'polished';
 
@@ -29,6 +30,13 @@ export default function Layout(props) {
         const {title, description} = data.site.siteMetadata;
         return (
           <Container>
+            <Global
+              styles={{
+                'p > a': {
+                  color: 'inherit'
+                }
+              }}
+            />
             <Helmet defaultTitle={title} titleTemplate={`%s - ${title}`}>
               <meta name="description" content={description} />
               <link

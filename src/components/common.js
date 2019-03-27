@@ -30,7 +30,10 @@ export function getSectionStyles(padding = sectionPadding) {
   };
 }
 
-export const Section = withTheme()(styled.section(getSectionStyles()));
+export const Section = withTheme()(
+  styled.section(props => getSectionStyles(props.padding))
+);
+
 export const Hero = withTheme()(
   styled(Section)(
     getSectionStyles({
