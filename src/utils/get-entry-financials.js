@@ -1,16 +1,13 @@
 import getISOWeek from 'date-fns/getISOWeek';
 import getISOWeekYear from 'date-fns/getISOWeekYear';
+import setQuarter from 'date-fns/setQuarter';
+import startOfQuarter from 'date-fns/startOfQuarter';
 import {TOTAL_BUDGET} from './constants';
 import {getInitialPlayerCost, getTotalPlayerCost, sum} from './get-player-cost';
 
-export function getEntryDate(entry) {
-  const [selection] = entry.selections;
-  return getSelectionDate(selection.player, selection.createdAt);
-}
-
 function getSelectionDate(player, ms) {
   const [{week, year}] = player.statistics;
-  const date = new Date(Number(ms));
+  const date = new Date(ms);
   return {
     date,
     week: Math.min(week, getISOWeek(date)),
@@ -33,9 +30,22 @@ export function getEntryPlayers(entry) {
     .map(selection => selection.player);
 }
 
-export default function getEntryFinancials(entry) {
-  const {date, week, year} = getEntryDate(entry);
+export default function getEntryFinancials(entry, quarter) {
+  let quarterStart;
+  if (quarter) {
+    quarterStart = startOfQuarter(setQuarter(Date.now(), quarter));
+    // quarterStart = new Date('2019-02-25');
+  }
+
+  const createdAt = Number(entry.createdAt);
   const initialSelections = entry.selections.slice(0, 5);
+  const {date, week, year} = getSelectionDate(
+    initialSelections[0].player,
+    quarterStart ? Math.max(quarterStart.getTime(), createdAt) : createdAt
+  );
+
+  console.log(date, week, year);
+
   const initialValue = initialSelections
     .map(selection => selection.player)
     .map(getInitialPlayerCost.bind(this, week, year))
@@ -47,10 +57,10 @@ export default function getEntryFinancials(entry) {
     .reduce((acc, selection) => {
       const {player, createdAt, deletedAt} = selection;
       if (deletedAt) {
-        acc.push(getTransaction(player, deletedAt));
+        acc.push(getTransaction(player, Number(deletedAt)));
       }
 
-      return [...acc, ...getTransaction(player, createdAt, -1)];
+      return [...acc, ...getTransaction(player, Number(createdAt), -1)];
     }, [])
     .sort((a, b) => a.date - b.date);
 
