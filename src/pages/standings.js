@@ -49,9 +49,13 @@ export default class Standings extends Component {
     const {lastUpdated} = site.siteMetadata;
     const numQuarters = differenceInQuarters(lastUpdated, startDate) + 1;
     const quarters = Array.from(Array(numQuarters).keys()).map(num => num + 1);
-    const financials = getQuarterlyFinancials(superteam.entries, quarters);
-    const entries = financials[this.state.quarter];
+    const financials = getQuarterlyFinancials(
+      superteam.entries,
+      quarters,
+      lastUpdated
+    );
 
+    const entries = financials[this.state.quarter];
     const counts = entries.reduce(
       (acc, entry) => ({
         ...acc,

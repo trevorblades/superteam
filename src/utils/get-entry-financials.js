@@ -85,10 +85,10 @@ export function getQuarterDate(quarter) {
   };
 }
 
-export function getQuarterlyFinancials(entries, quarters) {
+export function getQuarterlyFinancials(entries, quarters, date) {
   return quarters.reduce((acc, quarter) => {
     const {start, end} = getQuarterDate(quarter);
-    const periodEndDate = Math.min(Date.now(), end);
+    const periodEndDate = Math.min(date, end);
     const periodEndWeek = getISOWeek(periodEndDate);
     const periodEndYear = getISOWeekYear(periodEndDate);
     return {
