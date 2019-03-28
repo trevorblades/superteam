@@ -16,7 +16,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
-import getPlayerCost, {getTotalPlayerCost} from '../../utils/get-player-cost';
+import getPlayerCost, {sum} from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
 import {CREATE_ENTRY, LIST_ENTRIES} from '../../utils/queries';
 import {FaChevronLeft} from 'react-icons/fa';
@@ -68,7 +68,7 @@ class CheckoutDialog extends Component {
   };
 
   render() {
-    const totalCost = getTotalPlayerCost(this.props.players);
+    const totalCost = this.props.players.map(getPlayerCost).reduce(sum);
     return (
       <Mutation
         mutation={CREATE_ENTRY}

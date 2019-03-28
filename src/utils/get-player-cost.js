@@ -16,10 +16,6 @@ export function sum(a, b) {
   return a + b;
 }
 
-export function getTotalPlayerCost(players) {
-  return players.map(getPlayerCost).reduce(sum);
-}
-
 export default function getPlayerCost(player) {
   const [statistic] = player.statistics;
   return percentileToCost(statistic.percentile);
