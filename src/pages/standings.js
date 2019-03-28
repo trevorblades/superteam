@@ -73,21 +73,24 @@ export default class Standings extends Component {
             <Typography variant="h3" gutterBottom>
               {title}
             </Typography>
-            <FormControl margin="dense">
+            <FormControl margin="normal">
               <InputLabel htmlFor="quarter">Ranking period</InputLabel>
               <Select
                 value={this.state.quarter}
                 onChange={this.onQuarterChange}
-                inputProps={{
-                  id: 'quarter'
+                inputProps={{id: 'quarter'}}
+                renderValue={value => {
+                  const {label, start, end} = getQuarterDate(value);
+                  const startDate = format(start, 'LLL d');
+                  const endDate = format(end, 'LLL d, yyyy');
+                  return `${label} (${startDate} - ${endDate})`;
                 }}
               >
                 {quarters.map(quarter => {
-                  const {label, start, end} = getQuarterDate(quarter);
+                  const {label} = getQuarterDate(quarter);
                   return (
                     <MenuItem key={quarter} value={quarter}>
-                      {label} ({format(start, 'LLL d')} -{' '}
-                      {format(end, 'LLL d, yyyy')})
+                      {label}
                     </MenuItem>
                   );
                 })}
