@@ -18,7 +18,7 @@ import Typography from '@material-ui/core/Typography';
 import getEntryFinancials, {
   getEntryPlayers
 } from '../../utils/get-entry-financials';
-import getPlayerCost, {getInitialPlayerCost} from '../../utils/get-player-cost';
+import getPlayerCost, {getPlayerCostAtWeek} from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
 import {GET_ENTRY} from '../../utils/queries';
 import {Link, navigate} from 'gatsby';
@@ -104,9 +104,12 @@ export default class EntryDrawer extends Component {
               );
             }
 
-            const {date, week, year, transactions} = getEntryFinancials(
-              data.entry
-            );
+            const {
+              startDate,
+              startWeek,
+              startYear,
+              transactions
+            } = getEntryFinancials(data.entry);
             const players = getEntryPlayers(data.entry);
             return (
               <Container>
@@ -114,7 +117,7 @@ export default class EntryDrawer extends Component {
                   title={data.entry.name}
                   subheader={
                     <span>
-                      Created on <CreatedAt>{formatDate(date)}</CreatedAt>
+                      Created on <CreatedAt>{formatDate(startDate)}</CreatedAt>
                     </span>
                   }
                   action={
@@ -128,14 +131,18 @@ export default class EntryDrawer extends Component {
                     </Tooltip>
                   }
                 />
-                <EntryChart players={players} year={year} week={week} />
+                <EntryChart
+                  players={players}
+                  year={startYear}
+                  week={startWeek}
+                />
                 <List>
                   {players.map(player => {
                     const currentValue = getPlayerCost(player);
-                    const initialValue = getInitialPlayerCost(
-                      week,
-                      year,
-                      player
+                    const initialValue = getPlayerCostAtWeek(
+                      player,
+                      startWeek,
+                      startYear
                     );
 
                     return (
