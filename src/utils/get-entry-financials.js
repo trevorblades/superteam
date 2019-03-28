@@ -49,12 +49,6 @@ function transactionsToCash(transactions) {
     .reduce(sum, TOTAL_BUDGET);
 }
 
-export function getEntryPlayers(entry) {
-  return entry.selections
-    .filter(selection => !selection.deletedAt)
-    .map(selection => selection.player);
-}
-
 function getSelectionsValue(selections, week, year, filter) {
   return selections
     .filter(
@@ -72,6 +66,12 @@ function getFinancials(currentValue, currentCash, initialValue, initialCash) {
     currentValue,
     diff: currentValue + currentCash - (initialValue + initialCash)
   };
+}
+
+export function getEntryPlayers(entry) {
+  return entry.selections
+    .filter(selection => !selection.deletedAt)
+    .map(selection => selection.player);
 }
 
 export function getQuarterYear(quarter) {
@@ -107,20 +107,15 @@ export function getQuarterlyFinancials(entries, quarters) {
           const periodStartWeek = getISOWeek(periodStartDate);
           const periodStartYear = getISOWeekYear(periodStartDate);
 
-          const transactions = selectionsToTransactions(
+          // get all transactions leading up to and including quarter
+          const allTransactions = selectionsToTransactions(
             entry.selections,
-            deletedAt => deletedAt < quarterEnd
+            deletedAt => deletedAt <= quarterEnd
           );
 
-          const currentCash = transactionsToCash(transactions);
-          const filteredTransactions = transactions.filter(
+          // get all transactions leading up to quarter start
+          const filteredTransactions = allTransactions.filter(
             transaction => transaction.date < periodStartDate
-          );
-
-          const initialCash = transactionsToCash(
-            filteredTransactions.length
-              ? filteredTransactions
-              : transactions.slice(0, 5)
           );
 
           // filter out selections that were created after the quarter
@@ -135,6 +130,12 @@ export function getQuarterlyFinancials(entries, quarters) {
             deletedAt => deletedAt >= quarterStart
           );
 
+          const initialCash = transactionsToCash(
+            filteredTransactions.length
+              ? filteredTransactions
+              : allTransactions.slice(0, 5)
+          );
+
           const currentValue = getSelectionsValue(
             selections,
             periodEndWeek,
@@ -142,6 +143,7 @@ export function getQuarterlyFinancials(entries, quarters) {
             deletedAt => deletedAt > quarterEnd
           );
 
+          const currentCash = transactionsToCash(allTransactions);
           return {
             ...entry,
             ...getFinancials(
@@ -172,6 +174,8 @@ export default function getEntryFinancials(entry) {
     startYear
   );
 
+  const initialCash = TOTAL_BUDGET - initialValue;
+  const currentValue = getSelectionsValue(entry.selections, endWeek, endYear);
   const transactions = selectionsToTransactions(entry.selections);
   const currentCash = transactionsToCash(transactions);
   return {
@@ -180,11 +184,6 @@ export default function getEntryFinancials(entry) {
     startYear,
     transactions,
     currentCash,
-    ...getFinancials(
-      initialValue,
-      TOTAL_BUDGET - initialValue,
-      getSelectionsValue(entry.selections, endWeek, endYear),
-      currentCash
-    )
+    ...getFinancials(initialValue, initialCash, currentValue, currentCash)
   };
 }
