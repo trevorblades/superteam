@@ -30,6 +30,7 @@ export const resolvers = {
           }
         ],
         order: [
+          // this orders the player by percentile rank
           [Statistic, 'year', 'desc'],
           [Statistic, 'week', 'desc'],
           [Statistic, 'percentile', 'desc']
