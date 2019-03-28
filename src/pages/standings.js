@@ -15,25 +15,27 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import differenceInQuarters from 'date-fns/differenceInQuarters';
+import format from 'date-fns/format';
+import getQuarter from 'date-fns/getQuarter';
 import {PageWrapper, Section} from '../components/common';
 import {
-  getQuarterYear,
-  getQuarterlyFinancials,
-  normalizeQuarter
+  getQuarterDate,
+  getQuarterlyFinancials
 } from '../utils/get-entry-financials';
 import {graphql} from 'gatsby';
 
 const title = 'Standings';
 const startDate = new Date('2019-01-01');
-const numQuarters = differenceInQuarters(Date.now(), startDate) + 1;
-const quarters = Array.from(Array(numQuarters).keys()).map(num => num + 1);
 export default class Standings extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      quarter: getQuarter(props.data.site.siteMetadata.lastUpdated)
+    };
+  }
+
   static propTypes = {
     data: PropTypes.object.isRequired
-  };
-
-  state = {
-    quarter: quarters[0]
   };
 
   onQuarterChange = event => {
@@ -43,10 +45,12 @@ export default class Standings extends Component {
   };
 
   render() {
-    const entries = getQuarterlyFinancials(
-      this.props.data.superteam.entries,
-      quarters
-    )[this.state.quarter];
+    const {site, superteam} = this.props.data;
+    const {lastUpdated} = site.siteMetadata;
+    const numQuarters = differenceInQuarters(lastUpdated, startDate) + 1;
+    const quarters = Array.from(Array(numQuarters).keys()).map(num => num + 1);
+    const financials = getQuarterlyFinancials(superteam.entries, quarters);
+    const entries = financials[this.state.quarter];
 
     const counts = entries.reduce(
       (acc, entry) => ({
@@ -66,9 +70,11 @@ export default class Standings extends Component {
         </Helmet>
         <Section>
           <PageWrapper centered>
-            <Typography variant="h3">{title}</Typography>
-            <FormControl margin="normal">
-              <InputLabel htmlFor="quarter">Quarter</InputLabel>
+            <Typography variant="h3" gutterBottom>
+              {title}
+            </Typography>
+            <FormControl margin="dense">
+              <InputLabel htmlFor="quarter">Ranking period</InputLabel>
               <Select
                 value={this.state.quarter}
                 onChange={this.onQuarterChange}
@@ -76,11 +82,15 @@ export default class Standings extends Component {
                   id: 'quarter'
                 }}
               >
-                {quarters.map(quarter => (
-                  <MenuItem key={quarter} value={quarter}>
-                    Q{normalizeQuarter(quarter)} {getQuarterYear(quarter)}
-                  </MenuItem>
-                ))}
+                {quarters.map(quarter => {
+                  const {label, start, end} = getQuarterDate(quarter);
+                  return (
+                    <MenuItem key={quarter} value={quarter}>
+                      {label} ({format(start, 'LLL d')} -{' '}
+                      {format(end, 'LLL d, yyyy')})
+                    </MenuItem>
+                  );
+                })}
               </Select>
             </FormControl>
             <Table padding="none">
@@ -118,6 +128,11 @@ export default class Standings extends Component {
 
 export const query = graphql`
   {
+    site {
+      siteMetadata {
+        lastUpdated
+      }
+    }
     superteam {
       entries: standings {
         id

@@ -74,43 +74,37 @@ export function getEntryPlayers(entry) {
     .map(selection => selection.player);
 }
 
-export function getQuarterYear(quarter) {
-  return 2018 + Math.ceil(quarter / 4);
-}
-
-export function normalizeQuarter(quarter) {
-  return quarter % 4 || 4;
+export function getQuarterDate(quarter) {
+  const normalized = quarter % 4 || 4;
+  const year = 2018 + Math.ceil(quarter / 4);
+  const date = setQuarter(setYear(Date.now(), year), normalized);
+  return {
+    label: `Q${normalized} ${year}`,
+    start: startOfQuarter(date),
+    end: endOfQuarter(date)
+  };
 }
 
 export function getQuarterlyFinancials(entries, quarters) {
   return quarters.reduce((acc, quarter) => {
-    const quarterYear = getQuarterYear(quarter);
-    const quarterDate = setQuarter(
-      setYear(Date.now(), quarterYear),
-      normalizeQuarter(quarter)
-    );
-
-    const quarterStart = startOfQuarter(quarterDate);
-    const quarterEnd = endOfQuarter(quarterDate);
-
-    const periodEndDate = Math.min(Date.now(), quarterEnd);
+    const {start, end} = getQuarterDate(quarter);
+    const periodEndDate = Math.min(Date.now(), end);
     const periodEndWeek = getISOWeek(periodEndDate);
     const periodEndYear = getISOWeekYear(periodEndDate);
-
     return {
       ...acc,
       [quarter]: entries
-        .filter(entry => Number(entry.createdAt) <= quarterEnd)
+        .filter(entry => Number(entry.createdAt) <= end)
         .map(entry => {
           const createdAt = Number(entry.createdAt);
-          const periodStartDate = Math.max(createdAt, quarterStart);
+          const periodStartDate = Math.max(createdAt, start);
           const periodStartWeek = getISOWeek(periodStartDate);
           const periodStartYear = getISOWeekYear(periodStartDate);
 
           // get all transactions leading up to and including quarter
           const allTransactions = selectionsToTransactions(
             entry.selections,
-            deletedAt => deletedAt <= quarterEnd
+            deletedAt => deletedAt <= end
           );
 
           // get all transactions leading up to quarter start
@@ -120,14 +114,14 @@ export function getQuarterlyFinancials(entries, quarters) {
 
           // filter out selections that were created after the quarter
           const selections = entry.selections.filter(
-            selection => Number(selection.createdAt) <= quarterEnd
+            selection => Number(selection.createdAt) <= end
           );
 
           const initialValue = getSelectionsValue(
             selections,
             periodStartWeek,
             periodStartYear,
-            deletedAt => deletedAt >= quarterStart
+            deletedAt => deletedAt >= start
           );
 
           const initialCash = transactionsToCash(
@@ -140,7 +134,7 @@ export function getQuarterlyFinancials(entries, quarters) {
             selections,
             periodEndWeek,
             periodEndYear,
-            deletedAt => deletedAt > quarterEnd
+            deletedAt => deletedAt > end
           );
 
           const currentCash = transactionsToCash(allTransactions);
