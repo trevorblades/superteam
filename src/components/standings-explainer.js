@@ -38,7 +38,7 @@ export default class StandingsExplainer extends Component {
           <DialogContent>
             <DialogContentText paragraph>
               Standings get updated every day, and player ranks are calculated
-              based on a few different criteria: gain/loss (diff), total current
+              based on a few different criteria: gain/loss (diff), total team
               value, and total kill count.
             </DialogContentText>
             <DialogContentText>
