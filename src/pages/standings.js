@@ -115,6 +115,7 @@ export default class Standings extends Component {
                     <FinancialCells
                       diff={entry.diff}
                       currentValue={entry.currentValue}
+                      currentCash={entry.currentCash}
                       initialValue={entry.initialValue}
                     />
                   </TableRow>

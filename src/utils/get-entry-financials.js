@@ -49,21 +49,31 @@ function transactionsToCash(transactions) {
     .reduce(sum, TOTAL_BUDGET);
 }
 
-function getSelectionsValue(selections, week, year, filter) {
+function getSelectionValue(selections, week, year) {
   return selections
-    .filter(
-      selection =>
-        !selection.deletedAt || (filter && filter(Number(selection.deletedAt)))
-    )
-    .slice(0, 5)
     .map(selection => getPlayerCostAtWeek(selection.player, week, year))
     .reduce(sum);
+}
+
+function getFilteredSelectionValue(selections, week, year, filter) {
+  return getSelectionValue(
+    selections
+      .filter(
+        selection =>
+          !selection.deletedAt ||
+          (filter && filter(Number(selection.deletedAt)))
+      )
+      .slice(0, 5),
+    week,
+    year
+  );
 }
 
 function getFinancials({initialValue, initialCash, currentValue, currentCash}) {
   return {
     initialValue,
     currentValue,
+    currentCash,
     diff: currentValue + currentCash - (initialValue + initialCash)
   };
 }
@@ -117,7 +127,7 @@ export function getQuarterlyFinancials(entries, quarters, date) {
             selection => Number(selection.createdAt) <= end
           );
 
-          const initialValue = getSelectionsValue(
+          const initialValue = getFilteredSelectionValue(
             selections,
             periodStartWeek,
             periodStartYear,
@@ -130,7 +140,7 @@ export function getQuarterlyFinancials(entries, quarters, date) {
               : allTransactions.slice(0, 5)
           );
 
-          const currentValue = getSelectionsValue(
+          const currentValue = getFilteredSelectionValue(
             selections,
             periodEndWeek,
             periodEndYear,
@@ -162,14 +172,19 @@ export default function getEntryFinancials(entry) {
   const endWeek = getISOWeek(endDate);
   const endYear = getISOWeekYear(endDate);
 
-  const initialValue = getSelectionsValue(
-    entry.selections,
+  const initialValue = getSelectionValue(
+    entry.selections.slice(0, 5),
     startWeek,
     startYear
   );
 
   const initialCash = TOTAL_BUDGET - initialValue;
-  const currentValue = getSelectionsValue(entry.selections, endWeek, endYear);
+  const currentValue = getFilteredSelectionValue(
+    entry.selections,
+    endWeek,
+    endYear
+  );
+
   const transactions = selectionsToTransactions(entry.selections);
   const currentCash = transactionsToCash(transactions);
   return {
@@ -177,7 +192,6 @@ export default function getEntryFinancials(entry) {
     startWeek,
     startYear,
     transactions,
-    currentCash,
     ...getFinancials({initialValue, initialCash, currentValue, currentCash})
   };
 }

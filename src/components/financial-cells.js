@@ -11,6 +11,7 @@ export function FinancialHeaders() {
     <Fragment>
       <TableCell align="right">Initial</TableCell>
       <TableCell align="right">Current</TableCell>
+      <TableCell align="right">Cash</TableCell>
       <TableCell align="right">Diff</TableCell>
       <TableCell align="right">
         <Tooltip title="Return on investment">
@@ -27,6 +28,7 @@ export default function FinancialCells(props) {
     <Fragment>
       <TableCell align="right">{formatMoney(props.initialValue)}</TableCell>
       <TableCell align="right">{formatMoney(props.currentValue)}</TableCell>
+      <TableCell align="right">{formatMoney(props.currentCash)}</TableCell>
       <TableCell align="right">
         <Diff value={props.diff} />
       </TableCell>
@@ -37,6 +39,7 @@ export default function FinancialCells(props) {
 
 FinancialCells.propTypes = {
   currentValue: PropTypes.number.isRequired,
+  currentCash: PropTypes.number.isRequired,
   initialValue: PropTypes.number.isRequired,
   diff: PropTypes.number.isRequired
 };
