@@ -34,16 +34,16 @@ export default class StandingsExplainer extends Component {
           open={this.state.dialogOpen}
           onClose={this.closeDialog}
         >
-          <DialogTitle>Our standings, explained 🧐</DialogTitle>
+          <DialogTitle>Ranking teams, explained 🧐</DialogTitle>
           <DialogContent>
             <DialogContentText paragraph>
-              Standings get updated every day, and player ranks are calculated
-              based on a few different criteria: gain/loss (diff), total team
-              value, and total kill count.
+              Our standings get updated every day, and teams are ranked based on
+              a few different criteria: gain/loss (diff), total value, and total
+              kill count.
             </DialogContentText>
             <DialogContentText>
               Gain/loss resets each quarter, but teams <strong>do</strong> carry
-              their values over between quarters.
+              over their values between quarters.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
