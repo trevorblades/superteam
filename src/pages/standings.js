@@ -20,9 +20,14 @@ import getQuarter from 'date-fns/getQuarter';
 import {PageWrapper, Section} from '../components/common';
 import {
   getQuarterDate,
-  getQuarterlyFinancials
+  getQuarterlyFinancials,
+  rankingCriteria
 } from '../utils/get-entry-financials';
 import {graphql} from 'gatsby';
+
+function getCountKey(entry) {
+  return rankingCriteria.map(criteria => entry[criteria]).toString();
+}
 
 const title = 'Standings';
 const startDate = new Date('2019-01-01');
@@ -56,17 +61,15 @@ export default class Standings extends Component {
     );
 
     const entries = financials[this.state.quarter];
-    const counts = entries.reduce(
-      (acc, entry) => ({
+    const counts = entries.reduce((acc, entry) => {
+      const key = getCountKey(entry);
+      return {
         ...acc,
-        [entry.diff]: acc[entry.diff] ? acc[entry.diff] + 1 : 1
-      }),
-      {}
-    );
+        [key]: acc[key] ? acc[key] + 1 : 1
+      };
+    }, {});
 
-    const diffs = Object.keys(counts)
-      .map(Number)
-      .sort((a, b) => b - a);
+    const countKeys = Object.keys(counts);
     return (
       <Layout>
         <Helmet>
@@ -105,21 +108,24 @@ export default class Standings extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {entries.map(entry => (
-                  <TableRow key={entry.id}>
-                    <TableCell>
-                      {counts[entry.diff] > 1 ? 'T' : ''}
-                      {diffs.indexOf(entry.diff) + 1}
-                    </TableCell>
-                    <TableCell>{entry.name}</TableCell>
-                    <FinancialCells
-                      diff={entry.diff}
-                      currentValue={entry.currentValue}
-                      currentCash={entry.currentCash}
-                      initialValue={entry.initialValue}
-                    />
-                  </TableRow>
-                ))}
+                {entries.map(entry => {
+                  const key = getCountKey(entry);
+                  return (
+                    <TableRow key={entry.id}>
+                      <TableCell>
+                        {counts[key] > 1 ? 'T' : ''}
+                        {countKeys.indexOf(key) + 1}
+                      </TableCell>
+                      <TableCell>{entry.name}</TableCell>
+                      <FinancialCells
+                        diff={entry.diff}
+                        currentValue={entry.currentValue}
+                        currentCash={entry.currentCash}
+                        initialValue={entry.initialValue}
+                      />
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </PageWrapper>

@@ -103,6 +103,7 @@ export function getQuarterDate(quarter) {
   };
 }
 
+export const rankingCriteria = ['diff', 'currentValue', 'totalKills'];
 export function getQuarterlyFinancials(entries, quarters, date) {
   return quarters.reduce((acc, quarter) => {
     const {start, end} = getQuarterDate(quarter);
@@ -186,8 +187,8 @@ export function getQuarterlyFinancials(entries, quarters, date) {
       ...acc,
       [quarter]: orderBy(
         standings,
-        ['diff', 'currentValue', 'totalKills'],
-        ['desc', 'desc', 'desc']
+        rankingCriteria,
+        Array(rankingCriteria.length).fill('desc')
       )
     };
   }, {});
