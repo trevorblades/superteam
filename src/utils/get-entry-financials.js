@@ -1,16 +1,15 @@
+import endOfQuarter from 'date-fns/endOfQuarter';
 import getISOWeek from 'date-fns/getISOWeek';
 import getISOWeekYear from 'date-fns/getISOWeekYear';
+import setQuarter from 'date-fns/setQuarter';
+import setYear from 'date-fns/setYear';
+import startOfQuarter from 'date-fns/startOfQuarter';
 import {TOTAL_BUDGET} from './constants';
-import {getInitialPlayerCost, getTotalPlayerCost, sum} from './get-player-cost';
+import {getPlayerCostAtWeek, sum} from './get-player-cost';
 
-export function getEntryDate(entry) {
-  const [selection] = entry.selections;
-  return getSelectionDate(selection.player, selection.createdAt);
-}
-
-function getSelectionDate(player, ms) {
-  const [{week, year}] = player.statistics;
-  const date = new Date(Number(ms));
+function getSelectionDate(selection, selectedAt) {
+  const [{week, year}] = selection.player.statistics;
+  const date = new Date(Number(selectedAt));
   return {
     date,
     week: Math.min(week, getISOWeek(date)),
@@ -18,13 +17,64 @@ function getSelectionDate(player, ms) {
   };
 }
 
-function getTransaction(player, ms, modifier = 1) {
-  const {date, week, year} = getSelectionDate(player, ms);
+function selectionsToTransactions(selections, filter) {
+  // loop through selections to save additions and subtractions and sort them in
+  // the order that they happened
+  return selections
+    .reduce((acc, selection) => {
+      const {createdAt, deletedAt} = selection;
+      if (deletedAt && (!filter || filter(Number(deletedAt)))) {
+        acc.push(selectionToTransaction(selection, deletedAt));
+      }
+
+      return [...acc, selectionToTransaction(selection, createdAt, -1)];
+    }, [])
+    .sort((a, b) => a.date - b.date);
+}
+
+function selectionToTransaction(selection, selectedAt, modifier = 1) {
+  const {player} = selection;
+  const {date, week, year} = getSelectionDate(selection, selectedAt);
   return {
-    id: player.id + ms,
     date,
     player,
-    amount: getInitialPlayerCost(week, year, player) * modifier
+    amount: getPlayerCostAtWeek(player, week, year) * modifier
+  };
+}
+
+function transactionsToCash(transactions) {
+  // get current cash by making the transactions against starting cash
+  return transactions
+    .map(transaction => transaction.amount)
+    .reduce(sum, TOTAL_BUDGET);
+}
+
+function getSelectionValue(selections, week, year) {
+  return selections
+    .map(selection => getPlayerCostAtWeek(selection.player, week, year))
+    .reduce(sum);
+}
+
+function getFilteredSelectionValue(selections, week, year, filter) {
+  return getSelectionValue(
+    selections
+      .filter(
+        selection =>
+          !selection.deletedAt ||
+          (filter && filter(Number(selection.deletedAt)))
+      )
+      .slice(0, 5),
+    week,
+    year
+  );
+}
+
+function getFinancials({initialValue, initialCash, currentValue, currentCash}) {
+  return {
+    initialValue,
+    currentValue,
+    currentCash,
+    diff: currentValue + currentCash - (initialValue + initialCash)
   };
 }
 
@@ -34,46 +84,114 @@ export function getEntryPlayers(entry) {
     .map(selection => selection.player);
 }
 
-export default function getEntryFinancials(entry) {
-  const {date, week, year} = getEntryDate(entry);
-  const initialSelections = entry.selections.slice(0, 5);
-  const initialValue = initialSelections
-    .map(selection => selection.player)
-    .map(getInitialPlayerCost.bind(this, week, year))
-    .reduce(sum);
-
-  // loop through selections to save additions and subtractions and sort them in
-  // the order that they happened
-  const transactions = entry.selections
-    .reduce((acc, selection) => {
-      const {player, createdAt, deletedAt} = selection;
-      if (deletedAt) {
-        acc.push(getTransaction(player, deletedAt));
-      }
-
-      return [...acc, ...getTransaction(player, createdAt, -1)];
-    }, [])
-    .sort((a, b) => a.date - b.date);
-
-  // get current cash by making the transactions against starting cash
-  const cash = transactions
-    .map(transaction => transaction.amount)
-    .reduce(sum, TOTAL_BUDGET);
-
-  const players = getEntryPlayers(entry);
-  const playerValue = getTotalPlayerCost(players);
-  const totalValue = playerValue + cash;
-  const initialCash = TOTAL_BUDGET - initialValue;
+export function getQuarterDate(quarter) {
+  const normalized = quarter % 4 || 4;
+  const year = 2018 + Math.ceil(quarter / 4);
+  const date = setQuarter(setYear(Date.now(), year), normalized);
   return {
-    date,
-    week,
-    year,
-    players,
-    playerValue,
-    totalValue,
-    cash,
+    label: `Q${normalized} ${year}`,
+    start: startOfQuarter(date),
+    end: endOfQuarter(date)
+  };
+}
+
+export function getQuarterlyFinancials(entries, quarters, date) {
+  return quarters.reduce((acc, quarter) => {
+    const {start, end} = getQuarterDate(quarter);
+    const periodEndDate = Math.min(date, end);
+    const periodEndWeek = getISOWeek(periodEndDate);
+    const periodEndYear = getISOWeekYear(periodEndDate);
+    return {
+      ...acc,
+      [quarter]: entries
+        .filter(entry => Number(entry.createdAt) <= end)
+        .map(entry => {
+          const createdAt = Number(entry.createdAt);
+          const periodStartDate = Math.max(createdAt, start);
+          const periodStartWeek = getISOWeek(periodStartDate);
+          const periodStartYear = getISOWeekYear(periodStartDate);
+
+          // get all transactions leading up to and including quarter
+          const allTransactions = selectionsToTransactions(
+            entry.selections,
+            deletedAt => deletedAt <= end
+          );
+
+          // get all transactions leading up to quarter start
+          const filteredTransactions = allTransactions.filter(
+            transaction => transaction.date < periodStartDate
+          );
+
+          // filter out selections that were created after the quarter
+          const selections = entry.selections.filter(
+            selection => Number(selection.createdAt) <= end
+          );
+
+          const initialValue = getFilteredSelectionValue(
+            selections,
+            periodStartWeek,
+            periodStartYear,
+            deletedAt => deletedAt >= start
+          );
+
+          const initialCash = transactionsToCash(
+            filteredTransactions.length
+              ? filteredTransactions
+              : allTransactions.slice(0, 5)
+          );
+
+          const currentValue = getFilteredSelectionValue(
+            selections,
+            periodEndWeek,
+            periodEndYear,
+            deletedAt => deletedAt > end
+          );
+
+          const currentCash = transactionsToCash(allTransactions);
+          return {
+            ...entry,
+            ...getFinancials({
+              initialValue,
+              initialCash,
+              currentValue,
+              currentCash
+            })
+          };
+        })
+        .sort((a, b) => b.diff - a.diff)
+    };
+  }, {});
+}
+
+export default function getEntryFinancials(entry) {
+  const startDate = Number(entry.createdAt);
+  const startWeek = getISOWeek(startDate);
+  const startYear = getISOWeekYear(startDate);
+
+  const endDate = Date.now();
+  const endWeek = getISOWeek(endDate);
+  const endYear = getISOWeekYear(endDate);
+
+  const initialValue = getSelectionValue(
+    entry.selections.slice(0, 5),
+    startWeek,
+    startYear
+  );
+
+  const initialCash = TOTAL_BUDGET - initialValue;
+  const currentValue = getFilteredSelectionValue(
+    entry.selections,
+    endWeek,
+    endYear
+  );
+
+  const transactions = selectionsToTransactions(entry.selections);
+  const currentCash = transactionsToCash(transactions);
+  return {
+    startDate,
+    startWeek,
+    startYear,
     transactions,
-    initialValue,
-    diff: totalValue - (initialValue + initialCash)
+    ...getFinancials({initialValue, initialCash, currentValue, currentCash})
   };
 }

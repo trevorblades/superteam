@@ -6,12 +6,12 @@ import Tooltip from '@material-ui/core/Tooltip';
 import round from 'lodash/round';
 import {formatMoney} from '../utils/format';
 
-export function FinancialHeaders(props) {
+export function FinancialHeaders() {
   return (
     <Fragment>
-      <TableCell align="right">Players</TableCell>
-      {!props.hideCash && <TableCell align="right">Cash</TableCell>}
-      <TableCell align="right">Total</TableCell>
+      <TableCell align="right">Initial</TableCell>
+      <TableCell align="right">Current</TableCell>
+      <TableCell align="right">Cash</TableCell>
       <TableCell align="right">Diff</TableCell>
       <TableCell align="right">
         <Tooltip title="Return on investment">
@@ -22,19 +22,13 @@ export function FinancialHeaders(props) {
   );
 }
 
-FinancialHeaders.propTypes = {
-  hideCash: PropTypes.bool
-};
-
 export default function FinancialCells(props) {
   const roi = (props.diff / props.initialValue) * 100;
   return (
     <Fragment>
-      <TableCell align="right">{formatMoney(props.playerValue)}</TableCell>
-      {Number.isInteger(props.cash) && (
-        <TableCell align="right">{formatMoney(props.cash)}</TableCell>
-      )}
-      <TableCell align="right">{formatMoney(props.totalValue)}</TableCell>
+      <TableCell align="right">{formatMoney(props.initialValue)}</TableCell>
+      <TableCell align="right">{formatMoney(props.currentValue)}</TableCell>
+      <TableCell align="right">{formatMoney(props.currentCash)}</TableCell>
       <TableCell align="right">
         <Diff value={props.diff} />
       </TableCell>
@@ -44,9 +38,8 @@ export default function FinancialCells(props) {
 }
 
 FinancialCells.propTypes = {
-  playerValue: PropTypes.number.isRequired,
-  cash: PropTypes.number,
-  totalValue: PropTypes.number.isRequired,
+  currentValue: PropTypes.number.isRequired,
+  currentCash: PropTypes.number.isRequired,
   initialValue: PropTypes.number.isRequired,
   diff: PropTypes.number.isRequired
 };

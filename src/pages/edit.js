@@ -9,7 +9,9 @@ import React, {Fragment} from 'react';
 import SaveButton from '../components/save-button';
 import TeamBuilder from '../components/team-builder';
 import Typography from '@material-ui/core/Typography';
-import getEntryFinancials from '../utils/get-entry-financials';
+import getEntryFinancials, {
+  getEntryPlayers
+} from '../utils/get-entry-financials';
 import styled from '@emotion/styled';
 import {GET_ENTRY, UPDATE_ENTRY} from '../utils/queries';
 import {Mutation, Query} from 'react-apollo';
@@ -51,18 +53,19 @@ export default function Edit(props) {
                   );
                 }
 
-                const {players, playerValue, totalValue} = getEntryFinancials(
+                const {currentValue, currentCash} = getEntryFinancials(
                   data.entry
                 );
+                const players = getEntryPlayers(data.entry);
                 return (
                   <Fragment>
                     <Helmet>
                       <title>{data.entry.name}</title>
                     </Helmet>
                     <TeamBuilder
-                      amountSpent={playerValue}
+                      amountSpent={currentValue}
                       selectedPlayers={players.map(player => player.id)}
-                      budget={totalValue}
+                      budget={currentValue + currentCash}
                     >
                       {players => (
                         <Mutation

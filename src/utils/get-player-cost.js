@@ -5,7 +5,7 @@ export function percentileToCost(percentile) {
   return Math.round(cost);
 }
 
-export function getInitialPlayerCost(week, year, player) {
+export function getPlayerCostAtWeek(player, week, year) {
   const {percentile} = player.statistics.find(
     statistic => statistic.week <= week && statistic.year <= year
   );
@@ -14,10 +14,6 @@ export function getInitialPlayerCost(week, year, player) {
 
 export function sum(a, b) {
   return a + b;
-}
-
-export function getTotalPlayerCost(players) {
-  return players.map(getPlayerCost).reduce(sum);
 }
 
 export default function getPlayerCost(player) {

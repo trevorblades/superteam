@@ -25,7 +25,9 @@ export default function TransactionList(props) {
 
         const isSubtraction = transaction.amount > 0;
         return (
-          <Fragment key={transaction.id}>
+          <Fragment
+            key={transaction.player.id + transaction.date.getTime().toString()}
+          >
             {renderSubheader && (
               <ListSubheader disableGutters>{date}</ListSubheader>
             )}
