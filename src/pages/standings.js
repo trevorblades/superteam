@@ -83,18 +83,14 @@ export default class Standings extends Component {
                 value={this.state.quarter}
                 onChange={this.onQuarterChange}
                 inputProps={{id: 'quarter'}}
-                renderValue={value => {
-                  const {label, start, end} = getQuarterDate(value);
-                  const startDate = format(start, 'LLL d');
-                  const endDate = format(end, 'LLL d, yyyy');
-                  return `${label} (${startDate} - ${endDate})`;
-                }}
               >
                 {quarters.map(quarter => {
-                  const {label} = getQuarterDate(quarter);
+                  const {label, start, end} = getQuarterDate(quarter);
+                  const startDate = format(start, 'LLL d');
+                  const endDate = format(end, 'LLL d, yyyy');
                   return (
                     <MenuItem key={quarter} value={quarter}>
-                      {label}
+                      {label} ({startDate} - {endDate})
                     </MenuItem>
                   );
                 })}
