@@ -5,10 +5,14 @@ export function percentileToCost(percentile) {
   return Math.round(cost);
 }
 
-export function getPlayerCostAtWeek(player, week, year) {
-  const {percentile} = player.statistics.find(
+export function getPlayerStatsAtWeek(player, week, year) {
+  return player.statistics.find(
     statistic => statistic.week <= week && statistic.year <= year
   );
+}
+
+export function getPlayerCostAtWeek(player, week, year) {
+  const {percentile} = getPlayerStatsAtWeek(player, week, year);
   return percentileToCost(percentile);
 }
 

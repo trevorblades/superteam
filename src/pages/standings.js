@@ -148,6 +148,7 @@ export const query = graphql`
           deletedAt
           player {
             statistics {
+              kills
               percentile
               week
               year

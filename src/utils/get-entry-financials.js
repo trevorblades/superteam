@@ -1,11 +1,16 @@
 import endOfQuarter from 'date-fns/endOfQuarter';
 import getISOWeek from 'date-fns/getISOWeek';
 import getISOWeekYear from 'date-fns/getISOWeekYear';
+import orderBy from 'lodash/orderBy';
 import setQuarter from 'date-fns/setQuarter';
 import setYear from 'date-fns/setYear';
 import startOfQuarter from 'date-fns/startOfQuarter';
 import {TOTAL_BUDGET} from './constants';
-import {getPlayerCostAtWeek, sum} from './get-player-cost';
+import {
+  getPlayerCostAtWeek,
+  getPlayerStatsAtWeek,
+  sum
+} from './get-player-cost';
 
 function getSelectionDate(selection, selectedAt) {
   const [{week, year}] = selection.player.statistics;
@@ -55,15 +60,18 @@ function getSelectionValue(selections, week, year) {
     .reduce(sum);
 }
 
+function getFilteredSelections(selections, filter) {
+  return selections
+    .filter(
+      selection =>
+        !selection.deletedAt || (filter && filter(Number(selection.deletedAt)))
+    )
+    .slice(0, 5);
+}
+
 function getFilteredSelectionValue(selections, week, year, filter) {
   return getSelectionValue(
-    selections
-      .filter(
-        selection =>
-          !selection.deletedAt ||
-          (filter && filter(Number(selection.deletedAt)))
-      )
-      .slice(0, 5),
+    getFilteredSelections(selections, filter),
     week,
     year
   );
@@ -101,64 +109,86 @@ export function getQuarterlyFinancials(entries, quarters, date) {
     const periodEndDate = Math.min(date, end);
     const periodEndWeek = getISOWeek(periodEndDate);
     const periodEndYear = getISOWeekYear(periodEndDate);
+
+    const standings = entries
+      .filter(entry => Number(entry.createdAt) <= end)
+      .map(entry => {
+        const createdAt = Number(entry.createdAt);
+        const periodStartDate = Math.max(createdAt, start);
+        const periodStartWeek = getISOWeek(periodStartDate);
+        const periodStartYear = getISOWeekYear(periodStartDate);
+
+        // get all transactions leading up to and including quarter
+        const allTransactions = selectionsToTransactions(
+          entry.selections,
+          deletedAt => deletedAt <= end
+        );
+
+        // get all transactions leading up to quarter start
+        const filteredTransactions = allTransactions.filter(
+          transaction => transaction.date < periodStartDate
+        );
+
+        // filter out selections that were created after the quarter
+        const selections = entry.selections.filter(
+          selection => Number(selection.createdAt) <= end
+        );
+
+        const initialValue = getFilteredSelectionValue(
+          selections,
+          periodStartWeek,
+          periodStartYear,
+          deletedAt => deletedAt >= start
+        );
+
+        const initialCash = transactionsToCash(
+          filteredTransactions.length
+            ? filteredTransactions
+            : allTransactions.slice(0, 5)
+        );
+
+        const currentSelections = getFilteredSelections(
+          selections,
+          deletedAt => deletedAt > end
+        );
+
+        const currentValue = getSelectionValue(
+          currentSelections,
+          periodEndWeek,
+          periodEndYear
+        );
+
+        const totalKills = currentSelections
+          .map(selection => {
+            const {kills} = getPlayerStatsAtWeek(
+              selection.player,
+              periodEndWeek,
+              periodEndYear
+            );
+            return kills;
+          })
+          .reduce(sum);
+
+        const currentCash = transactionsToCash(allTransactions);
+        return {
+          ...entry,
+          totalKills,
+          ...getFinancials({
+            initialValue,
+            initialCash,
+            currentValue,
+            currentCash
+          })
+        };
+      });
+
     return {
       ...acc,
-      [quarter]: entries
-        .filter(entry => Number(entry.createdAt) <= end)
-        .map(entry => {
-          const createdAt = Number(entry.createdAt);
-          const periodStartDate = Math.max(createdAt, start);
-          const periodStartWeek = getISOWeek(periodStartDate);
-          const periodStartYear = getISOWeekYear(periodStartDate);
-
-          // get all transactions leading up to and including quarter
-          const allTransactions = selectionsToTransactions(
-            entry.selections,
-            deletedAt => deletedAt <= end
-          );
-
-          // get all transactions leading up to quarter start
-          const filteredTransactions = allTransactions.filter(
-            transaction => transaction.date < periodStartDate
-          );
-
-          // filter out selections that were created after the quarter
-          const selections = entry.selections.filter(
-            selection => Number(selection.createdAt) <= end
-          );
-
-          const initialValue = getFilteredSelectionValue(
-            selections,
-            periodStartWeek,
-            periodStartYear,
-            deletedAt => deletedAt >= start
-          );
-
-          const initialCash = transactionsToCash(
-            filteredTransactions.length
-              ? filteredTransactions
-              : allTransactions.slice(0, 5)
-          );
-
-          const currentValue = getFilteredSelectionValue(
-            selections,
-            periodEndWeek,
-            periodEndYear,
-            deletedAt => deletedAt > end
-          );
-
-          const currentCash = transactionsToCash(allTransactions);
-          return {
-            ...entry,
-            ...getFinancials({
-              initialValue,
-              initialCash,
-              currentValue,
-              currentCash
-            })
-          };
-        })
-        .sort((a, b) => b.diff - a.diff)
+      [quarter]: orderBy(
+        standings,
+        ['diff', 'currentValue', 'totalKills'],
+        ['desc', 'desc', 'desc']
+      )
     };
   }, {});
 }
