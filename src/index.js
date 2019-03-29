@@ -39,16 +39,19 @@ passport.use(
     {
       consumerKey: process.env.TWITTER_CONSUMER_KEY,
       consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-      callbackURL: process.env.TWITTER_CALLBACK_URL
+      callbackURL: process.env.TWITTER_CALLBACK_URL,
+      includeEmail: true
     },
     async (accessToken, refreshToken, profile, cb) => {
-      const {id, username, displayName, photos} = profile;
+      const {id, username, displayName, photos, emails} = profile;
       let user = await User.findByPk(id);
       if (!user) {
         user = await User.create({id});
       }
 
+      const [{value: email}] = emails;
       await user.update({
+        email,
         username,
         displayName,
         profileImage: photos[0].value.replace(/_normal/, '')
