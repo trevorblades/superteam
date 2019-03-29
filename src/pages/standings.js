@@ -3,11 +3,13 @@ import Footer from '../components/footer';
 import FormControl from '@material-ui/core/FormControl';
 import Helmet from 'react-helmet';
 import InputLabel from '@material-ui/core/InputLabel';
+import LastUpdated from '../components/last-updated';
 import Layout from '../components/layout';
 import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Select from '@material-ui/core/Select';
+import StandingsExplainer from '../components/standings-explainer';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -17,6 +19,7 @@ import Typography from '@material-ui/core/Typography';
 import differenceInQuarters from 'date-fns/differenceInQuarters';
 import format from 'date-fns/format';
 import getQuarter from 'date-fns/getQuarter';
+import styled from '@emotion/styled';
 import {PageWrapper, Section} from '../components/common';
 import {
   getQuarterDate,
@@ -24,6 +27,10 @@ import {
   rankingCriteria
 } from '../utils/get-entry-financials';
 import {graphql} from 'gatsby';
+
+const StyledTable = styled(Table)({
+  margin: `${16}px 0`
+});
 
 function getCountKey(entry) {
   return rankingCriteria.map(criteria => entry[criteria]).toString();
@@ -80,7 +87,7 @@ export default class Standings extends Component {
             <Typography variant="h3" gutterBottom>
               {title}
             </Typography>
-            <FormControl margin="normal">
+            <FormControl>
               <InputLabel htmlFor="quarter">Ranking period</InputLabel>
               <Select
                 value={this.state.quarter}
@@ -99,7 +106,7 @@ export default class Standings extends Component {
                 })}
               </Select>
             </FormControl>
-            <Table padding="none">
+            <StyledTable padding="none">
               <TableHead>
                 <TableRow>
                   <TableCell>Rank</TableCell>
@@ -127,7 +134,10 @@ export default class Standings extends Component {
                   );
                 })}
               </TableBody>
-            </Table>
+            </StyledTable>
+            <Typography component="p" variant="caption" color="textSecondary">
+              <LastUpdated />. <StandingsExplainer />?
+            </Typography>
           </PageWrapper>
         </Section>
         <Footer />

@@ -38,7 +38,7 @@ export default function HowToPlay() {
             >
               HLTV
             </a>{' '}
-            rating at recent LAN events. Simply click on a player card to
+            rating for recent LAN events. Simply click on a player card to
             acquire that player and repeat until you have a full 5-person team.
             You must be strategic with your spending and decide how you want to
             spread your team&apos;s talent around.

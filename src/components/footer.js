@@ -1,5 +1,4 @@
 import Colophon from './colophon';
-import LastUpdated from './last-updated';
 import LogoTitle from './logo-title';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
@@ -86,7 +85,7 @@ export default function Footer() {
         <div>
           <StyledLogoTitle vector color="inherit" />
           <Text variant="caption">
-            <Colophon />. <LastUpdated />
+            <Colophon />
           </Text>
         </div>
         <StyledNav>
