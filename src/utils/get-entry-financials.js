@@ -60,7 +60,7 @@ function getSelectionsValue(selections, week, year, filter) {
     .reduce(sum);
 }
 
-function getFinancials(currentValue, currentCash, initialValue, initialCash) {
+function getFinancials({initialValue, initialCash, currentValue, currentCash}) {
   return {
     initialValue,
     currentValue,
@@ -140,12 +140,12 @@ export function getQuarterlyFinancials(entries, quarters, date) {
           const currentCash = transactionsToCash(allTransactions);
           return {
             ...entry,
-            ...getFinancials(
+            ...getFinancials({
               initialValue,
               initialCash,
               currentValue,
               currentCash
-            )
+            })
           };
         })
         .sort((a, b) => b.diff - a.diff)
@@ -178,6 +178,6 @@ export default function getEntryFinancials(entry) {
     startYear,
     transactions,
     currentCash,
-    ...getFinancials(initialValue, initialCash, currentValue, currentCash)
+    ...getFinancials({initialValue, initialCash, currentValue, currentCash})
   };
 }
