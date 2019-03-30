@@ -14,6 +14,7 @@ import {cover} from 'polished';
 const StyledHero = styled(Hero)({
   flexShrink: 0,
   color: 'white',
+  backgroundColor: 'black',
   backgroundImage: `url(${hero})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
