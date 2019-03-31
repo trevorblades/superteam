@@ -19,8 +19,7 @@ const logoStyles = {
 
 const StyledImage = styled.img(logoStyles);
 const StyledLogo = styled(Logo)(logoStyles, {
-  fill: 'currentColor',
-  stroke: 'currentColor'
+  fill: 'currentColor'
 });
 
 export default function LogoTitle(props) {
