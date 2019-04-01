@@ -11,8 +11,8 @@ export default class ShareButton extends Component {
   };
 
   onClick = () => {
-    const width = 555;
-    const height = 420;
+    const width = 666; // 👹
+    const height = 420; // 💨
     const options = {
       width,
       height,
