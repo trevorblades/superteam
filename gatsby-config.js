@@ -7,7 +7,7 @@ module.exports = {
   siteMetadata: {
     title: 'Superteam',
     description:
-      'Assemble a dream team of your favourite esports stars and compete against others to see who makes the best picks.',
+      "Build a team of current and future CS:GO superstars and earn prizes based on your team's quarterly performance.",
     lastUpdated: Date.now()
   },
   plugins: [

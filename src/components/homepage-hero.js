@@ -40,42 +40,47 @@ export default function HomepageHero() {
   return (
     <StyledHero>
       <PageWrapper centered>
-        <Grid container alignItems="center">
-          <Grid item sm={12} md={6}>
-            <Typography variant="h2" color="secondary" gutterBottom>
-              Free <span style={{color: 'white'}}>fantasy CS:GO esports</span>
-            </Typography>
-            <Typography variant="body1" paragraph color="inherit">
-              Build a team of current and future CS:GO superstars and{' '}
-              <a href="#prizes">earn prizes</a> based on your team&apos;s
-              quarterly performance.
-            </Typography>
-            <Fab
-              variant="extended"
-              color="secondary"
-              component={Link}
-              to="/create"
-            >
-              <MdAdd size={24} style={{marginRight: 8}} />
-              Create a team
-            </Fab>
-          </Grid>
-          <Grid item md={6}>
-            <Hidden smDown implementation="css">
-              <StaticQuery
-                query={graphql`
-                  {
-                    superteam {
-                      player1: player(id: "7398") {
-                        ...PlayerFragment
-                      }
-                      player2: player(id: "7687") {
-                        ...PlayerFragment
-                      }
-                    }
-                  }
-                `}
-                render={data => (
+        <StaticQuery
+          query={graphql`
+            {
+              site {
+                siteMetadata {
+                  description
+                }
+              }
+              superteam {
+                player1: player(id: "7398") {
+                  ...PlayerFragment
+                }
+                player2: player(id: "7687") {
+                  ...PlayerFragment
+                }
+              }
+            }
+          `}
+          render={data => (
+            <Grid container alignItems="center">
+              <Grid item sm={12} md={6}>
+                <Typography variant="h2" color="secondary" gutterBottom>
+                  Free{' '}
+                  <span style={{color: 'white'}}>fantasy CS:GO esports</span>
+                </Typography>
+
+                <Typography variant="body1" paragraph color="inherit">
+                  {data.site.siteMetadata.description}
+                </Typography>
+                <Fab
+                  variant="extended"
+                  color="secondary"
+                  component={Link}
+                  to="/create"
+                >
+                  <MdAdd size={24} style={{marginRight: 8}} />
+                  Create a team
+                </Fab>
+              </Grid>
+              <Grid item md={6}>
+                <Hidden smDown implementation="css">
                   <PlayerCards>
                     <PlayerCardWrapper>
                       <PlayerCard static player={data.superteam.player1} />
@@ -89,11 +94,11 @@ export default function HomepageHero() {
                       />
                     </PlayerCardWrapper>
                   </PlayerCards>
-                )}
-              />
-            </Hidden>
-          </Grid>
-        </Grid>
+                </Hidden>
+              </Grid>
+            </Grid>
+          )}
+        />
       </PageWrapper>
     </StyledHero>
   );
