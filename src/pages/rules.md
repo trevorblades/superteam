@@ -4,6 +4,10 @@ title: Official rules
 
 ### Official contest rules
 
+---
+
+<br>
+
 NO PURCHASE NECESSARY TO ENTER OR WIN. MAKING A PURCHASE OR PAYMENT OF ANY KIND WILL NOT INCREASE YOUR CHANCES OF WINNING. VOID WHERE PROHIBITED OR RESTRICTED BY LAW.
 
 1. PROMOTION DESCRIPTION: The Superteam Challenge Q2 2019 ("Contest") begins on 1 April 2019 at 0:00 PT and ends on 30 June 2019 at 19:00 PT (the "Promotion Period").

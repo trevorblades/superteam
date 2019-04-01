@@ -1,3 +1,4 @@
+import Divider from '@material-ui/core/Divider';
 import Footer from '../components/footer';
 import Helmet from 'react-helmet';
 import Layout from '../components/layout';
@@ -44,6 +45,7 @@ export default function Template(props) {
                 h4: getHeadingOverride('h4'),
                 h5: getHeadingOverride('h5'),
                 h6: getHeadingOverride('h6'),
+                hr: Divider,
                 li: StyledListItem,
                 p: {
                   component: Typography,
