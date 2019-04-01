@@ -55,6 +55,10 @@ function EntryChart(props) {
             }
           }
         ]}
+        xScale={{
+          type: 'linear',
+          min: 'auto'
+        }}
         axisBottom={{
           orient: 'bottom',
           legend: 'week',
