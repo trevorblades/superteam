@@ -52,7 +52,7 @@ export default function PrimaryEntryCard(props) {
             text={`I picked ${arrayToSentence(
               players.map(player => player.ign),
               {lastSeparator: ', and '}
-            )} for my Superteam`}
+            )}`}
           />
         }
         avatar={<StyledStar size={32} />}

@@ -22,6 +22,7 @@ export default class ShareButton extends Component {
 
     const query = stringify({
       text: this.props.text,
+      hashtags: 'MySuperteam',
       url: 'https://superteam.gg',
       related: 'superteamgg'
     });
