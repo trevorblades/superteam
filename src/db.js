@@ -42,7 +42,8 @@ export const User = sequelize.define('user', {
   email: Sequelize.STRING,
   username: Sequelize.STRING,
   displayName: Sequelize.STRING,
-  profileImage: Sequelize.STRING
+  profileImage: Sequelize.STRING,
+  twitterId: Sequelize.STRING
 });
 
 export const Entry = sequelize.define('entry', {

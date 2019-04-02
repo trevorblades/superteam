@@ -42,11 +42,16 @@ passport.use(
       callbackURL: process.env.TWITTER_CALLBACK_URL,
       includeEmail: true
     },
-    async (accessToken, refreshToken, profile, cb) => {
-      const {id, username, displayName, photos, emails} = profile;
-      let user = await User.findByPk(id);
+    async (token, tokenSecret, profile, cb) => {
+      const {id: twitterId, username, displayName, photos, emails} = profile;
+      let user = await User.findOne({
+        where: {
+          twitterId
+        }
+      });
+
       if (!user) {
-        user = await User.create({id});
+        user = await User.create({twitterId});
       }
 
       const [{value: email}] = emails;
