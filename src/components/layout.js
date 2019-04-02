@@ -12,7 +12,8 @@ import {resolve} from 'url';
 const Container = styled.div(cover(), {
   display: 'flex',
   flexDirection: 'column',
-  overflow: 'auto'
+  overflow: 'auto',
+  WebkitOverflowScrolling: 'touch'
 });
 
 export default function Layout(props) {
