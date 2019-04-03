@@ -5,17 +5,18 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import LoginSaveButton from './login-save-button';
 import MoneyRow, {MoneyCell} from './money-row';
 import PlayerAvatar from '../player-avatar';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import SaveButton from '../save-button';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
+import TwitterLogin from '../twitter-login';
 import getPlayerCost, {sum} from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
 import {CREATE_ENTRY, LIST_ENTRIES} from '../../utils/queries';
@@ -170,10 +171,14 @@ class CheckoutDialog extends Component {
               componentize login/save buttons to consume injected className prop
               more info: https://bit.ly/2SJyiXD
             */}
-              <LoginSaveButton
-                user={this.props.user}
-                disabled={!this.state.accepted || loading}
-              />
+              {this.props.user ? (
+                <SaveButton
+                  disabled={!this.state.accepted || loading}
+                  type="submit"
+                />
+              ) : (
+                <TwitterLogin text="Log in to save" />
+              )}
             </DialogActions>
           </form>
         )}

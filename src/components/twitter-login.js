@@ -1,14 +1,38 @@
+import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
+import React, {Component} from 'react';
 import io from 'socket.io-client';
-import {Component} from 'react';
+import styled from '@emotion/styled';
+import {FaTwitter} from 'react-icons/fa';
+import {TWITTER_BLUE} from '../utils/constants';
+import {mix} from 'polished';
 import {stringify} from 'querystring';
 import {userFromToken} from '../utils/user-from-storage';
 import {withApollo} from 'react-apollo';
+import {withTheme} from '@material-ui/core/styles';
+
+const StyledButton = withTheme()(
+  styled(Button)(({theme}) => {
+    const {main, dark} = theme.palette.augmentColor({main: TWITTER_BLUE});
+    return {
+      color: 'white',
+      backgroundColor: main,
+      ':hover': {
+        backgroundColor: mix(0.5, main, dark)
+      }
+    };
+  })
+);
 
 class TwitterLogin extends Component {
   static propTypes = {
+    text: PropTypes.string,
     client: PropTypes.object.isRequired,
-    children: PropTypes.func.isRequired
+    className: PropTypes.string
+  };
+
+  static defaultProps = {
+    text: 'Log in with Twitter'
   };
 
   state = {
@@ -82,10 +106,16 @@ class TwitterLogin extends Component {
   };
 
   render() {
-    return this.props.children({
-      pending: this.state.pending,
-      startAuth: this.startAuth
-    });
+    return (
+      <StyledButton
+        variant="contained"
+        onClick={this.startAuth}
+        disabled={this.state.pending}
+        className={this.props.className}
+      >
+        <FaTwitter size={20} style={{marginRight: 8}} /> {this.props.text}
+      </StyledButton>
+    );
   }
 }
 

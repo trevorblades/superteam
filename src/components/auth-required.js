@@ -1,7 +1,9 @@
+import Footer from './footer';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {Fragment} from 'react';
+import TwitterLogin from './twitter-login';
 import Typography from '@material-ui/core/Typography';
-import {Section} from './common';
+import {PageWrapper, Section} from './common';
 import {withUser} from './with-user';
 
 function AuthRequired(props) {
@@ -10,9 +12,17 @@ function AuthRequired(props) {
   }
 
   return (
-    <Section>
-      <Typography>No user plz login</Typography>
-    </Section>
+    <Fragment>
+      <Section>
+        <PageWrapper>
+          <Typography gutterBottom variant="h3">
+            Login required
+          </Typography>
+          <TwitterLogin />
+        </PageWrapper>
+      </Section>
+      <Footer />
+    </Fragment>
   );
 }
 

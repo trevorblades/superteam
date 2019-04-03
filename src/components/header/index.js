@@ -1,13 +1,11 @@
 import AppBar from '@material-ui/core/AppBar';
-import ButtonBase from '@material-ui/core/ButtonBase';
+import Button from '@material-ui/core/Button';
 import Hidden from '@material-ui/core/Hidden';
 import LogoTitle from '../logo-title';
 import MobileNav from './mobile-nav';
 import NoSsr from '@material-ui/core/NoSsr';
 import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
-import TwitterLogin from '../twitter-login';
 import Typography from '@material-ui/core/Typography';
 import UserMenu from './user-menu';
 import WithUser from '../with-user';
@@ -15,10 +13,9 @@ import compose from 'recompose/compose';
 import mapProps from 'recompose/mapProps';
 import styled from '@emotion/styled';
 import withProps from 'recompose/withProps';
-import {Avatar} from '@material-ui/core';
-import {FaTwitter} from 'react-icons/fa';
-import {GRID_SPACING, TWITTER_BLUE} from '../../utils/constants';
+import {GRID_SPACING} from '../../utils/constants';
 import {Link} from 'gatsby';
+import {MdVpnKey} from 'react-icons/md';
 import {PageWrapper} from '../common';
 import {withTheme} from '@material-ui/core/styles';
 
@@ -111,11 +108,6 @@ const Action = withTheme()(
   }))
 );
 
-const StyledAvatar = styled(Avatar)({
-  color: 'white',
-  backgroundColor: TWITTER_BLUE
-});
-
 export const navItems = [
   {
     path: '/',
@@ -162,19 +154,10 @@ export default function Header() {
                   user ? (
                     <UserMenu user={user} />
                   ) : (
-                    <TwitterLogin>
-                      {({pending, startAuth}) => (
-                        <Tooltip title="Log in with Twitter">
-                          <StyledAvatar
-                            component={ButtonBase}
-                            onClick={startAuth}
-                            disabled={pending}
-                          >
-                            <FaTwitter size={20} />
-                          </StyledAvatar>
-                        </Tooltip>
-                      )}
-                    </TwitterLogin>
+                    <Button color="primary">
+                      <MdVpnKey size={18} style={{marginRight: 8}} />
+                      Log in
+                    </Button>
                   )
                 }
               </WithUser>
