@@ -23,7 +23,7 @@ export default function HowToPlay() {
     <Fragment>
       <a name="how-to-play" />
       <Section>
-        <PageWrapper mini centered>
+        <PageWrapper mini>
           <Typography variant="h3" gutterBottom>
             How to play
           </Typography>

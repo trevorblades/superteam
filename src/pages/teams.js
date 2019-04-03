@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import EntryDrawer from '../components/entry-drawer';
 import FinancialCells, {FinancialHeaders} from '../components/financial-cells';
 import Footer from '../components/footer';
+import Grid from '@material-ui/core/Grid';
 import Helmet from 'react-helmet';
 import Layout from '../components/layout';
 import LoadingIndicator from '../components/loading-indicator';
@@ -11,7 +12,7 @@ import NoSsr from '@material-ui/core/NoSsr';
 import PrimaryCheckbox from '../components/primary-checkbox';
 import PrimaryEntryCard from '../components/primary-entry-card';
 import PropTypes from 'prop-types';
-import React, {Fragment} from 'react';
+import React from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -19,15 +20,10 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import getEntryFinancials from '../utils/get-entry-financials';
-import styled from '@emotion/styled';
 import {LIST_ENTRIES} from '../utils/queries';
 import {Link} from 'gatsby';
 import {PageWrapper, Section} from '../components/common';
 import {Query} from 'react-apollo';
-
-const StyledPageWrapper = styled(PageWrapper)({
-  padding: `${12}px 0`
-});
 
 const title = 'My teams';
 export default function Teams(props) {
@@ -40,7 +36,7 @@ export default function Teams(props) {
             <title>{title}</title>
           </Helmet>
           <Section>
-            <PageWrapper centered>
+            <PageWrapper>
               <Typography variant="h3" gutterBottom>
                 {title}
               </Typography>
@@ -64,48 +60,51 @@ export default function Teams(props) {
                   }
 
                   return (
-                    <Fragment>
-                      <StyledPageWrapper mini>
+                    <Grid container spacing={32}>
+                      <Grid item xs={12} sm={11} md={9} lg={8}>
                         <PrimaryEntryCard
                           entry={data.entries.find(entry => entry.primary)}
                         />
-                      </StyledPageWrapper>
-                      <br />
-                      <Table padding="none">
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>Team name</TableCell>
-                            <FinancialHeaders />
-                            <TableCell align="right">Actions</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {data.entries.map(entry => (
-                            <TableRow key={entry.id}>
-                              <TableCell>
-                                <PrimaryCheckbox
-                                  id={entry.id}
-                                  name={entry.name}
-                                  checked={entry.primary}
-                                />
-                                {entry.name}
-                              </TableCell>
-                              <FinancialCells {...getEntryFinancials(entry)} />
-                              <TableCell align="right">
-                                <Button
-                                  component={Link}
-                                  variant="outlined"
-                                  size="small"
-                                  to={`/teams/${entry.id}`}
-                                >
-                                  Details
-                                </Button>
-                              </TableCell>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Table padding="none">
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>Team name</TableCell>
+                              <FinancialHeaders />
+                              <TableCell align="right">Actions</TableCell>
                             </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </Fragment>
+                          </TableHead>
+                          <TableBody>
+                            {data.entries.map(entry => (
+                              <TableRow key={entry.id}>
+                                <TableCell>
+                                  <PrimaryCheckbox
+                                    id={entry.id}
+                                    name={entry.name}
+                                    checked={entry.primary}
+                                  />
+                                  {entry.name}
+                                </TableCell>
+                                <FinancialCells
+                                  {...getEntryFinancials(entry)}
+                                />
+                                <TableCell align="right">
+                                  <Button
+                                    component={Link}
+                                    variant="outlined"
+                                    size="small"
+                                    to={`/teams/${entry.id}`}
+                                  >
+                                    Details
+                                  </Button>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </Grid>
+                    </Grid>
                   );
                 }}
               </Query>

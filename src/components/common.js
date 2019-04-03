@@ -48,7 +48,7 @@ export const Hero = withTheme()(
 export const PageWrapper = styled.div(props => ({
   width: '100%',
   maxWidth: props.mini ? 900 : 1280,
-  margin: props.centered && '0 auto'
+  margin: '0 auto'
 }));
 
 export const EmptyPlayerCard = withTheme()(

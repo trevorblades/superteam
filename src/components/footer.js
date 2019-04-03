@@ -81,7 +81,7 @@ const ExternalLink = withProps({
 export default function Footer() {
   return (
     <Container>
-      <StyledPageWrapper centered>
+      <StyledPageWrapper>
         <div>
           <StyledLogoTitle vector color="inherit" />
           <Text variant="caption">

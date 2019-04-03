@@ -61,7 +61,7 @@ export default function Prizes() {
     <Fragment>
       <a name="prizes" />
       <Section>
-        <PageWrapper mini centered>
+        <PageWrapper mini>
           <Typography variant="h3" gutterBottom>
             Earn prizes
           </Typography>
@@ -73,7 +73,7 @@ export default function Prizes() {
             this quarter&apos;s prizes! 👀
           </Typography>
         </PageWrapper>
-        <StyledPageWrapper centered>
+        <StyledPageWrapper>
           <Grid container justify="center" spacing={32}>
             {prizeKeys.map((key, index, array) => {
               const prize = prizes[key];

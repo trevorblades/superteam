@@ -39,7 +39,7 @@ export default function Banner() {
         xs: 12
       }}
     >
-      <StyledPageWrapper centered>
+      <StyledPageWrapper>
         <TextWrapper>
           <Typography color="inherit" variant="h6">
             Q2 Challenge: 1 April - 30 June 2019

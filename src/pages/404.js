@@ -9,7 +9,7 @@ export default function NotFound() {
   return (
     <Layout>
       <Hero>
-        <PageWrapper centered>
+        <PageWrapper>
           <Typography variant="h2" gutterBottom>
             404 Door stuck
           </Typography>

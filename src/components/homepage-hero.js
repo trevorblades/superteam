@@ -39,7 +39,7 @@ const PlayerCardWrapper = styled.div({
 export default function HomepageHero() {
   return (
     <StyledHero>
-      <PageWrapper centered>
+      <PageWrapper>
         <StaticQuery
           query={graphql`
             {

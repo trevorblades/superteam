@@ -35,7 +35,7 @@ export default function Template(props) {
         <title>{frontmatter.title}</title>
       </Helmet>
       <Section>
-        <PageWrapper mini centered>
+        <PageWrapper mini>
           <Markdown
             options={{
               overrides: {

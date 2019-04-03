@@ -155,7 +155,7 @@ export default class Standings extends Component {
           <title>{title}</title>
         </Helmet>
         <Section>
-          <PageWrapper centered>
+          <PageWrapper>
             <Typography variant="h3" gutterBottom>
               {title}
             </Typography>

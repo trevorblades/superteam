@@ -22,7 +22,7 @@ export default function Settings() {
             <title>Settings</title>
           </Helmet>
           <Section>
-            <PageWrapper centered mini>
+            <PageWrapper mini>
               <Typography variant="h3" gutterBottom>
                 Settings
               </Typography>
