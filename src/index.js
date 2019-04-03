@@ -81,9 +81,13 @@ passport.use(
     },
     async (token, tokenSecret, profile, cb) => {
       const {id, displayName, photos, emails} = profile;
-      const [{value: email}] = emails;
-      const [{value: photo}] = photos;
 
+      let email;
+      if (emails) {
+        email = emails[0].value;
+      }
+
+      const [{value: photo}] = photos;
       const user = await getUserForProvider('twitterId', {
         id,
         email,
