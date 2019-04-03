@@ -1,3 +1,4 @@
+import axios from 'axios';
 import cors from 'cors';
 import express from 'express';
 import http from 'http';
@@ -7,6 +8,7 @@ import schema from './schema';
 import session from 'express-session';
 import socketio from 'socket.io';
 import {ApolloServer} from 'apollo-server-express';
+import {Op} from 'sequelize';
 import {Strategy as TwitterStrategy} from 'passport-twitter';
 import {User, sequelize} from './db';
 
@@ -31,8 +33,43 @@ app.use(
   })
 );
 
-passport.serializeUser((user, cb) => cb(null, user));
-passport.deserializeUser((obj, cb) => cb(null, obj));
+function serialize(user, cb) {
+  return cb(null, user);
+}
+
+passport.serializeUser(serialize);
+passport.deserializeUser(serialize);
+
+async function getUserForProvider(key, {id, email, name, image}) {
+  let user = await User.findOne({
+    where: {
+      [Op.or]: {
+        [key]: id,
+        [Op.and]: {
+          [key]: {
+            [Op.is]: null
+          },
+          email: {
+            [Op.iLike]: email
+          }
+        }
+      }
+    }
+  });
+
+  if (!user) {
+    user = User.build();
+  }
+
+  user.set({
+    email,
+    name,
+    image,
+    [key]: id
+  });
+
+  return user.save();
+}
 
 passport.use(
   new TwitterStrategy(
@@ -43,23 +80,15 @@ passport.use(
       includeEmail: true
     },
     async (token, tokenSecret, profile, cb) => {
-      const {id: twitterId, username, displayName, photos, emails} = profile;
-      let user = await User.findOne({
-        where: {
-          twitterId
-        }
-      });
-
-      if (!user) {
-        user = await User.create({twitterId});
-      }
-
+      const {id, displayName, photos, emails} = profile;
       const [{value: email}] = emails;
-      await user.update({
+      const [{value: photo}] = photos;
+
+      const user = await getUserForProvider('twitterId', {
+        id,
         email,
-        username,
-        displayName,
-        profileImage: photos[0].value.replace(/_normal/, '')
+        name: displayName,
+        image: photo.replace(/_normal/, '')
       });
 
       cb(null, user);
@@ -75,9 +104,25 @@ function addSocketIdToSession(req, res, next) {
 const twitterAuth = passport.authenticate('twitter');
 app.get('/twitter', addSocketIdToSession, twitterAuth);
 app.get('/twitter/callback', twitterAuth, (req, res) => {
-  const token = jwt.sign(req.user.get(), process.env.TOKEN_SECRET);
-  io.in(req.session.socketId).emit('token', token);
+  io.in(req.session.socketId).emit('token', req.user.toJWT());
   res.end();
+});
+
+app.get('/facebook/:accessToken', async (req, res) => {
+  const {data} = await axios.get(
+    `https://graph.facebook.com/me?fields=name,email,picture&access_token=${
+      req.params.accessToken
+    }`
+  );
+
+  const user = await getUserForProvider('facebookId', {
+    id: data.id,
+    email: data.email,
+    name: data.name,
+    image: data.picture.data.url
+  });
+
+  res.send(user.toJWT());
 });
 
 const apolloServer = new ApolloServer({

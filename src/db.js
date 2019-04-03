@@ -1,4 +1,5 @@
 import Sequelize from 'sequelize';
+import jwt from 'jsonwebtoken';
 
 export const sequelize = new Sequelize(process.env.DATABASE_URL, {
   // logging: false
@@ -40,11 +41,15 @@ Team.hasMany(Player);
 
 export const User = sequelize.define('user', {
   email: Sequelize.STRING,
-  username: Sequelize.STRING,
-  displayName: Sequelize.STRING,
-  profileImage: Sequelize.STRING,
-  twitterId: Sequelize.STRING
+  name: Sequelize.STRING,
+  image: Sequelize.STRING,
+  twitterId: Sequelize.STRING,
+  facebookId: Sequelize.STRING
 });
+
+User.prototype.toJWT = function() {
+  return jwt.sign(this.get(), process.env.TOKEN_SECRET);
+};
 
 export const Entry = sequelize.define('entry', {
   name: Sequelize.STRING,
