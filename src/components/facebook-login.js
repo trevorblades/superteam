@@ -43,7 +43,6 @@ class FacebookLogin extends Component {
   render() {
     return (
       <FacebookLoginRenderProps
-        autoLoad
         appId="2160925927333968"
         onClick={this.onClick}
         onFailure={this.onFailure}
