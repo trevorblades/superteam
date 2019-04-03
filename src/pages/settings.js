@@ -1,7 +1,5 @@
 import AuthRequired from '../components/auth-required';
-import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
-import DialogActions from '@material-ui/core/DialogActions';
 import Footer from '../components/footer';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Helmet from 'react-helmet';
@@ -11,6 +9,7 @@ import NoSsr from '@material-ui/core/NoSsr';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import {PageWrapper, Section} from '../components/common';
+// import Button from '@material-ui/core/Button';
 
 export default function Settings() {
   return (
@@ -22,7 +21,7 @@ export default function Settings() {
             <title>Settings</title>
           </Helmet>
           <Section>
-            <PageWrapper mini>
+            <PageWrapper>
               <Typography variant="h3" gutterBottom>
                 Settings
               </Typography>
@@ -33,11 +32,11 @@ export default function Settings() {
                   label="Enable weekly email digests (coming soon)"
                 />
               </div>
-              <br />
+              {/* <br />
               <Typography paragraph color="textSecondary">
                 Want to delete your account? Click this big dangerous button:
               </Typography>
-              <Button variant="outlined">Delete account</Button>
+              <Button variant="outlined">Delete account</Button> */}
             </PageWrapper>
           </Section>
           <Footer />

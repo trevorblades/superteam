@@ -1,6 +1,6 @@
 import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
 import Hidden from '@material-ui/core/Hidden';
+import LoginButton from '../login-button';
 import LogoTitle from '../logo-title';
 import MobileNav from './mobile-nav';
 import NoSsr from '@material-ui/core/NoSsr';
@@ -15,7 +15,6 @@ import styled from '@emotion/styled';
 import withProps from 'recompose/withProps';
 import {GRID_SPACING} from '../../utils/constants';
 import {Link} from 'gatsby';
-import {MdVpnKey} from 'react-icons/md';
 import {PageWrapper} from '../common';
 import {withTheme} from '@material-ui/core/styles';
 
@@ -151,14 +150,7 @@ export default function Header() {
             <Action>
               <WithUser>
                 {({user}) =>
-                  user ? (
-                    <UserMenu user={user} />
-                  ) : (
-                    <Button color="primary">
-                      <MdVpnKey size={18} style={{marginRight: 8}} />
-                      Log in
-                    </Button>
-                  )
+                  user ? <UserMenu user={user} /> : <LoginButton />
                 }
               </WithUser>
             </Action>

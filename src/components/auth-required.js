@@ -1,7 +1,7 @@
 import Footer from './footer';
+import LoginButton from './login-button';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
-import TwitterLogin from './twitter-login';
 import Typography from '@material-ui/core/Typography';
 import {PageWrapper, Section} from './common';
 import {withUser} from './with-user';
@@ -18,7 +18,14 @@ function AuthRequired(props) {
           <Typography gutterBottom variant="h3">
             Login required
           </Typography>
-          <TwitterLogin />
+          <Typography paragraph variant="body1">
+            You need to be logged in to see this page
+          </Typography>
+          <LoginButton
+            variant="outlined"
+            size="large"
+            text="Click here to log in"
+          />
         </PageWrapper>
       </Section>
       <Footer />
