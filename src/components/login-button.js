@@ -69,7 +69,7 @@ export default class LoginButton extends Component {
           </DialogTitle>
           <DialogContent>
             <TwitterLogin />
-            <Typography align="center" variant="overline">
+            <Typography color="textSecondary" align="center" variant="overline">
               or
             </Typography>
             <FacebookLogin />

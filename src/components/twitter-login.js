@@ -88,6 +88,7 @@ class TwitterLogin extends Component {
         fullWidth
         hex="#38a1f3"
         variant="contained"
+        size="large"
         onClick={this.startAuth}
         disabled={this.state.pending}
       >

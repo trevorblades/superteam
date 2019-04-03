@@ -52,6 +52,7 @@ class FacebookLogin extends Component {
           <ColoredButton
             fullWidth
             hex="#3C5A99"
+            size="large"
             disabled={
               isDisabled || isProcessing || !isSdkLoaded || this.state.pending
             }
