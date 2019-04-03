@@ -1,4 +1,5 @@
 import React from 'react';
+import format from 'date-fns/format';
 import {StaticQuery, graphql} from 'gatsby';
 
 export default function LastUpdated() {
@@ -13,10 +14,15 @@ export default function LastUpdated() {
           }
         }
       `}
-      render={data => {
-        const date = new Date(data.site.siteMetadata.lastUpdated);
-        return <span>Last updated {date.toLocaleString()}</span>;
-      }}
+      render={data => (
+        <span>
+          Last updated{' '}
+          {format(
+            data.site.siteMetadata.lastUpdated,
+            "MMM d, yyyy 'at' h:mm a"
+          )}
+        </span>
+      )}
     />
   );
 }
