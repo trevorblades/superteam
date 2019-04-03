@@ -1,4 +1,4 @@
-<img align="right" src="./src/assets/logo.png" width="192">
+<img align="right" src="https://i.imgur.com/fB9JqdR.png" width="192">
 
 # Superteam
 
