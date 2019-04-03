@@ -1,4 +1,6 @@
+import Button from '@material-ui/core/Button';
 import styled from '@emotion/styled';
+import {mix} from 'polished';
 import {withTheme} from '@material-ui/core/styles';
 
 const sectionPadding = {
@@ -62,4 +64,17 @@ export const EmptyPlayerCard = withTheme()(
     color: theme.palette.text.secondary,
     backgroundColor: theme.palette.background.default
   }))
+);
+
+export const ColoredButton = withTheme()(
+  styled(Button)(({theme, hex}) => {
+    const {main, dark} = theme.palette.augmentColor({main: hex});
+    return {
+      color: 'white',
+      backgroundColor: main,
+      ':hover': {
+        backgroundColor: mix(0.5, main, dark)
+      }
+    };
+  })
 );

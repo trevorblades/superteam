@@ -12,7 +12,7 @@ import NoSsr from '@material-ui/core/NoSsr';
 import PrimaryCheckbox from '../components/primary-checkbox';
 import PrimaryEntryCard from '../components/primary-entry-card';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {Fragment} from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -60,51 +60,54 @@ export default function Teams(props) {
                   }
 
                   return (
-                    <Grid container spacing={32}>
-                      <Grid item xs={12} sm={11} md={9} lg={8}>
-                        <PrimaryEntryCard
-                          entry={data.entries.find(entry => entry.primary)}
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Table padding="none">
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>Team name</TableCell>
-                              <FinancialHeaders />
-                              <TableCell align="right">Actions</TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            {data.entries.map(entry => (
-                              <TableRow key={entry.id}>
-                                <TableCell>
-                                  <PrimaryCheckbox
-                                    id={entry.id}
-                                    name={entry.name}
-                                    checked={entry.primary}
-                                  />
-                                  {entry.name}
-                                </TableCell>
-                                <FinancialCells
-                                  {...getEntryFinancials(entry)}
-                                />
-                                <TableCell align="right">
-                                  <Button
-                                    component={Link}
-                                    variant="outlined"
-                                    size="small"
-                                    to={`/teams/${entry.id}`}
-                                  >
-                                    Details
-                                  </Button>
-                                </TableCell>
+                    <Fragment>
+                      <br />
+                      <Grid container spacing={32}>
+                        <Grid item xs={12} sm={11} md={9} lg={8}>
+                          <PrimaryEntryCard
+                            entry={data.entries.find(entry => entry.primary)}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Table padding="none">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>Team name</TableCell>
+                                <FinancialHeaders />
+                                <TableCell align="right">Actions</TableCell>
                               </TableRow>
-                            ))}
-                          </TableBody>
-                        </Table>
+                            </TableHead>
+                            <TableBody>
+                              {data.entries.map(entry => (
+                                <TableRow key={entry.id}>
+                                  <TableCell>
+                                    <PrimaryCheckbox
+                                      id={entry.id}
+                                      name={entry.name}
+                                      checked={entry.primary}
+                                    />
+                                    {entry.name}
+                                  </TableCell>
+                                  <FinancialCells
+                                    {...getEntryFinancials(entry)}
+                                  />
+                                  <TableCell align="right">
+                                    <Button
+                                      component={Link}
+                                      variant="outlined"
+                                      size="small"
+                                      to={`/teams/${entry.id}`}
+                                    >
+                                      Details
+                                    </Button>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </Grid>
                       </Grid>
-                    </Grid>
+                    </Fragment>
                   );
                 }}
               </Query>

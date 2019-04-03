@@ -10,9 +10,8 @@ export const withUser = compose(
     {
       user @client {
         id
-        username
-        displayName
-        profileImage
+        name
+        image
       }
     }
   `),

@@ -28,11 +28,11 @@ class UserMenu extends Component {
     return (
       <MenuButton
         renderButton={openMenu => (
-          <Tooltip title={`Logged in as ${this.props.user.displayName}`}>
+          <Tooltip title={`Logged in as ${this.props.user.name}`}>
             <Avatar
               component={ButtonBase}
-              src={this.props.user.profileImage}
-              alt={this.props.user.displayName}
+              src={this.props.user.image}
+              alt={this.props.user.name}
               onClick={openMenu}
             />
           </Tooltip>

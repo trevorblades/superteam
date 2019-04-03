@@ -41,6 +41,7 @@
     "react": "^16.8.3",
     "react-apollo": "^2.5.2",
     "react-dom": "^16.8.3",
+    "react-facebook-login": "^4.1.1",
     "react-helmet": "^5.2.0",
     "react-icons": "^3.4.0",
     "react-spring": "^8.0.8",
