@@ -3,6 +3,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Divider from '@material-ui/core/Divider';
 import FacebookLogin from './facebook-login';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
@@ -57,16 +58,7 @@ export default class LoginButton extends Component {
           open={this.state.dialogOpen}
           onClose={this.closeDialog}
         >
-          <DialogTitle disableTypography>
-            <Typography
-              gutterBottom
-              fields="name,email,picture"
-              align="center"
-              variant="h5"
-            >
-              Log in
-            </Typography>
-          </DialogTitle>
+          <DialogTitle>Pick your poison</DialogTitle>
           <DialogContent>
             <TwitterLogin />
             <Typography color="textSecondary" align="center" variant="overline">
@@ -74,6 +66,7 @@ export default class LoginButton extends Component {
             </Typography>
             <FacebookLogin />
           </DialogContent>
+          <Divider />
           <DialogActions>
             <Button onClick={this.closeDialog}>Close</Button>
           </DialogActions>
