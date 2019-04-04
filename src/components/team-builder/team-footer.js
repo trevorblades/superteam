@@ -4,7 +4,7 @@ import LastUpdated from '../last-updated';
 import Paper from '@material-ui/core/Paper';
 import PlayerCard from '../player-card';
 import PropTypes from 'prop-types';
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
@@ -119,13 +119,7 @@ export default class TeamFooter extends Component {
           to={this.props.budget - this.props.amountSpent}
         />
         <Icons>
-          <Tooltip
-            title={
-              <Fragment>
-                <Colophon />. Images &copy; HLTV.org
-              </Fragment>
-            }
-          >
+          <Tooltip title={<Colophon />}>
             <MdCopyright size={20} />
           </Tooltip>
           <Tooltip title={<LastUpdated />}>
