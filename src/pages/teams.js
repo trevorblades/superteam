@@ -73,7 +73,8 @@ export default function Teams(props) {
                         </Grid>
                         <Grid item xs={12} md={3} lg={4}>
                           <Typography gutterBottom variant="h6">
-                            {data.entries.length}/{data.entriesLimit} team slots used
+                            {data.entries.length}/{data.entriesLimit} team slots
+                            used
                           </Typography>
                           <LinearProgress
                             value={Math.round(teamsUsed * 100)}
