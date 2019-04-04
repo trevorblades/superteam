@@ -6,6 +6,7 @@ import Footer from '../components/footer';
 import Grid from '@material-ui/core/Grid';
 import Helmet from 'react-helmet';
 import Layout from '../components/layout';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import LoadingIndicator from '../components/loading-indicator';
 import NoIndex from '../components/no-index';
 import NoSsr from '@material-ui/core/NoSsr';
@@ -59,6 +60,8 @@ export default function Teams(props) {
                     );
                   }
 
+                  const teamsUsed = data.entries.length / data.entriesLimit;
+                  const hasTeamSlots = teamsUsed < 1;
                   return (
                     <Fragment>
                       <br />
@@ -67,6 +70,20 @@ export default function Teams(props) {
                           <PrimaryEntryCard
                             entry={data.entries.find(entry => entry.primary)}
                           />
+                        </Grid>
+                        <Grid item xs={12} md={3} lg={4}>
+                          <Typography gutterBottom variant="h6">
+                            {data.entries.length}/{data.entriesLimit} team slots used
+                          </Typography>
+                          <LinearProgress
+                            value={Math.round(teamsUsed * 100)}
+                            color={hasTeamSlots ? 'primary' : 'secondary'}
+                            variant="determinate"
+                          />
+                          <br />
+                          <Typography paragraph color="textSecondary">
+                            Coming soon: Unlock additional slots
+                          </Typography>
                         </Grid>
                         <Grid item xs={12}>
                           <Table padding="none">
@@ -103,6 +120,19 @@ export default function Teams(props) {
                                   </TableCell>
                                 </TableRow>
                               ))}
+                              {hasTeamSlots && (
+                                <TableRow>
+                                  <TableCell align="center" colSpan={7}>
+                                    <Button
+                                      size="small"
+                                      component={Link}
+                                      to="/create"
+                                    >
+                                      Create new team
+                                    </Button>
+                                  </TableCell>
+                                </TableRow>
+                              )}
                             </TableBody>
                           </Table>
                         </Grid>

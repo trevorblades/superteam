@@ -40,6 +40,7 @@ export const CREATE_ENTRY = gql`
 
 export const LIST_ENTRIES = gql`
   {
+    entriesLimit
     entries {
       ...EntryFragment
     }
