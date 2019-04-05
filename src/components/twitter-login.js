@@ -1,15 +1,14 @@
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
 import io from 'socket.io-client';
-import {ColoredButton} from './common';
-import {FaTwitter} from 'react-icons/fa';
+import {Component} from 'react';
 import {stringify} from 'querystring';
 import {userFromToken} from '../utils/user-from-storage';
 import {withApollo} from 'react-apollo';
 
 class TwitterLogin extends Component {
   static propTypes = {
-    client: PropTypes.object.isRequired
+    client: PropTypes.object.isRequired,
+    children: PropTypes.func.isRequired
   };
 
   state = {
@@ -83,18 +82,10 @@ class TwitterLogin extends Component {
   };
 
   render() {
-    return (
-      <ColoredButton
-        fullWidth
-        hex="#38a1f3"
-        variant="contained"
-        size="large"
-        onClick={this.startAuth}
-        disabled={this.state.pending}
-      >
-        <FaTwitter size={20} style={{marginRight: 8}} /> Log in with Twitter
-      </ColoredButton>
-    );
+    return this.props.children({
+      onClick: this.startAuth,
+      disabled: this.state.pending
+    });
   }
 }
 

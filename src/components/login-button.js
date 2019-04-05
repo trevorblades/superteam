@@ -7,6 +7,7 @@ import Divider from '@material-ui/core/Divider';
 import FacebookLogin from './facebook-login';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
+import TwitterButton from './twitter-button';
 import TwitterLogin from './twitter-login';
 import Typography from '@material-ui/core/Typography';
 import {MdVpnKey} from 'react-icons/md';
@@ -60,7 +61,7 @@ export default class LoginButton extends Component {
         >
           <DialogTitle>Pick your poison</DialogTitle>
           <DialogContent>
-            <TwitterLogin />
+            <TwitterLogin>{props => <TwitterButton {...props} />}</TwitterLogin>
             <Typography color="textSecondary" align="center" variant="overline">
               or
             </Typography>
