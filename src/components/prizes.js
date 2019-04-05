@@ -32,21 +32,21 @@ const PrizeWrapper = withTheme()(
 );
 
 const prizes = {
-  20: {
+  10: {
     name: 'Superteam',
     type: 'sticker pack',
     image: stickers,
     note: 'Five 3-inch stickers',
     color: rare
   },
-  10: {
+  5: {
     name: 'SteelSeries QcK Edge',
     type: 'mousepad',
     image: mousepad,
     note: 'Large size',
     color: epic
   },
-  5: {
+  1: {
     name: 'HyperX Cloud Stinger',
     type: 'headset',
     image: headset,
@@ -81,7 +81,7 @@ export default function Prizes() {
                 <Grid item key={key} xs={12} sm={6} md={4}>
                   <PrizeWrapper style={{borderColor: prize.color}}>
                     <Typography variant="h5" gutterBottom>
-                      Top {key}
+                      {key === '1' ? 'First place' : `Top ${key}`}
                     </Typography>
                     <Typography>
                       {prize.name} {prize.type}
