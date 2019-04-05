@@ -157,6 +157,19 @@ export default function Teams(props) {
                                     </FollowWrapper>
                                   </StepContent>
                                 </Step>
+                                <Step>
+                                  <StepLabel>Share your team</StepLabel>
+                                  <StepContent>
+                                    <Typography
+                                      variant="caption"
+                                      color="textSecondary"
+                                    >
+                                      🚨 Coming soon 🚨: Tweet about your team
+                                      using the hashtag #MySuperteam to unlock
+                                      another team slot.
+                                    </Typography>
+                                  </StepContent>
+                                </Step>
                               </StyledStepper>
                             </Grid>
                             <Grid item xs={12}>
