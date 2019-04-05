@@ -149,7 +149,7 @@ export default function Teams(props) {
                                         {props => (
                                           <Tooltip title="Verify follow">
                                             <StyledIconButton {...props}>
-                                              <MdVerifiedUser size={20} />
+                                              <MdVerifiedUser size={24} />
                                             </StyledIconButton>
                                           </Tooltip>
                                         )}
