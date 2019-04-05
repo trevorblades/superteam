@@ -39,13 +39,25 @@ export const Team = sequelize.define('team', {
 Player.belongsTo(Team);
 Team.hasMany(Player);
 
-export const User = sequelize.define('user', {
-  email: Sequelize.STRING,
-  name: Sequelize.STRING,
-  image: Sequelize.STRING,
-  twitterId: Sequelize.STRING,
-  facebookId: Sequelize.STRING
-});
+const ENTRY_LIMIT = 3;
+export const User = sequelize.define(
+  'user',
+  {
+    email: Sequelize.STRING,
+    name: Sequelize.STRING,
+    image: Sequelize.STRING,
+    following: Sequelize.BOOLEAN,
+    twitterId: Sequelize.STRING,
+    facebookId: Sequelize.STRING
+  },
+  {
+    getterMethods: {
+      entryLimit() {
+        return ENTRY_LIMIT + Number(this.following);
+      }
+    }
+  }
+);
 
 User.prototype.toJWT = function() {
   return jwt.sign(this.get(), process.env.TOKEN_SECRET);

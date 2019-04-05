@@ -25,7 +25,8 @@
     "passport-twitter": "^1.0.4",
     "pg": "^7.8.1",
     "sequelize": "^4.43.0",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "twitter": "^1.7.1"
   },
   "devDependencies": {
     "@trevorblades/eslint-config": "^6.21.0",

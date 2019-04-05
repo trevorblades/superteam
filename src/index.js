@@ -1,3 +1,4 @@
+import Twitter from 'twitter';
 import axios from 'axios';
 import cors from 'cors';
 import express from 'express';
@@ -40,7 +41,7 @@ function serialize(user, cb) {
 passport.serializeUser(serialize);
 passport.deserializeUser(serialize);
 
-async function getUserForProvider(key, {id, email, name, image}) {
+async function getUserForProvider(key, {id, email, ...args}) {
   let user = await User.findOne({
     where: {
       [Op.or]: {
@@ -62,9 +63,8 @@ async function getUserForProvider(key, {id, email, name, image}) {
   }
 
   user.set({
+    ...args,
     email,
-    name,
-    image,
     [key]: id
   });
 
@@ -87,12 +87,23 @@ passport.use(
         email = emails[0].value;
       }
 
-      const [{value: photo}] = photos;
+      const client = new Twitter({
+        consumer_key: process.env.TWITTER_CONSUMER_KEY,
+        consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+        access_token_key: token,
+        access_token_secret: tokenSecret
+      });
+
+      const {relationship} = await client.get('friendships/show', {
+        target_screen_name: 'superteamgg'
+      });
+
       const user = await getUserForProvider('twitterId', {
         id,
         email,
         name: displayName,
-        image: photo.replace(/_normal/, '')
+        image: photos[0].value.replace(/_normal/, ''),
+        following: relationship.source.following
       });
 
       cb(null, user);

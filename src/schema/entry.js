@@ -4,7 +4,7 @@ import {Op} from 'sequelize';
 
 export const typeDef = gql`
   extend type Query {
-    entriesLimit: Int
+    entryLimit: Int
     entry(id: ID!): Entry
     entries: [Entry]
     standings: [Entry]
@@ -44,7 +44,6 @@ async function getEntryForUser(user, id) {
   return entry;
 }
 
-const ENTRIES_LIMIT = 3;
 export const resolvers = {
   Entry: {
     selections: parent =>
@@ -54,7 +53,6 @@ export const resolvers = {
       })
   },
   Query: {
-    entriesLimit: () => ENTRIES_LIMIT,
     entry: async (parent, args, {user}) => {
       if (!user) {
         throw new AuthenticationError('Unauthorized');
@@ -101,9 +99,9 @@ export const resolvers = {
         }
       });
 
-      if (numEntries >= ENTRIES_LIMIT) {
+      if (numEntries >= user.entryLimit) {
         throw new UserInputError(
-          `You cannot create any more teams (max. ${ENTRIES_LIMIT})`
+          `You cannot create any more teams (max. ${user.entryLimit})`
         );
       }
 
