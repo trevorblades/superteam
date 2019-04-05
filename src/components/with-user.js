@@ -12,6 +12,8 @@ export const withUser = compose(
         id
         name
         image
+        following
+        entryLimit
       }
     }
   `),
