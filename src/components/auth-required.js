@@ -8,7 +8,9 @@ import {withUser} from './with-user';
 
 function AuthRequired(props) {
   if (props.user) {
-    return props.children;
+    return typeof props.children === 'function'
+      ? props.children(props.user)
+      : props.children;
   }
 
   return (
@@ -35,7 +37,7 @@ function AuthRequired(props) {
 
 AuthRequired.propTypes = {
   user: PropTypes.object,
-  children: PropTypes.node.isRequired
+  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired
 };
 
 export default withUser(AuthRequired);
