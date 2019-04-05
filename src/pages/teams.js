@@ -139,9 +139,9 @@ export default function Teams(props) {
                                       <Follow
                                         username="superteamgg"
                                         options={{
-                                          screen_name: false,
-                                          size: 'large',
-                                          count: 'none'
+                                          showScreenName: false,
+                                          showCount: false,
+                                          size: 'large'
                                         }}
                                       />
                                       <MdArrowForward size={20} />
