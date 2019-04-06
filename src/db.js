@@ -47,13 +47,22 @@ export const User = sequelize.define(
     name: Sequelize.STRING,
     image: Sequelize.STRING,
     following: Sequelize.BOOLEAN,
+    tweeted: Sequelize.BOOLEAN,
     twitterId: Sequelize.STRING,
     facebookId: Sequelize.STRING
   },
   {
     getterMethods: {
       entryLimit() {
-        return ENTRY_LIMIT + Number(this.following);
+        if (this.following) {
+          if (this.tweeted) {
+            return ENTRY_LIMIT + 2;
+          }
+
+          return ENTRY_LIMIT + 1;
+        }
+
+        return ENTRY_LIMIT;
       }
     }
   }

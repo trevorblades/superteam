@@ -80,7 +80,7 @@ passport.use(
       includeEmail: true
     },
     async (token, tokenSecret, profile, cb) => {
-      const {id, displayName, photos, emails} = profile;
+      const {id, username, displayName, photos, emails} = profile;
 
       let email;
       if (emails) {
@@ -98,12 +98,17 @@ passport.use(
         target_screen_name: 'superteamgg'
       });
 
+      const {statuses} = await client.get('search/tweets', {
+        q: `from:${username} #MySuperteam`
+      });
+
       const user = await getUserForProvider('twitterId', {
         id,
         email,
         name: displayName,
         image: photos[0].value.replace(/_normal/, ''),
-        following: relationship.source.following
+        following: relationship.source.following,
+        tweeted: statuses.length > 0
       });
 
       cb(null, user);
