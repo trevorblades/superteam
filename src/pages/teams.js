@@ -179,7 +179,7 @@ export default function Teams(props) {
                                       Click on the{' '}
                                       <MdShare
                                         style={{
-                                          verticalAlign: '-0.1em'
+                                          verticalAlign: -2
                                         }}
                                       />{' '}
                                       icon on the top right corner of your

@@ -16,10 +16,12 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
+import WithUser from '../components/with-user';
 import differenceInQuarters from 'date-fns/differenceInQuarters';
 import format from 'date-fns/format';
 import getQuarter from 'date-fns/getQuarter';
 import styled from '@emotion/styled';
+import {FaStar} from 'react-icons/fa';
 import {PageWrapper, Section} from '../components/common';
 import {
   getQuarterDate,
@@ -31,6 +33,12 @@ import {graphql} from 'gatsby';
 const StyledTable = styled(Table)({
   margin: `${16}px 0`
 });
+
+const StyledTableRow = styled(TableRow)(props => ({
+  td: {
+    fontWeight: props.highlighted && 'bold'
+  }
+}));
 
 function getCountKey(entry) {
   return rankingCriteria.map(criteria => entry[criteria]).toString();
@@ -102,35 +110,49 @@ export default class Standings extends Component {
             })}
           </Select>
         </FormControl>
-        <StyledTable padding="none">
-          <TableHead>
-            <TableRow>
-              <TableCell>Rank</TableCell>
-              <TableCell>Team name</TableCell>
-              <FinancialHeaders />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {entries.map(entry => {
-              const key = getCountKey(entry);
-              return (
-                <TableRow key={entry.id}>
-                  <TableCell>
-                    {counts[key] > 1 ? 'T' : ''}
-                    {countKeys.indexOf(key) + 1}
-                  </TableCell>
-                  <TableCell>{entry.name}</TableCell>
-                  <FinancialCells
-                    diff={entry.diff}
-                    currentValue={entry.currentValue}
-                    currentCash={entry.currentCash}
-                    initialValue={entry.initialValue}
-                  />
+        <WithUser>
+          {({user}) => (
+            <StyledTable padding="none">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Rank</TableCell>
+                  <TableCell>Team name</TableCell>
+                  <FinancialHeaders />
                 </TableRow>
-              );
-            })}
-          </TableBody>
-        </StyledTable>
+              </TableHead>
+              <TableBody>
+                {entries.map(entry => {
+                  const key = getCountKey(entry);
+                  const isUserEntry = user && user.id === Number(entry.userId);
+                  return (
+                    <StyledTableRow key={entry.id} highlighted={isUserEntry}>
+                      <TableCell>
+                        {counts[key] > 1 ? 'T' : ''}
+                        {countKeys.indexOf(key) + 1}
+                      </TableCell>
+                      <TableCell>
+                        {isUserEntry && (
+                          <FaStar
+                            style={{
+                              verticalAlign: -2
+                            }}
+                          />
+                        )}{' '}
+                        {entry.name}
+                      </TableCell>
+                      <FinancialCells
+                        diff={entry.diff}
+                        currentValue={entry.currentValue}
+                        currentCash={entry.currentCash}
+                        initialValue={entry.initialValue}
+                      />
+                    </StyledTableRow>
+                  );
+                })}
+              </TableBody>
+            </StyledTable>
+          )}
+        </WithUser>
         <Typography component="p" variant="caption" color="textSecondary">
           <LastUpdated />. <StandingsExplainer />?
         </Typography>
@@ -180,6 +202,7 @@ export const query = graphql`
         id
         name
         createdAt
+        userId
         selections {
           id
           createdAt
