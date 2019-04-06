@@ -21,6 +21,7 @@ export const typeDef = gql`
     name: String
     primary: Boolean
     createdAt: String
+    userId: ID
     user: User
     selections: [Selection]
   }
