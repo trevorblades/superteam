@@ -32,7 +32,7 @@ import styled from '@emotion/styled';
 import {Follow} from 'react-twitter-widgets';
 import {LIST_ENTRIES} from '../utils/queries';
 import {Link} from 'gatsby';
-import {MdArrowForward, MdVerifiedUser} from 'react-icons/md';
+import {MdArrowForward, MdShare, MdVerifiedUser} from 'react-icons/md';
 import {PageWrapper, Section} from '../components/common';
 import {Query} from 'react-apollo';
 
@@ -90,6 +90,14 @@ export default function Teams(props) {
                         );
                       }
 
+                      let activeStep = 0;
+                      if (user.following) {
+                        activeStep++;
+                        if (user.tweeted) {
+                          activeStep++;
+                        }
+                      }
+
                       const hasOpenSlots =
                         data.entries.length < user.entryLimit;
                       return (
@@ -117,10 +125,12 @@ export default function Teams(props) {
                               />
                               <br />
                               <Typography paragraph color="textSecondary">
-                                Unlock additional team slots!
+                                {activeStep > 1
+                                  ? 'All slots unlocked'
+                                  : 'Unlock additional team slots'}
                               </Typography>
                               <StyledStepper
-                                activeStep={Number(Boolean(user.following))}
+                                activeStep={activeStep}
                                 orientation="vertical"
                               >
                                 <Step>
@@ -164,9 +174,16 @@ export default function Teams(props) {
                                       variant="caption"
                                       color="textSecondary"
                                     >
-                                      🚨 Coming soon 🚨: Tweet about your team
-                                      using the hashtag #MySuperteam to unlock
-                                      another team slot.
+                                      Tweet about your team using the
+                                      #MySuperteam hashtag and superteam.gg URL.
+                                      Click on the{' '}
+                                      <MdShare
+                                        style={{
+                                          verticalAlign: '-0.1em'
+                                        }}
+                                      />{' '}
+                                      icon on the top right corner of your
+                                      primary team card!
                                     </Typography>
                                   </StepContent>
                                 </Step>

@@ -13,6 +13,7 @@ export const withUser = compose(
         name
         image
         following
+        tweeted
         entryLimit
       }
     }
