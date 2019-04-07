@@ -24,22 +24,25 @@ export function FinancialHeaders() {
 
 export default function FinancialCells(props) {
   const roi = (props.diff / props.initialValue) * 100;
-  return (
-    <Fragment>
-      <TableCell align="right">{formatMoney(props.initialValue)}</TableCell>
-      <TableCell align="right">{formatMoney(props.currentValue)}</TableCell>
-      <TableCell align="right">{formatMoney(props.currentCash)}</TableCell>
-      <TableCell align="right">
-        <Diff value={props.diff} />
-      </TableCell>
-      <TableCell align="right">{round(roi, 2)} %</TableCell>
-    </Fragment>
-  );
+  const cells = [
+    formatMoney(props.initialValue),
+    formatMoney(props.currentValue),
+    formatMoney(props.currentCash),
+    <Diff key="diff" value={props.diff} />,
+    `${round(roi, 2)} %`
+  ];
+
+  return cells.map((cell, index) => (
+    <TableCell key={index} align="right" style={props.style}>
+      {cell}
+    </TableCell>
+  ));
 }
 
 FinancialCells.propTypes = {
   currentValue: PropTypes.number.isRequired,
   currentCash: PropTypes.number.isRequired,
   initialValue: PropTypes.number.isRequired,
-  diff: PropTypes.number.isRequired
+  diff: PropTypes.number.isRequired,
+  style: PropTypes.object
 };

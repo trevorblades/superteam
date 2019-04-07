@@ -34,12 +34,6 @@ const StyledTable = styled(Table)({
   margin: `${16}px 0`
 });
 
-const BoldTableRow = styled(TableRow)({
-  td: {
-    fontWeight: 'bold'
-  }
-});
-
 function getCountKey(entry) {
   return rankingCriteria.map(criteria => entry[criteria]).toString();
 }
@@ -124,14 +118,14 @@ export default class Standings extends Component {
                 {entries.map(entry => {
                   const key = getCountKey(entry);
                   const isUserEntry = user && user.id === Number(entry.userId);
-                  const RowComponent = isUserEntry ? BoldTableRow : TableRow;
+                  const cellStyles = isUserEntry ? {fontWeight: 'bold'} : null;
                   return (
-                    <RowComponent key={entry.id}>
-                      <TableCell>
+                    <TableRow key={entry.id}>
+                      <TableCell style={cellStyles}>
                         {counts[key] > 1 ? 'T' : ''}
                         {countKeys.indexOf(key) + 1}
                       </TableCell>
-                      <TableCell>
+                      <TableCell style={cellStyles}>
                         {isUserEntry && (
                           <FaStar
                             style={{
@@ -146,8 +140,9 @@ export default class Standings extends Component {
                         currentValue={entry.currentValue}
                         currentCash={entry.currentCash}
                         initialValue={entry.initialValue}
+                        style={cellStyles}
                       />
-                    </RowComponent>
+                    </TableRow>
                   );
                 })}
               </TableBody>
