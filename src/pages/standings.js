@@ -22,7 +22,7 @@ import format from 'date-fns/format';
 import getQuarter from 'date-fns/getQuarter';
 import styled from '@emotion/styled';
 import {FaStar} from 'react-icons/fa';
-import {PageWrapper, Section, StyledTableCell} from '../components/common';
+import {PageWrapper, Section} from '../components/common';
 import {
   getQuarterDate,
   getQuarterlyFinancials,
@@ -118,31 +118,27 @@ export default class Standings extends Component {
                 {entries.map(entry => {
                   const key = getCountKey(entry);
                   const isUserEntry = user && user.id === Number(entry.userId);
-                  if (isUserEntry) {
-                    return (
-                      <TableRow key={entry.id} style={{fontWeight: 'bold'}}>
-                        <StyledTableCell colSpan={7}>
-                          <FaStar
-                            style={{
-                              verticalAlign: -2
-                            }}
-                          />{' '}
-                          {entry.name}
-                        </StyledTableCell>
-                      </TableRow>
-                    );
-                  }
-
+                  const rank =
+                    (counts[key] > 1 ? 'T' : '') + (countKeys.indexOf(key) + 1);
                   return (
-                    <TableRow
-                      key={entry.id}
-                      style={{fontWeight: isUserEntry && 'bold'}}
-                    >
-                      <StyledTableCell>
-                        {counts[key] > 1 ? 'T' : ''}
-                        {countKeys.indexOf(key) + 1}
-                      </StyledTableCell>
-                      <StyledTableCell>{entry.name}</StyledTableCell>
+                    <TableRow key={entry.id}>
+                      <TableCell>
+                        {isUserEntry ? <strong>{rank}</strong> : rank}
+                      </TableCell>
+                      <TableCell>
+                        {isUserEntry ? (
+                          <Fragment>
+                            <FaStar
+                              style={{
+                                verticalAlign: -2
+                              }}
+                            />{' '}
+                            <strong>{entry.name}</strong>
+                          </Fragment>
+                        ) : (
+                          entry.name
+                        )}
+                      </TableCell>
                       <FinancialCells
                         diff={entry.diff}
                         currentValue={entry.currentValue}

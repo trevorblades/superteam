@@ -4,7 +4,6 @@ import React, {Fragment} from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import Tooltip from '@material-ui/core/Tooltip';
 import round from 'lodash/round';
-import {StyledTableCell} from './common';
 import {formatMoney} from '../utils/format';
 
 export function FinancialHeaders() {
@@ -27,19 +26,13 @@ export default function FinancialCells(props) {
   const roi = (props.diff / props.initialValue) * 100;
   return (
     <Fragment>
-      <StyledTableCell align="right">
-        {formatMoney(props.initialValue)}
-      </StyledTableCell>
-      <StyledTableCell align="right">
-        {formatMoney(props.currentValue)}
-      </StyledTableCell>
-      <StyledTableCell align="right">
-        {formatMoney(props.currentCash)}
-      </StyledTableCell>
-      <StyledTableCell align="right">
+      <TableCell align="right">{formatMoney(props.initialValue)}</TableCell>
+      <TableCell align="right">{formatMoney(props.currentValue)}</TableCell>
+      <TableCell align="right">{formatMoney(props.currentCash)}</TableCell>
+      <TableCell align="right">
         <Diff value={props.diff} />
-      </StyledTableCell>
-      <StyledTableCell align="right">{round(roi, 2)} %</StyledTableCell>
+      </TableCell>
+      <TableCell align="right">{round(roi, 2)} %</TableCell>
     </Fragment>
   );
 }

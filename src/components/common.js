@@ -79,7 +79,3 @@ export const ColoredButton = withTheme()(
     };
   })
 );
-
-export const StyledTableCell = styled(TableCell)({
-  fontWeight: 'inherit'
-});
