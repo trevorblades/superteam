@@ -37,23 +37,17 @@ FinancialCell.propTypes = {
 
 export default function FinancialCells(props) {
   const roi = (props.diff / props.initialValue) * 100;
-  return (
-    <Fragment>
-      <FinancialCell bold={props.bold}>
-        {formatMoney(props.initialValue)}
-      </FinancialCell>
-      <FinancialCell bold={props.bold}>
-        {formatMoney(props.currentValue)}
-      </FinancialCell>
-      <FinancialCell bold={props.bold}>
-        {formatMoney(props.currentCash)}
-      </FinancialCell>
-      <FinancialCell bold={props.bold}>
-        <Diff value={props.diff} />
-      </FinancialCell>
-      <FinancialCell bold={props.bold}>{round(roi, 2)} %</FinancialCell>
-    </Fragment>
-  );
+  return [
+    formatMoney(props.initialValue),
+    formatMoney(props.currentValue),
+    formatMoney(props.currentCash),
+    <Diff key="diff" value={props.diff} />,
+    `${round(roi, 2)} %`
+  ].map((value, index) => (
+    <FinancialCell key={index} bold={props.bold}>
+      {value}
+    </FinancialCell>
+  ));
 }
 
 FinancialCells.propTypes = {
