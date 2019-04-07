@@ -118,25 +118,31 @@ export default class Standings extends Component {
                 {entries.map(entry => {
                   const key = getCountKey(entry);
                   const isUserEntry = user && user.id === Number(entry.userId);
+                  if (isUserEntry) {
+                    return (
+                      <TableRow key={entry.id} style={{fontWeight: 'bold'}}>
+                        <StyledTableCell colSpan={7}>
+                          <FaStar
+                            style={{
+                              verticalAlign: -2
+                            }}
+                          />{' '}
+                          {entry.name}
+                        </StyledTableCell>
+                      </TableRow>
+                    );
+                  }
+
                   return (
                     <TableRow
-                      key={entry.id + isUserEntry}
+                      key={entry.id}
                       style={{fontWeight: isUserEntry && 'bold'}}
                     >
                       <StyledTableCell>
                         {counts[key] > 1 ? 'T' : ''}
                         {countKeys.indexOf(key) + 1}
                       </StyledTableCell>
-                      <StyledTableCell>
-                        {isUserEntry && (
-                          <FaStar
-                            style={{
-                              verticalAlign: -2
-                            }}
-                          />
-                        )}{' '}
-                        {entry.name}
-                      </StyledTableCell>
+                      <StyledTableCell>{entry.name}</StyledTableCell>
                       <FinancialCells
                         diff={entry.diff}
                         currentValue={entry.currentValue}
