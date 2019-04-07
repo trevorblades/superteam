@@ -10,6 +10,6 @@ client.writeData({
 });
 
 // eslint-disable-next-line react/prop-types
-export function wrapRootElement({element}) {
-  return <ApolloProvider client={client}>{element}</ApolloProvider>;
-}
+export const wrapRootElement = ({element}) => (
+  <ApolloProvider client={client}>{element}</ApolloProvider>
+);
