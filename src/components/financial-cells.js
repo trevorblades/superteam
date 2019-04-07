@@ -22,22 +22,42 @@ export function FinancialHeaders() {
   );
 }
 
+function FinancialCell(props) {
+  return (
+    <TableCell align="right">
+      {props.bold ? <strong>{props.children}</strong> : props.children}
+    </TableCell>
+  );
+}
+
+FinancialCell.propTypes = {
+  bold: PropTypes.bool,
+  children: PropTypes.node.isRequired
+};
+
 export default function FinancialCells(props) {
   const roi = (props.diff / props.initialValue) * 100;
   return (
     <Fragment>
-      <TableCell align="right">{formatMoney(props.initialValue)}</TableCell>
-      <TableCell align="right">{formatMoney(props.currentValue)}</TableCell>
-      <TableCell align="right">{formatMoney(props.currentCash)}</TableCell>
-      <TableCell align="right">
+      <FinancialCell bold={props.bold}>
+        {formatMoney(props.initialValue)}
+      </FinancialCell>
+      <FinancialCell bold={props.bold}>
+        {formatMoney(props.currentValue)}
+      </FinancialCell>
+      <FinancialCell bold={props.bold}>
+        {formatMoney(props.currentCash)}
+      </FinancialCell>
+      <FinancialCell bold={props.bold}>
         <Diff value={props.diff} />
-      </TableCell>
-      <TableCell align="right">{round(roi, 2)} %</TableCell>
+      </FinancialCell>
+      <FinancialCell bold={props.bold}>{round(roi, 2)} %</FinancialCell>
     </Fragment>
   );
 }
 
 FinancialCells.propTypes = {
+  bold: PropTypes.bool,
   currentValue: PropTypes.number.isRequired,
   currentCash: PropTypes.number.isRequired,
   initialValue: PropTypes.number.isRequired,

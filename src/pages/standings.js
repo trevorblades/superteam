@@ -140,6 +140,7 @@ export default class Standings extends Component {
                         )}
                       </TableCell>
                       <FinancialCells
+                        bold={isUserEntry}
                         diff={entry.diff}
                         currentValue={entry.currentValue}
                         currentCash={entry.currentCash}
