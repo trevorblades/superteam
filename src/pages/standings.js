@@ -58,6 +58,33 @@ export default class Standings extends Component {
     });
   };
 
+  renderRow({entry, counts, countKeys, key}, showStar) {
+    return (
+      <Fragment>
+        <StyledTableCell>
+          {counts[key] > 1 ? 'T' : ''}
+          {countKeys.indexOf(key) + 1}
+        </StyledTableCell>
+        <StyledTableCell>
+          {showStar && (
+            <FaStar
+              style={{
+                verticalAlign: -2
+              }}
+            />
+          )}{' '}
+          {entry.name}
+        </StyledTableCell>
+        <FinancialCells
+          diff={entry.diff}
+          currentValue={entry.currentValue}
+          currentCash={entry.currentCash}
+          initialValue={entry.initialValue}
+        />
+      </Fragment>
+    );
+  }
+
   renderStandings(quarters) {
     if (!quarters.length) {
       return (
@@ -117,32 +144,19 @@ export default class Standings extends Component {
               <TableBody>
                 {entries.map(entry => {
                   const key = getCountKey(entry);
+                  const options = {entry, counts, countKeys, key};
                   const isUserEntry = user && user.id === Number(entry.userId);
+                  if (isUserEntry) {
+                    return (
+                      <TableRow key={entry.id} style={{fontWeight: 'bold'}}>
+                        {this.renderRow(options, true)}
+                      </TableRow>
+                    );
+                  }
+
                   return (
-                    <TableRow
-                      key={entry.id}
-                      style={{fontWeight: isUserEntry && 'bold'}}
-                    >
-                      <StyledTableCell>
-                        {counts[key] > 1 ? 'T' : ''}
-                        {countKeys.indexOf(key) + 1}
-                      </StyledTableCell>
-                      <StyledTableCell>
-                        {isUserEntry && (
-                          <FaStar
-                            style={{
-                              verticalAlign: -2
-                            }}
-                          />
-                        )}{' '}
-                        {entry.name}
-                      </StyledTableCell>
-                      <FinancialCells
-                        diff={entry.diff}
-                        currentValue={entry.currentValue}
-                        currentCash={entry.currentCash}
-                        initialValue={entry.initialValue}
-                      />
+                    <TableRow key={entry.id}>
+                      {this.renderRow(options, false)}
                     </TableRow>
                   );
                 })}
