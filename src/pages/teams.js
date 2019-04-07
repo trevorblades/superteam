@@ -158,7 +158,10 @@ export default function Teams(props) {
                                       <TwitterLogin>
                                         {props => (
                                           <Tooltip title="Verify follow">
-                                            <StyledIconButton {...props}>
+                                            <StyledIconButton
+                                              {...props}
+                                              color="inherit"
+                                            >
                                               <MdVerifiedUser size={24} />
                                             </StyledIconButton>
                                           </Tooltip>
@@ -171,6 +174,7 @@ export default function Teams(props) {
                                   <StepLabel>Share your team</StepLabel>
                                   <StepContent>
                                     <Typography
+                                      gutterBottom
                                       variant="caption"
                                       color="textSecondary"
                                     >
@@ -185,6 +189,22 @@ export default function Teams(props) {
                                       icon on the top right corner of your
                                       primary team card!
                                     </Typography>
+                                    <TwitterLogin>
+                                      {props => (
+                                        <Button
+                                          {...props}
+                                          style={{marginLeft: -8}}
+                                        >
+                                          <MdVerifiedUser
+                                            size={24}
+                                            style={{
+                                              marginRight: 8
+                                            }}
+                                          />
+                                          Verify
+                                        </Button>
+                                      )}
+                                    </TwitterLogin>
                                   </StepContent>
                                 </Step>
                               </StyledStepper>
