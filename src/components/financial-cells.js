@@ -37,7 +37,7 @@ export default function FinancialCells(props) {
         {formatMoney(props.currentCash)}
       </StyledTableCell>
       <StyledTableCell align="right">
-        <Diff value={props.diff} />,
+        <Diff value={props.diff} />
       </StyledTableCell>
       <StyledTableCell align="right">{round(roi, 2)} %</StyledTableCell>
     </Fragment>
