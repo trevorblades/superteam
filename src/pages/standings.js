@@ -120,7 +120,7 @@ export default class Standings extends Component {
                   const isUserEntry = user && user.id === Number(entry.userId);
                   return (
                     <TableRow
-                      key={entry.id}
+                      key={entry.id + isUserEntry}
                       style={{fontWeight: isUserEntry && 'bold'}}
                     >
                       <StyledTableCell>
