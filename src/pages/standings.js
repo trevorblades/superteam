@@ -22,7 +22,7 @@ import format from 'date-fns/format';
 import getQuarter from 'date-fns/getQuarter';
 import styled from '@emotion/styled';
 import {FaStar} from 'react-icons/fa';
-import {PageWrapper, Section} from '../components/common';
+import {PageWrapper, Section, StyledTableCell} from '../components/common';
 import {
   getQuarterDate,
   getQuarterlyFinancials,
@@ -118,14 +118,16 @@ export default class Standings extends Component {
                 {entries.map(entry => {
                   const key = getCountKey(entry);
                   const isUserEntry = user && user.id === Number(entry.userId);
-                  const cellStyles = isUserEntry ? {fontWeight: 'bold'} : null;
                   return (
-                    <TableRow key={entry.id}>
-                      <TableCell style={cellStyles}>
+                    <TableRow
+                      key={entry.id}
+                      style={{fontWeight: isUserEntry && 'bold'}}
+                    >
+                      <StyledTableCell>
                         {counts[key] > 1 ? 'T' : ''}
                         {countKeys.indexOf(key) + 1}
-                      </TableCell>
-                      <TableCell style={cellStyles}>
+                      </StyledTableCell>
+                      <StyledTableCell>
                         {isUserEntry && (
                           <FaStar
                             style={{
@@ -134,13 +136,12 @@ export default class Standings extends Component {
                           />
                         )}{' '}
                         {entry.name}
-                      </TableCell>
+                      </StyledTableCell>
                       <FinancialCells
                         diff={entry.diff}
                         currentValue={entry.currentValue}
                         currentCash={entry.currentCash}
                         initialValue={entry.initialValue}
-                        style={cellStyles}
                       />
                     </TableRow>
                   );

@@ -4,6 +4,7 @@ import React, {Fragment} from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import Tooltip from '@material-ui/core/Tooltip';
 import round from 'lodash/round';
+import {StyledTableCell} from './common';
 import {formatMoney} from '../utils/format';
 
 export function FinancialHeaders() {
@@ -24,25 +25,28 @@ export function FinancialHeaders() {
 
 export default function FinancialCells(props) {
   const roi = (props.diff / props.initialValue) * 100;
-  const cells = [
-    formatMoney(props.initialValue),
-    formatMoney(props.currentValue),
-    formatMoney(props.currentCash),
-    <Diff key="diff" value={props.diff} />,
-    `${round(roi, 2)} %`
-  ];
-
-  return cells.map((cell, index) => (
-    <TableCell key={index} align="right" style={props.style}>
-      {cell}
-    </TableCell>
-  ));
+  return (
+    <Fragment>
+      <StyledTableCell align="right">
+        {formatMoney(props.initialValue)}
+      </StyledTableCell>
+      <StyledTableCell align="right">
+        {formatMoney(props.currentValue)}
+      </StyledTableCell>
+      <StyledTableCell align="right">
+        {formatMoney(props.currentCash)}
+      </StyledTableCell>
+      <StyledTableCell align="right">
+        <Diff value={props.diff} />,
+      </StyledTableCell>
+      <StyledTableCell align="right">{round(roi, 2)} %</StyledTableCell>
+    </Fragment>
+  );
 }
 
 FinancialCells.propTypes = {
   currentValue: PropTypes.number.isRequired,
   currentCash: PropTypes.number.isRequired,
   initialValue: PropTypes.number.isRequired,
-  diff: PropTypes.number.isRequired,
-  style: PropTypes.object
+  diff: PropTypes.number.isRequired
 };
