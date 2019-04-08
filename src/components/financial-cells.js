@@ -22,10 +22,10 @@ export function FinancialHeaders() {
   );
 }
 
-function FinancialCell(props) {
+export function FinancialCell({bold, children, ...props}) {
   return (
-    <TableCell align="right">
-      {props.bold ? <strong>{props.children}</strong> : props.children}
+    <TableCell {...props}>
+      {bold ? <strong>{children}</strong> : children}
     </TableCell>
   );
 }
@@ -44,7 +44,7 @@ export default function FinancialCells(props) {
     <Diff key="diff" value={props.diff} />,
     `${round(roi, 2)} %`
   ].map((value, index) => (
-    <FinancialCell key={index} bold={props.bold}>
+    <FinancialCell key={index} align="right" bold={props.bold}>
       {value}
     </FinancialCell>
   ));

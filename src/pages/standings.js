@@ -1,4 +1,7 @@
-import FinancialCells, {FinancialHeaders} from '../components/financial-cells';
+import FinancialCells, {
+  FinancialCell,
+  FinancialHeaders
+} from '../components/financial-cells';
 import Footer from '../components/footer';
 import FormControl from '@material-ui/core/FormControl';
 import Helmet from 'react-helmet';
@@ -122,23 +125,19 @@ export default class Standings extends Component {
                     (counts[key] > 1 ? 'T' : '') + (countKeys.indexOf(key) + 1);
                   return (
                     <TableRow key={entry.id}>
-                      <TableCell>
-                        {isUserEntry ? <strong>{rank}</strong> : rank}
-                      </TableCell>
-                      <TableCell>
-                        {isUserEntry ? (
+                      <FinancialCell bold={isUserEntry}>{rank}</FinancialCell>
+                      <FinancialCell bold={isUserEntry}>
+                        {isUserEntry && (
                           <Fragment>
                             <FaStar
                               style={{
                                 verticalAlign: -2
                               }}
                             />{' '}
-                            <strong>{entry.name}</strong>
                           </Fragment>
-                        ) : (
-                          entry.name
                         )}
-                      </TableCell>
+                        {entry.name}
+                      </FinancialCell>
                       <FinancialCells
                         bold={isUserEntry}
                         diff={entry.diff}
