@@ -31,6 +31,7 @@ export default function Layout(props) {
       `}
       render={data => {
         const {title, description} = data.site.siteMetadata;
+        const socialCardUrl = resolve('https://superteam.gg', socialCard);
         return (
           <Container>
             <Global
@@ -48,15 +49,12 @@ export default function Layout(props) {
               />
               <meta property="og:title" content={title} />
               <meta property="og:description" content={description} />
-              <meta property="og:image" content={socialCard} />
+              <meta property="og:image" content={socialCardUrl} />
               <meta name="twitter:card" content="summary_large_image" />
               <meta name="twitter:site" content="@superteamgg" />
               <meta name="twitter:title" content={title} />
               <meta name="twitter:description" content={description} />
-              <meta
-                name="twitter:image"
-                content={resolve('https://superteam.gg', socialCard)}
-              />
+              <meta name="twitter:image" content={socialCardUrl} />
             </Helmet>
             <Header />
             {props.children}
