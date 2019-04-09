@@ -89,7 +89,10 @@ function getFinancials({initialValue, initialCash, currentValue, currentCash}) {
 export function getEntryPlayers(entry) {
   return entry.selections
     .filter(selection => !selection.deletedAt)
-    .map(selection => selection.player);
+    .map(selection => ({
+      ...selection.player,
+      selectedAt: selection.createdAt
+    }));
 }
 
 export function getQuarterDate(quarter) {

@@ -18,6 +18,8 @@ import Typography from '@material-ui/core/Typography';
 import getEntryFinancials, {
   getEntryPlayers
 } from '../../utils/get-entry-financials';
+import getISOWeek from 'date-fns/getISOWeek';
+import getISOWeekYear from 'date-fns/getISOWeekYear';
 import getPlayerCost, {getPlayerCostAtWeek} from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
 import {GET_ENTRY} from '../../utils/queries';
@@ -138,11 +140,15 @@ export default class EntryDrawer extends Component {
                 />
                 <List>
                   {players.map(player => {
+                    const selectedAt = Number(player.selectedAt);
+                    const selectedWeek = getISOWeek(selectedAt);
+                    const selectedYear = getISOWeekYear(selectedAt);
+
                     const currentValue = getPlayerCost(player);
                     const initialValue = getPlayerCostAtWeek(
                       player,
-                      startWeek,
-                      startYear
+                      selectedWeek,
+                      selectedYear
                     );
 
                     return (
