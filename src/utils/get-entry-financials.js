@@ -6,11 +6,11 @@ import setQuarter from 'date-fns/setQuarter';
 import setYear from 'date-fns/setYear';
 import startOfQuarter from 'date-fns/startOfQuarter';
 import {TOTAL_BUDGET} from './constants';
-import {
-  getPlayerCostAtWeek,
-  getPlayerStatsAtWeek,
-  sum
-} from './get-player-cost';
+import {getPlayerCostAtWeek, getPlayerStatsAtWeek} from './get-player-cost';
+
+export function sum(a, b) {
+  return a + b;
+}
 
 function getSelectionDate(selection, selectedAt) {
   const [{week, year}] = selection.player.statistics;

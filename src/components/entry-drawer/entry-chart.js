@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import chroma from 'chroma-js';
-import getPlayerCost, {percentileToCost} from '../../utils/get-player-cost';
+import getPlayerCost, {ratingToCost} from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
 import {ResponsiveLine} from '@nivo/line';
 import {darken, lighten} from 'polished';
@@ -35,7 +35,7 @@ function EntryChart(props) {
           data: player.statistics
             .map(statistic => ({
               x: statistic.week,
-              y: percentileToCost(statistic.percentile)
+              y: ratingToCost(statistic.rating)
             }))
             .sort((a, b) => a.x - b.x)
         }))}

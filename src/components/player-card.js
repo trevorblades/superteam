@@ -14,7 +14,7 @@ import {classes} from '../utils/scale';
 import {cover, transparentize} from 'polished';
 import {formatMoney} from '../utils/format';
 import {graphql} from 'gatsby';
-import {percentileToCost} from '../utils/get-player-cost';
+import {ratingToCost} from '../utils/get-player-cost';
 
 const StyledCard = styled(Card)(props => ({
   paddingTop: `${(1 / CARD_ASPECT_RATIO) * 100}%`,
@@ -161,7 +161,7 @@ export default class PlayerCard extends PureComponent {
   render() {
     const {team, statistics, country, ign, name, image} = this.props.player;
     const [statistic] = statistics;
-    const cost = percentileToCost(statistic.percentile);
+    const cost = ratingToCost(statistic.rating);
     const color = classes(statistic.percentile).hex();
     return (
       <StyledCard

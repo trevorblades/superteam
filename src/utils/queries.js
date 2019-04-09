@@ -20,6 +20,7 @@ export const EntryFragment = gql`
           logo
         }
         statistics {
+          rating
           percentile
           week
           year

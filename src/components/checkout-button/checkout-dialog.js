@@ -17,13 +17,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
-import getPlayerCost, {sum} from '../../utils/get-player-cost';
+import getPlayerCost from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
 import {CREATE_ENTRY, LIST_ENTRIES} from '../../utils/queries';
 import {FaChevronLeft} from 'react-icons/fa';
 import {Mutation} from 'react-apollo';
 import {TOTAL_BUDGET} from '../../utils/constants';
 import {navigate} from 'gatsby';
+import {sum} from '../../utils/get-entry-financials';
 import {withUser} from '../with-user';
 
 const PlayerCell = styled.div({
