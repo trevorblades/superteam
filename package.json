@@ -29,7 +29,7 @@
     "twitter": "^1.7.1"
   },
   "devDependencies": {
-    "@trevorblades/eslint-config": "^6.21.0",
+    "@trevorblades/eslint-config": "^6.22.1",
     "dotenv": "^7.0.0",
     "eslint": "^5.15.0",
     "nodemon": "^1.18.10"
