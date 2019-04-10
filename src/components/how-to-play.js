@@ -40,8 +40,16 @@ export default function HowToPlay() {
             </a>{' '}
             rating for recent LAN events. Simply click on a player card to
             acquire that player and repeat until you have a full 5-person team.
-            You must be strategic with your spending and decide how you want to
-            spread your team&apos;s talent around.
+            You must{' '}
+            <a
+              href="https://twitter.com/superteamgg/status/1112817777952251904"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              be strategic
+            </a>{' '}
+            with your spending and decide how you want to spread your
+            team&apos;s talent around.
           </Typography>
           <StyledImage src={howToPlay} alt="select players and win" />
           <Typography variant="body1" paragraph>
