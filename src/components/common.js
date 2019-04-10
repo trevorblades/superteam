@@ -1,5 +1,4 @@
 import Button from '@material-ui/core/Button';
-import TableCell from '@material-ui/core/TableCell';
 import styled from '@emotion/styled';
 import {mix} from 'polished';
 import {withTheme} from '@material-ui/core/styles';

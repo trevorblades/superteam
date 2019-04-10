@@ -50,7 +50,7 @@
     "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
-    "@trevorblades/eslint-config": "^6.21.0",
+    "@trevorblades/eslint-config": "^6.22.1",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.14.1"
   }
