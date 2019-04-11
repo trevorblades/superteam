@@ -124,7 +124,24 @@ export default class TeamBuilder extends Component {
   render() {
     return (
       <StaticQuery
-        query={query}
+        query={graphql`
+          {
+            countries {
+              regions: continents {
+                code
+                name
+                countries {
+                  code
+                }
+              }
+            }
+            superteam {
+              players {
+                ...PlayerFragment
+              }
+            }
+          }
+        `}
         render={data => {
           const {players} = data.superteam;
           const countries = Array.from(
@@ -228,22 +245,3 @@ export default class TeamBuilder extends Component {
     );
   }
 }
-
-const query = graphql`
-  {
-    countries {
-      regions: continents {
-        code
-        name
-        countries {
-          code
-        }
-      }
-    }
-    superteam {
-      players {
-        ...PlayerFragment
-      }
-    }
-  }
-`;
