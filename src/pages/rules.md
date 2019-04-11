@@ -14,13 +14,13 @@ NO PURCHASE NECESSARY TO ENTER OR WIN. MAKING A PURCHASE OR PAYMENT OF ANY KIND 
 
 3. PRIZES:
 
-  - Grand Prize: Five (5) winners will receive [one (1) HyperX Cloud Stinger gaming headset] (approximate retail value or "ARV": $59)
+  - Grand Prize: One (1) winner will receive one (1) HyperX Cloud Stinger gaming headset (approximate retail value or "ARV": $59)
 
-  - Second Prize: Ten (10) winners will receive [one (1) SteelSeries QcK Edge large mousepad] (approximate retail value or "ARV": $19)
+  - Second Prize: Five (5) winners will receive one (1) SteelSeries QcK Edge large mousepad (approximate retail value or "ARV": $19)
 
-  - Third Prize: Twenty (20) winners will receive [five (5) Superteam 3-inch stickers] (approximate retail value or "ARV": $6)
+  - Third Prize: Ten (10) winners will receive five (5) Superteam 3-inch stickers (approximate retail value or "ARV": $6)
 
-  Only one prize per person and per household will be awarded. Gift cards and gift certificates are subject to the terms and conditions of the issuer. Prizes cannot be transferred, redeemed for cash or substituted by winner. Sponsor reserves the right in its sole and absolute discretion to award a substitute prize of equal or greater value if a prize described in these Official Rules is unavailable or cannot be awarded, in whole or in part, for any reason. The ARV of the prize represents Sponsor's good faith determination. That determination is final and binding and cannot be appealed. If the actual value of the prize turns out to be less than the stated ARV, the difference will not be awarded in cash. Sponsor makes no representation or warranty concerning the appearance, safety or performance of any prize awarded. Restrictions, conditions, and limitations may apply. Sponsor will not replace any lost or stolen prize items.
+  Only one prize per tier, per person, and per household will be awarded. Gift cards and gift certificates are subject to the terms and conditions of the issuer. Prizes cannot be transferred, redeemed for cash or substituted by winner. Sponsor reserves the right in its sole and absolute discretion to award a substitute prize of equal or greater value if a prize described in these Official Rules is unavailable or cannot be awarded, in whole or in part, for any reason. The ARV of the prize represents Sponsor's good faith determination. That determination is final and binding and cannot be appealed. If the actual value of the prize turns out to be less than the stated ARV, the difference will not be awarded in cash. Sponsor makes no representation or warranty concerning the appearance, safety or performance of any prize awarded. Restrictions, conditions, and limitations may apply. Sponsor will not replace any lost or stolen prize items.
 
   This Contest is open to legal residents of USA and Canada and Prize will only be awarded and/or delivered to addresses within said locations. All federal, state and/or local taxes, fees, and surcharges are the sole responsibility of the prize winner. Failure to comply with the Official Rules will result in forfeiture of the prize.
 
