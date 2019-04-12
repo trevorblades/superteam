@@ -5,7 +5,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import React, {Component, Fragment} from 'react';
 import styled from '@emotion/styled';
-import {HowToPlayTextA, HowToPlayTextB} from '../how-to-play';
+import {HowToPlayTextA, HowToPlayTextB} from './how-to-play';
 import {MdHelp} from 'react-icons/md';
 
 const StyledButton = styled(Button)({
