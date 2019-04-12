@@ -18,6 +18,49 @@ const StyledImage = styled.img({
   pointerEvents: 'none'
 });
 
+export function HowToPlayTextA() {
+  return (
+    <Typography variant="body1" paragraph>
+      When you create a team, you will start with a budget of{' '}
+      {formatMoney(TOTAL_BUDGET)} to spend on players, each one priced
+      differently based on their{' '}
+      <a href="https://www.hltv.org/" target="_blank" rel="noopener noreferrer">
+        HLTV
+      </a>{' '}
+      rating for recent LAN events. Simply click on a player card to acquire
+      that player and repeat until you have a full 5-person team. You must{' '}
+      <a
+        href="https://twitter.com/superteamgg/status/1112817777952251904"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        be strategic
+      </a>{' '}
+      with your spending and decide how you want to spread your team&apos;s
+      talent around.
+    </Typography>
+  );
+}
+
+export function HowToPlayTextB() {
+  return (
+    <Typography variant="body1" paragraph>
+      As players compete in events during the year, their values will increase
+      and decrease. The object of the game is to build a team that yields the
+      best{' '}
+      <a
+        href="https://en.wikipedia.org/wiki/Return_on_investment"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        return on investment
+      </a>{' '}
+      at the end of each quarter. You <strong>are allowed</strong> to swap
+      players on your team at any time.
+    </Typography>
+  );
+}
+
 export default function HowToPlay() {
   return (
     <Fragment>
@@ -27,45 +70,9 @@ export default function HowToPlay() {
           <Typography variant="h3" gutterBottom>
             How to play
           </Typography>
-          <Typography variant="body1" paragraph>
-            When you create a team, you will start with a budget of{' '}
-            {formatMoney(TOTAL_BUDGET)} to spend on players, each one priced
-            differently based on their{' '}
-            <a
-              href="https://www.hltv.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              HLTV
-            </a>{' '}
-            rating for recent LAN events. Simply click on a player card to
-            acquire that player and repeat until you have a full 5-person team.
-            You must{' '}
-            <a
-              href="https://twitter.com/superteamgg/status/1112817777952251904"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              be strategic
-            </a>{' '}
-            with your spending and decide how you want to spread your
-            team&apos;s talent around.
-          </Typography>
+          <HowToPlayTextA />
           <StyledImage src={howToPlay} alt="select players and win" />
-          <Typography variant="body1" paragraph>
-            As players compete in events during the year, their values will
-            increase and decrease. The object of the game is to build a team
-            that yields the best{' '}
-            <a
-              href="https://en.wikipedia.org/wiki/Return_on_investment"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              return on investment
-            </a>{' '}
-            at the end of each quarter. You <strong>are allowed</strong> to swap
-            players on your team at any time.
-          </Typography>
+          <HowToPlayTextB />
           <div align="center">
             <Fab
               variant="extended"

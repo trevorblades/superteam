@@ -1,4 +1,5 @@
 import Grid from '@material-ui/core/Grid';
+import HelpButton from './help-button';
 import Hidden from '@material-ui/core/Hidden';
 import MenuItem from '@material-ui/core/MenuItem';
 import PlayerCard from '../player-card';
@@ -65,7 +66,7 @@ const StyledSelect = withStyles(theme => ({
   })
 );
 
-const Action = styled.div({
+const Actions = styled.div({
   marginLeft: 'auto'
 });
 
@@ -205,7 +206,10 @@ export default class TeamBuilder extends Component {
                       ))}
                     </StyledSelect>
                   </Hidden>
-                  <Action>{this.props.children(selectedPlayers)}</Action>
+                  <Actions>
+                    <HelpButton />
+                    {this.props.children(selectedPlayers)}
+                  </Actions>
                 </StyledPageWrapper>
               </Subheader>
               <GridWrapper>

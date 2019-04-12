@@ -80,7 +80,6 @@ export default function Edit(props) {
                         >
                           {(updateEntry, {loading}) => (
                             <SaveButton
-                              style={{marginLeft: 16}}
                               onClick={updateEntry}
                               disabled={loading || players.length < TEAM_SIZE}
                             />
