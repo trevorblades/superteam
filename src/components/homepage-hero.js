@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
 import PlayerCard from './player-card';
 import React from 'react';
+import Ticker from './ticker';
 import Typography from '@material-ui/core/Typography';
 import hero from '../assets/images/hero2.jpg';
 import styled from '@emotion/styled';
@@ -11,7 +12,7 @@ import {Link, StaticQuery, graphql} from 'gatsby';
 import {MdAdd} from 'react-icons/md';
 import {cover} from 'polished';
 
-const StyledHero = styled(Hero)({
+const Container = styled.div({
   flexShrink: 0,
   color: 'white',
   backgroundColor: 'black',
@@ -38,68 +39,71 @@ const PlayerCardWrapper = styled.div({
 
 export default function HomepageHero() {
   return (
-    <StyledHero>
-      <PageWrapper>
-        <StaticQuery
-          query={graphql`
-            {
-              site {
-                siteMetadata {
-                  description
+    <Container>
+      <Hero>
+        <PageWrapper>
+          <StaticQuery
+            query={graphql`
+              {
+                site {
+                  siteMetadata {
+                    description
+                  }
+                }
+                superteam {
+                  player1: player(id: "7398") {
+                    ...PlayerFragment
+                  }
+                  player2: player(id: "7687") {
+                    ...PlayerFragment
+                  }
                 }
               }
-              superteam {
-                player1: player(id: "7398") {
-                  ...PlayerFragment
-                }
-                player2: player(id: "7687") {
-                  ...PlayerFragment
-                }
-              }
-            }
-          `}
-          render={data => (
-            <Grid container alignItems="center">
-              <Grid item sm={12} md={6}>
-                <Typography variant="h2" color="secondary" gutterBottom>
-                  Free{' '}
-                  <span style={{color: 'white'}}>fantasy CS:GO esports</span>
-                </Typography>
+            `}
+            render={data => (
+              <Grid container alignItems="center">
+                <Grid item sm={12} md={6}>
+                  <Typography variant="h2" color="secondary" gutterBottom>
+                    Free{' '}
+                    <span style={{color: 'white'}}>fantasy CS:GO esports</span>
+                  </Typography>
 
-                <Typography variant="body1" paragraph color="inherit">
-                  {data.site.siteMetadata.description}
-                </Typography>
-                <Fab
-                  variant="extended"
-                  color="secondary"
-                  component={Link}
-                  to="/create"
-                >
-                  <MdAdd size={24} style={{marginRight: 8}} />
-                  Create a team
-                </Fab>
+                  <Typography variant="body1" paragraph color="inherit">
+                    {data.site.siteMetadata.description}
+                  </Typography>
+                  <Fab
+                    variant="extended"
+                    color="secondary"
+                    component={Link}
+                    to="/create"
+                  >
+                    <MdAdd size={24} style={{marginRight: 8}} />
+                    Create a team
+                  </Fab>
+                </Grid>
+                <Grid item md={6}>
+                  <Hidden smDown implementation="css">
+                    <PlayerCards>
+                      <PlayerCardWrapper>
+                        <PlayerCard static player={data.superteam.player1} />
+                      </PlayerCardWrapper>
+                      <PlayerCardWrapper>
+                        <PlayerCard
+                          raised
+                          static
+                          selected
+                          player={data.superteam.player2}
+                        />
+                      </PlayerCardWrapper>
+                    </PlayerCards>
+                  </Hidden>
+                </Grid>
               </Grid>
-              <Grid item md={6}>
-                <Hidden smDown implementation="css">
-                  <PlayerCards>
-                    <PlayerCardWrapper>
-                      <PlayerCard static player={data.superteam.player1} />
-                    </PlayerCardWrapper>
-                    <PlayerCardWrapper>
-                      <PlayerCard
-                        raised
-                        static
-                        selected
-                        player={data.superteam.player2}
-                      />
-                    </PlayerCardWrapper>
-                  </PlayerCards>
-                </Hidden>
-              </Grid>
-            </Grid>
-          )}
-        />
-      </PageWrapper>
-    </StyledHero>
+            )}
+          />
+        </PageWrapper>
+      </Hero>
+      <Ticker />
+    </Container>
   );
 }
