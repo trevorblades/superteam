@@ -49,12 +49,7 @@ export default function Banner() {
           <StyledButton component={Link} to="/standings" color="inherit">
             Standings
           </StyledButton>
-          <StyledButton
-            component="a"
-            href="#prizes"
-            variant="outlined"
-            color="inherit"
-          >
+          <StyledButton href="#prizes" variant="outlined" color="inherit">
             Prizes
           </StyledButton>
         </Hidden>
