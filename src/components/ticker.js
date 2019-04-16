@@ -33,37 +33,40 @@ export default function Ticker() {
           }
         }
       `}
-      render={data => (
-        <StyledMarquee behavior="slide">
-          <StyledText color="inherit" variant="button">
-            Recent value changes
-          </StyledText>
-          {data.superteam.players
-            .map(({statistics, ...player}) => {
-              if (statistics.length < 2) {
-                return player;
-              }
+      render={data => {
+        const {players} = data.superteam;
+        return (
+          <StyledMarquee behavior="slide">
+            <StyledText color="inherit" variant="button">
+              Week {players[0].statistics[0].week} updates
+            </StyledText>
+            {players
+              .map(({statistics, ...player}) => {
+                if (statistics.length < 2) {
+                  return player;
+                }
 
-              const [
-                {rating: currentRating},
-                {rating: prevRating}
-              ] = statistics;
-              const currentCost = ratingToCost(currentRating);
-              const prevCost = ratingToCost(prevRating);
-              return {
-                ...player,
-                change: currentCost - prevCost
-              };
-            })
-            .filter(player => player.change)
-            .sort((a, b) => Math.abs(b.change) - Math.abs(a.change))
-            .map(player => (
-              <StyledText component="span" color="inherit" key={player.id}>
-                {player.ign}: <Diff value={player.change} />
-              </StyledText>
-            ))}
-        </StyledMarquee>
-      )}
+                const [
+                  {rating: currentRating},
+                  {rating: prevRating}
+                ] = statistics;
+                const currentCost = ratingToCost(currentRating);
+                const prevCost = ratingToCost(prevRating);
+                return {
+                  ...player,
+                  change: currentCost - prevCost
+                };
+              })
+              .filter(player => player.change)
+              .sort((a, b) => Math.abs(b.change) - Math.abs(a.change))
+              .map(player => (
+                <StyledText component="span" color="inherit" key={player.id}>
+                  {player.ign}: <Diff value={player.change} />
+                </StyledText>
+              ))}
+          </StyledMarquee>
+        );
+      }}
     />
   );
 }

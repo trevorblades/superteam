@@ -10,7 +10,7 @@ function Diff(props) {
 
   const {error, secondary} = props.theme.palette;
   const color = props.value < 0 ? error.main : secondary.main;
-  const sign = props.value > 0 ? '+' : '-';
+  const sign = props.value > 0 ? '⬆' : '⬇';
   return (
     <span style={{color}}>
       {sign}
