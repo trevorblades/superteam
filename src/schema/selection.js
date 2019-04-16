@@ -1,16 +1,23 @@
 import {gql} from 'apollo-server-express';
 
 export const typeDef = gql`
+  extend type Entry {
+    selections: [Selection]
+  }
+
   type Selection {
     id: ID
     createdAt: String
     deletedAt: String
-    player: Player
   }
 `;
 
 export const resolvers = {
-  Selection: {
-    player: parent => parent.getPlayer()
+  Entry: {
+    selections: parent =>
+      parent.getSelections({
+        paranoid: false,
+        order: ['id']
+      })
   }
 };

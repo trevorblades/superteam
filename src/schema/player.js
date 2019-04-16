@@ -7,14 +7,20 @@ export const typeDef = gql`
     players: [Player]
   }
 
+  extend type Team {
+    players: [Player]
+  }
+
+  extend type Selection {
+    player: Player
+  }
+
   type Player {
     id: ID
     name: String
     ign: String
     country: String
     image: String
-    team: Team
-    statistics: [Statistic]
   }
 `;
 
@@ -37,11 +43,10 @@ export const resolvers = {
         ]
       })
   },
-  Player: {
-    team: parent => parent.getTeam(),
-    statistics: parent =>
-      parent.getStatistics({
-        order: [['year', 'desc'], ['week', 'desc']]
-      })
+  Selection: {
+    player: parent => parent.getPlayer()
+  },
+  Team: {
+    players: parent => parent.getPlayers()
   }
 };

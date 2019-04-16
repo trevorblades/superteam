@@ -1,6 +1,10 @@
 import {gql} from 'apollo-server-express';
 
 export const typeDef = gql`
+  extend type Player {
+    statistics: [Statistic]
+  }
+
   type Statistic {
     id: ID
     rating: Float
@@ -18,3 +22,12 @@ export const typeDef = gql`
     year: Int
   }
 `;
+
+export const resolvers = {
+  Player: {
+    statistics: parent =>
+      parent.getStatistics({
+        order: [['year', 'desc'], ['week', 'desc']]
+      })
+  }
+};

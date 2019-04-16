@@ -5,7 +5,10 @@ import {
   typeDef as Selection,
   resolvers as selectionResolvers
 } from './selection';
-import {typeDef as Statistic} from './statistic';
+import {
+  typeDef as Statistic,
+  resolvers as statisticResolvers
+} from './statistic';
 import {typeDef as Team, resolvers as teamResolvers} from './team';
 import {typeDef as User} from './user';
 import {gql, makeExecutableSchema} from 'apollo-server-express';
@@ -28,6 +31,7 @@ export default makeExecutableSchema({
     entryResolvers,
     playerResolvers,
     selectionResolvers,
+    statisticResolvers,
     teamResolvers
   )
 });

@@ -22,8 +22,6 @@ export const typeDef = gql`
     primary: Boolean
     createdAt: String
     userId: ID
-    user: User
-    selections: [Selection]
   }
 `;
 
@@ -46,13 +44,6 @@ async function getEntryForUser(user, id) {
 }
 
 export const resolvers = {
-  Entry: {
-    selections: parent =>
-      parent.getSelections({
-        paranoid: false,
-        order: ['id']
-      })
-  },
   Query: {
     entry: async (parent, args, {user}) => {
       if (!user) {
