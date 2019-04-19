@@ -98,18 +98,23 @@ passport.use(
         target_screen_name: 'superteamgg'
       });
 
-      const {statuses} = await client.get('search/tweets', {
-        q: `from:${username} #MySuperteam`
-      });
-
       const user = await getUserForProvider('twitterId', {
         id,
         email,
         name: displayName,
         image: photos[0].value.replace(/_normal/, ''),
-        following: relationship.source.following,
-        tweeted: statuses.length > 0
+        following: relationship.source.following
       });
+
+      if (!user.tweeted) {
+        const {statuses} = await client.get('search/tweets', {
+          q: `from:${username} #MySuperteam`
+        });
+
+        await user.update({
+          tweeted: statuses.length > 0
+        });
+      }
 
       cb(null, user);
     }
