@@ -26,9 +26,11 @@ export const typeDef = gql`
 
 export const resolvers = {
   Query: {
-    player: (parent, args) => Player.findByPk(args.id),
-    players: () =>
-      Player.findAll({
+    player(parent, args) {
+      return Player.findByPk(args.id);
+    },
+    players() {
+      return Player.findAll({
         include: [
           {
             model: Statistic,
@@ -41,12 +43,17 @@ export const resolvers = {
           [Statistic, 'week', 'desc'],
           [Statistic, 'percentile', 'desc']
         ]
-      })
+      });
+    }
   },
   Selection: {
-    player: parent => parent.getPlayer()
+    player(parent) {
+      return parent.getPlayer();
+    }
   },
   Team: {
-    players: parent => parent.getPlayers()
+    players(parent) {
+      return parent.getPlayers();
+    }
   }
 };

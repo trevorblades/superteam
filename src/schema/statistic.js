@@ -25,9 +25,10 @@ export const typeDef = gql`
 
 export const resolvers = {
   Player: {
-    statistics: parent =>
-      parent.getStatistics({
+    statistics(parent) {
+      return parent.getStatistics({
         order: [['year', 'desc'], ['week', 'desc']]
-      })
+      });
+    }
   }
 };

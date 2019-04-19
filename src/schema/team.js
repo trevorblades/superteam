@@ -14,6 +14,8 @@ export const typeDef = gql`
 
 export const resolvers = {
   Player: {
-    team: parent => parent.getTeam()
+    team(parent) {
+      return parent.getTeam();
+    }
   }
 };

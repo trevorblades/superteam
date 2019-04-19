@@ -45,7 +45,7 @@ async function getEntryForUser(user, id) {
 
 export const resolvers = {
   Query: {
-    entry: async (parent, args, {user}) => {
+    async entry(parent, args, {user}) {
       if (!user) {
         throw new AuthenticationError('Unauthorized');
       }
@@ -62,7 +62,7 @@ export const resolvers = {
 
       return entry;
     },
-    entries: (parent, args, {user}) => {
+    entries(parent, args, {user}) {
       if (!user) {
         throw new AuthenticationError('Unauthorized');
       }
@@ -72,12 +72,13 @@ export const resolvers = {
       });
     },
     // TODO: reconsider how this works...
-    standings: () =>
-      Entry.findAll({
+    standings() {
+      return Entry.findAll({
         where: {
           primary: true
         }
-      })
+      });
+    }
   },
   Mutation: {
     async createEntry(parent, args, {user}) {

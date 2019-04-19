@@ -14,10 +14,11 @@ export const typeDef = gql`
 
 export const resolvers = {
   Entry: {
-    selections: parent =>
-      parent.getSelections({
+    selections(parent) {
+      return parent.getSelections({
         paranoid: false,
         order: ['id']
-      })
+      });
+    }
   }
 };
