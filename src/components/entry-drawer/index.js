@@ -174,7 +174,9 @@ export default class EntryDrawer extends Component {
                   })}
                 </List>
                 <CardContent>
-                  <Typography variant="h6">Transaction history</Typography>
+                  <Typography gutterBottom variant="h6">
+                    Transaction history
+                  </Typography>
                   <TransactionList transactions={transactions} />
                 </CardContent>
               </Container>

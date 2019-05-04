@@ -38,9 +38,10 @@ function selectionsToTransactions(selections, filter) {
 }
 
 function selectionToTransaction(selection, selectedAt, modifier = 1) {
-  const {player} = selection;
+  const {id, player} = selection;
   const {date, week, year} = getSelectionDate(selection, selectedAt);
   return {
+    id: id * modifier,
     date,
     player,
     amount: getPlayerCostAtWeek(player, week, year) * modifier
