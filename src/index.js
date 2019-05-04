@@ -22,7 +22,10 @@ app.use(passport.initialize());
 
 app.use(
   cors({
-    origin: process.env.ALLOWED_ORIGIN
+    origin:
+      process.env.NODE_ENV === 'production'
+        ? 'https://superteam.gg'
+        : /http:\/\/localhost:\d{4}/
   })
 );
 
