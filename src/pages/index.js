@@ -1,11 +1,11 @@
-import Banner from '../components/banner';
+// import Banner from '../components/banner';
 import Divider from '@material-ui/core/Divider';
 import Footer from '../components/footer';
 import Helmet from 'react-helmet';
 import HomepageHero from '../components/homepage-hero';
 import HowToPlay from '../components/how-to-play';
 import Layout from '../components/layout';
-import Prizes from '../components/prizes';
+// import Prizes from '../components/prizes';
 import React from 'react';
 
 export default function Home() {
@@ -15,10 +15,10 @@ export default function Home() {
         <title>Free fantasy esports</title>
       </Helmet>
       <HomepageHero />
-      <Banner />
+      {/* <Banner /> */}
       <HowToPlay />
       <Divider />
-      <Prizes />
+      {/* <Prizes /> */}
       <Footer />
     </Layout>
   );

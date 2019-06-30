@@ -106,11 +106,11 @@ export default function Footer() {
                 How to play
               </NavLink>
             </NavItem>
-            <NavItem>
+            {/* <NavItem>
               <NavLink component={Link} to="/#prizes">
                 Prizes
               </NavLink>
-            </NavItem>
+            </NavItem> */}
             <NavItem>
               <NavLink component={Link} to="/rules">
                 Official rules
