@@ -6,15 +6,23 @@ import parseArgs from 'minimist';
 import {HLTV} from 'hltv';
 import {Player, Statistic, Team, sequelize} from '../src/db';
 
+function formatDate(date) {
+  const isoString = date.toISOString();
+  return isoString.slice(0, isoString.indexOf('T'));
+}
+
 // const endDate = '2019-03-19'; // pass a date in here to adjust time window (e.g. '2019-01-01')
 async function update() {
   const endDate = new Date();
-  const isoString = endDate.toISOString();
+  const startDate = new Date(endDate);
+  startDate.setFullYear(startDate.getFullYear() - 1);
+
   const queryOptions = {
     matchType: 'Lan',
     rankingFilter: 'Top50',
-    startDate: '2018-01-01', // don't change this
-    endDate: isoString.slice(0, isoString.indexOf('T'))
+    // now we're using a moving, 1-year window
+    startDate: formatDate(startDate), // was 2018-01-01
+    endDate: formatDate(endDate)
   };
 
   // first, we loop through the most recent ranking and add any newcomers to the
