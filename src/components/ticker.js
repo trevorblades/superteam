@@ -2,7 +2,7 @@ import Diff from './diff';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
-import {StaticQuery, graphql} from 'gatsby';
+import {graphql, useStaticQuery} from 'gatsby';
 import {ratingToCost} from '../utils/get-player-cost';
 import {withTheme} from '@material-ui/core/styles';
 
@@ -22,51 +22,45 @@ const StyledText = styled(Typography)({
 });
 
 export default function Ticker() {
-  return (
-    <StaticQuery
-      query={graphql`
-        {
-          superteam {
-            players {
-              ...PlayerFragment
-            }
+  const data = useStaticQuery(
+    graphql`
+      {
+        superteam {
+          players {
+            ...PlayerFragment
           }
         }
-      `}
-      render={data => {
-        const {players} = data.superteam;
-        return (
-          <StyledMarquee behavior="slide">
-            <StyledText color="inherit" variant="button">
-              Week {players[0].statistics[0].week} updates
-            </StyledText>
-            {players
-              .map(({statistics, ...player}) => {
-                if (statistics.length < 2) {
-                  return player;
-                }
+      }
+    `
+  );
 
-                const [
-                  {rating: currentRating},
-                  {rating: prevRating}
-                ] = statistics;
-                const currentCost = ratingToCost(currentRating);
-                const prevCost = ratingToCost(prevRating);
-                return {
-                  ...player,
-                  change: currentCost - prevCost
-                };
-              })
-              .filter(player => player.change)
-              .sort((a, b) => Math.abs(b.change) - Math.abs(a.change))
-              .map(player => (
-                <StyledText component="span" color="inherit" key={player.id}>
-                  {player.ign}: <Diff value={player.change} />
-                </StyledText>
-              ))}
-          </StyledMarquee>
-        );
-      }}
-    />
+  const {players} = data.superteam;
+  return (
+    <StyledMarquee behavior="slide">
+      <StyledText color="inherit" variant="button">
+        Week {players[0].statistics[0].week} updates
+      </StyledText>
+      {players
+        .map(({statistics, ...player}) => {
+          if (statistics.length < 2) {
+            return player;
+          }
+
+          const [{rating: currentRating}, {rating: prevRating}] = statistics;
+          const currentCost = ratingToCost(currentRating);
+          const prevCost = ratingToCost(prevRating);
+          return {
+            ...player,
+            change: currentCost - prevCost
+          };
+        })
+        .filter(player => player.change)
+        .sort((a, b) => Math.abs(b.change) - Math.abs(a.change))
+        .map(player => (
+          <StyledText component="span" color="inherit" key={player.id}>
+            {player.ign}: <Diff value={player.change} />
+          </StyledText>
+        ))}
+    </StyledMarquee>
   );
 }
