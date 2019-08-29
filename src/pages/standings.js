@@ -113,7 +113,7 @@ export default class Standings extends Component {
               <TableHead>
                 <TableRow>
                   <TableCell>Rank</TableCell>
-                  <TableCell>Team name</TableCell>
+                  <TableCell padding="default">Team name</TableCell>
                   <FinancialHeaders />
                 </TableRow>
               </TableHead>
@@ -126,7 +126,7 @@ export default class Standings extends Component {
                   return (
                     <TableRow key={entry.id}>
                       <FinancialCell bold={isUserEntry}>{rank}</FinancialCell>
-                      <FinancialCell bold={isUserEntry}>
+                      <FinancialCell padding="default" bold={isUserEntry}>
                         {isUserEntry && (
                           <Fragment>
                             <FaStar

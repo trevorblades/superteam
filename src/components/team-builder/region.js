@@ -36,7 +36,7 @@ export default class Region extends Component {
         component="button"
         variant="h6"
         disabled={this.props.selected}
-        color={this.props.selected ? 'default' : 'textSecondary'}
+        color={this.props.selected ? 'textPrimary' : 'textSecondary'}
         onClick={this.onClick}
       >
         {this.props.children}
