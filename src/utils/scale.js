@@ -1,9 +1,11 @@
-import amber from '@material-ui/core/colors/amber';
-import blue from '@material-ui/core/colors/blue';
-import blueGrey from '@material-ui/core/colors/blueGrey';
 import chroma from 'chroma-js';
-import deepPurple from '@material-ui/core/colors/deepPurple';
-import green from '@material-ui/core/colors/green';
+import {
+  amber,
+  blue,
+  blueGrey,
+  deepPurple,
+  green
+} from '@material-ui/core/colors';
 
 export const rare = blue[500];
 export const epic = deepPurple[500];

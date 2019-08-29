@@ -1,13 +1,12 @@
 import Colophon from './colophon';
 import LogoTitle from './logo-title';
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
-import withProps from 'recompose/withProps';
 import {Link} from 'gatsby';
 import {PageWrapper, getSectionStyles} from './common';
+import {Typography, withTheme} from '@material-ui/core';
 import {navItems} from './header';
-import {withTheme} from '@material-ui/core/styles';
+import {withProps} from 'recompose';
 
 const Container = withTheme(
   styled.footer(getSectionStyles(24), ({theme}) => ({

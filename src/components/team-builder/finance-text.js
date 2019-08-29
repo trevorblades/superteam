@@ -1,11 +1,11 @@
 import NumberText from '../number-text';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
 import chroma from 'chroma-js';
 import styled from '@emotion/styled';
 import {Spring, animated} from 'react-spring/renderprops';
 import {TOTAL_BUDGET} from '../../utils/constants';
+import {Typography} from '@material-ui/core';
 import {formatMoney} from '../../utils/format';
 
 const Container = styled.div({

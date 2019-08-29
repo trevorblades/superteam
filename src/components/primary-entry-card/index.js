@@ -1,22 +1,24 @@
-import ButtonBase from '@material-ui/core/ButtonBase';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import PlayerCard from '../player-card';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ShareButton from './share-button';
-import Typography from '@material-ui/core/Typography';
 import arrayToSentence from 'array-to-sentence';
 import styled from '@emotion/styled';
-import withProps from 'recompose/withProps';
+import {
+  ButtonBase,
+  CardContent,
+  CardHeader,
+  Grid,
+  Paper,
+  Typography,
+  withTheme
+} from '@material-ui/core';
 import {EmptyPlayerCard} from '../common';
 import {FaStar} from 'react-icons/fa';
 import {Link} from 'gatsby';
 import {MdShowChart} from 'react-icons/md';
 import {getEntryPlayers} from '../../utils/get-entry-financials';
-import {withTheme} from '@material-ui/core/styles';
+import {withProps} from 'recompose';
 
 const StyledStar = withTheme(
   styled(FaStar)(({theme}) => ({

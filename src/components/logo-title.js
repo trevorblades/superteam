@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
 import logo from '../assets/logo.png';
 import styled from '@emotion/styled';
 import {ReactComponent as Logo} from '../assets/logo.svg';
 import {StaticQuery, graphql} from 'gatsby';
+import {Typography} from '@material-ui/core';
 
 const Container = styled.div({
   display: 'flex',
@@ -43,7 +43,7 @@ export default function LogoTitle(props) {
             ) : (
               <StyledImage alt={title} src={logo} />
             )}
-            <Typography variant="h6" color={props.color}>
+            <Typography variant="h5" color={props.color}>
               {title}
             </Typography>
           </Container>

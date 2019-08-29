@@ -3,29 +3,29 @@ import FinancialCells, {
   FinancialHeaders
 } from '../components/financial-cells';
 import Footer from '../components/footer';
-import FormControl from '@material-ui/core/FormControl';
 import Helmet from 'react-helmet';
-import InputLabel from '@material-ui/core/InputLabel';
 import LastUpdated from '../components/last-updated';
 import Layout from '../components/layout';
-import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
-import Select from '@material-ui/core/Select';
 import StandingsExplainer from '../components/standings-explainer';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
 import WithUser from '../components/with-user';
-import differenceInQuarters from 'date-fns/differenceInQuarters';
-import format from 'date-fns/format';
-import getQuarter from 'date-fns/getQuarter';
 import styled from '@emotion/styled';
 import {FaStar} from 'react-icons/fa';
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography
+} from '@material-ui/core';
 import {PageWrapper, Section} from '../components/common';
+import {differenceInQuarters, format, getQuarter} from 'date-fns';
 import {
   getQuarterDate,
   getQuarterlyFinancials,
@@ -175,7 +175,7 @@ export default class Standings extends Component {
         </Helmet>
         <Section>
           <PageWrapper>
-            <Typography variant="h3" gutterBottom>
+            <Typography variant="h2" gutterBottom>
               {title}
             </Typography>
             {this.renderStandings(quarters)}

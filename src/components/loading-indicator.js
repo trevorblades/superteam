@@ -1,8 +1,7 @@
-import CircularProgress from '@material-ui/core/CircularProgress';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
+import {CircularProgress, Typography} from '@material-ui/core';
 
 const Container = styled.div({
   display: 'flex',

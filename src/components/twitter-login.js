@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 import {Component} from 'react';
 import {stringify} from 'querystring';
-import {userFromToken} from '../utils/user-from-storage';
-import {withApollo} from 'react-apollo';
+import {userFromToken} from '../utils';
+import {withApollo} from '@apollo/react-hoc';
 
 class TwitterLogin extends Component {
   static propTypes = {

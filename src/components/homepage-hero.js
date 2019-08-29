@@ -1,15 +1,13 @@
-import Fab from '@material-ui/core/Fab';
-import Grid from '@material-ui/core/Grid';
-import Hidden from '@material-ui/core/Hidden';
 import PlayerCard from './player-card';
 import React from 'react';
 import Ticker from './ticker';
-import Typography from '@material-ui/core/Typography';
 import hero from '../assets/images/hero2.jpg';
 import styled from '@emotion/styled';
+import {Fab} from 'gatsby-theme-material-ui';
+import {Grid, Hidden, Typography} from '@material-ui/core';
 import {Hero, PageWrapper} from './common';
-import {Link, StaticQuery, graphql} from 'gatsby';
 import {MdAdd} from 'react-icons/md';
+import {StaticQuery, graphql} from 'gatsby';
 import {cover} from 'polished';
 
 const Container = styled.div({
@@ -67,16 +65,10 @@ export default function HomepageHero() {
                     Free{' '}
                     <span style={{color: 'white'}}>fantasy CS:GO esports</span>
                   </Typography>
-
-                  <Typography variant="body1" paragraph color="inherit">
+                  <Typography paragraph color="inherit">
                     {data.site.siteMetadata.description}
                   </Typography>
-                  <Fab
-                    variant="extended"
-                    color="secondary"
-                    component={Link}
-                    to="/create"
-                  >
+                  <Fab variant="extended" color="secondary" to="/create">
                     <MdAdd size={24} style={{marginRight: 8}} />
                     Create a team
                   </Fab>

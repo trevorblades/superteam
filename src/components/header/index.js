@@ -1,22 +1,22 @@
-import AppBar from '@material-ui/core/AppBar';
-import Hidden from '@material-ui/core/Hidden';
 import LoginButton from '../login-button';
 import LogoTitle from '../logo-title';
 import MobileNav from './mobile-nav';
-import NoSsr from '@material-ui/core/NoSsr';
 import React from 'react';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import UserMenu from './user-menu';
 import WithUser from '../with-user';
-import compose from 'recompose/compose';
-import mapProps from 'recompose/mapProps';
 import styled from '@emotion/styled';
-import withProps from 'recompose/withProps';
+import {
+  AppBar,
+  Hidden,
+  NoSsr,
+  Toolbar,
+  Typography,
+  withTheme
+} from '@material-ui/core';
 import {GRID_SPACING} from '../../utils/constants';
 import {Link} from 'gatsby';
 import {PageWrapper} from '../common';
-import {withTheme} from '@material-ui/core/styles';
+import {compose, mapProps, withProps} from 'recompose';
 
 const StyledToolbar = withTheme(
   styled(Toolbar)(({theme}) => ({

@@ -1,15 +1,11 @@
 import AuthRequired from '../components/auth-required';
-import Checkbox from '@material-ui/core/Checkbox';
 import Footer from '../components/footer';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Helmet from 'react-helmet';
 import Layout from '../components/layout';
 import NoIndex from '../components/no-index';
-import NoSsr from '@material-ui/core/NoSsr';
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import {Checkbox, FormControlLabel, NoSsr, Typography} from '@material-ui/core';
 import {PageWrapper, Section} from '../components/common';
-// import Button from '@material-ui/core/Button';
 
 export default function Settings() {
   return (

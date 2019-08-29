@@ -1,8 +1,7 @@
-import Fab from '@material-ui/core/Fab';
 import React, {Fragment} from 'react';
-import Typography from '@material-ui/core/Typography';
 import howToPlay from '../assets/images/how-to-play.png';
 import styled from '@emotion/styled';
+import {Fab, Typography} from '@material-ui/core';
 import {Link} from 'gatsby';
 import {MdAdd} from 'react-icons/md';
 import {PageWrapper, Section} from './common';
@@ -70,11 +69,11 @@ export default function HowToPlay() {
           <Typography variant="h3" gutterBottom>
             How to play
           </Typography>
-          <Typography variant="body1" paragraph>
+          <Typography paragraph>
             <HowToPlayTextA />
           </Typography>
           <StyledImage src={howToPlay} alt="select players and win" />
-          <Typography variant="body1" paragraph>
+          <Typography paragraph>
             <HowToPlayTextB />
           </Typography>
           <div align="center">

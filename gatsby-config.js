@@ -1,4 +1,7 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
+const {webFontsConfig} = require('@trevorblades/mui-theme');
+
+dotenv.config();
 
 module.exports = {
   siteMetadata: {
@@ -7,11 +10,16 @@ module.exports = {
       "Build a team of current and future CS:GO superstars and earn points based on your team's weekly performance."
   },
   plugins: [
-    'gatsby-theme-material-ui',
+    {
+      resolve: 'gatsby-theme-material-ui',
+      options: {webFontsConfig}
+    },
+    'gatsby-theme-apollo',
     'gatsby-plugin-emotion',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-svgr',
     'gatsby-plugin-netlify',
+    'gatsby-plugin-lodash',
     {
       resolve: 'gatsby-source-filesystem',
       options: {

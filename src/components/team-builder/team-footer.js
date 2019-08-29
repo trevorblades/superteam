@@ -1,17 +1,14 @@
 import Colophon from '../colophon';
 import FinanceText from './finance-text';
 import LastUpdated from '../last-updated';
-import Paper from '@material-ui/core/Paper';
 import PlayerCard from '../player-card';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
 import {CARD_ASPECT_RATIO, TEAM_SIZE} from '../../utils/constants';
 import {EmptyPlayerCard} from '../common';
 import {MdCopyright, MdUpdate} from 'react-icons/md';
-import {withTheme} from '@material-ui/core/styles';
+import {Paper, Tooltip, Typography, withTheme} from '@material-ui/core';
 
 const Container = styled(Paper)({
   display: 'flex',

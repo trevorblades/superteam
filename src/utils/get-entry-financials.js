@@ -1,12 +1,14 @@
-import endOfQuarter from 'date-fns/endOfQuarter';
-import getISOWeek from 'date-fns/getISOWeek';
-import getISOWeekYear from 'date-fns/getISOWeekYear';
-import orderBy from 'lodash/orderBy';
-import setQuarter from 'date-fns/setQuarter';
-import setYear from 'date-fns/setYear';
-import startOfQuarter from 'date-fns/startOfQuarter';
 import {TOTAL_BUDGET} from './constants';
+import {
+  endOfQuarter,
+  getISOWeek,
+  getISOWeekYear,
+  setQuarter,
+  setYear,
+  startOfQuarter
+} from 'date-fns';
 import {getPlayerCostAtWeek, getPlayerStatsAtWeek} from './get-player-cost';
+import {orderBy} from 'lodash';
 
 export function sum(a, b) {
   return a + b;

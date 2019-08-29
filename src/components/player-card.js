@@ -1,19 +1,16 @@
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import NumberText from './number-text';
 import PropTypes from 'prop-types';
 import React, {Fragment, PureComponent} from 'react';
-import Typography from '@material-ui/core/Typography';
 import emojiFlags from 'emoji-flags';
-import mapProps from 'recompose/mapProps';
 import styled from '@emotion/styled';
-import withProps from 'recompose/withProps';
 import {CARD_ASPECT_RATIO} from '../utils/constants';
+import {Card, CardActionArea, Typography} from '@material-ui/core';
 import {Transition, animated} from 'react-spring/renderprops';
 import {classes} from '../utils/scale';
 import {cover, transparentize} from 'polished';
 import {formatMoney} from '../utils/format';
 import {graphql} from 'gatsby';
+import {mapProps, withProps} from 'recompose';
 import {ratingToCost} from '../utils/get-player-cost';
 
 const StyledCard = styled(Card)(props => ({

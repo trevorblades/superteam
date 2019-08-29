@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {formatMoney} from '../utils/format';
-import {withTheme} from '@material-ui/core/styles';
+import {withTheme} from '@material-ui/core';
 
 function Diff(props) {
   if (!props.value) {

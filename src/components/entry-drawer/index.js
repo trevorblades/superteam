@@ -1,33 +1,35 @@
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
 import Diff from '../diff';
-import Drawer from '@material-ui/core/Drawer';
 import EntryChart from './entry-chart';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
 import LoadingIndicator from '../loading-indicator';
 import PlayerAvatar from '../player-avatar';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import Tooltip from '@material-ui/core/Tooltip';
 import TransactionList from './transaction-list';
-import Typography from '@material-ui/core/Typography';
 import getEntryFinancials, {
   getEntryPlayers
 } from '../../utils/get-entry-financials';
-import getISOWeek from 'date-fns/getISOWeek';
-import getISOWeekYear from 'date-fns/getISOWeekYear';
 import getPlayerCost, {getPlayerCostAtWeek} from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
+import {
+  CardContent,
+  CardHeader,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Tooltip,
+  Typography,
+  withStyles,
+  withTheme
+} from '@material-ui/core';
 import {GET_ENTRY} from '../../utils/queries';
 import {Link, navigate} from 'gatsby';
 import {MdEdit} from 'react-icons/md';
-import {Query} from 'react-apollo';
+import {Query} from '@apollo/react-components';
 import {formatDate, formatMoney} from '../../utils/format';
-import {withStyles, withTheme} from '@material-ui/core/styles';
+import {getISOWeek, getISOWeekYear} from 'date-fns';
 
 const StyledDrawer = withStyles({
   paper: {

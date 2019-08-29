@@ -9,8 +9,7 @@ import {formatMoney} from '../../utils/format';
 import {withTheme} from '@material-ui/core';
 
 const Container = styled.div({
-  height: 200,
-  fontFamily: 'Inconsolata, monospace'
+  height: 200
 });
 
 function EntryChart(props) {

@@ -1,12 +1,9 @@
-import ButtonBase from '@material-ui/core/ButtonBase';
 import MenuButton from '../menu-button';
-import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import Tooltip from '@material-ui/core/Tooltip';
-import {Avatar} from '@material-ui/core';
+import {Avatar, ButtonBase, MenuItem, Tooltip} from '@material-ui/core';
 import {Link} from 'gatsby';
-import {withApollo} from 'react-apollo';
+import {withApollo} from '@apollo/react-hoc';
 
 class UserMenu extends Component {
   static propTypes = {

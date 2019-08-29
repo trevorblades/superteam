@@ -1,10 +1,9 @@
 import Diff from './diff';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
-import TableCell from '@material-ui/core/TableCell';
-import Tooltip from '@material-ui/core/Tooltip';
-import round from 'lodash/round';
+import {TableCell, Tooltip} from '@material-ui/core';
 import {formatMoney} from '../utils/format';
+import {round} from 'lodash';
 
 export function FinancialHeaders() {
   return (

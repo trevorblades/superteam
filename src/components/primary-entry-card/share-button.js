@@ -1,7 +1,6 @@
-import IconButton from '@material-ui/core/IconButton';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import Tooltip from '@material-ui/core/Tooltip';
+import {IconButton, Tooltip} from '@material-ui/core';
 import {MdShare} from 'react-icons/md';
 import {stringify} from 'querystring';
 

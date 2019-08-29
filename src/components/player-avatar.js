@@ -1,7 +1,7 @@
-import Avatar from '@material-ui/core/Avatar';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from '@emotion/styled';
+import {Avatar} from '@material-ui/core';
 import {classes} from '../utils/scale';
 import {size} from 'polished';
 

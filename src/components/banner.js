@@ -1,18 +1,17 @@
-import Button from '@material-ui/core/Button';
-import Hidden from '@material-ui/core/Hidden';
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
+import {Button, Hidden, Typography, withTheme} from '@material-ui/core';
 import {Link} from 'gatsby';
 import {PageWrapper, Section} from './common';
-import {withTheme} from '@material-ui/core/styles';
 
 const StyledSection = withTheme(
   styled(Section)(({theme}) => ({
     color: 'white',
-    backgroundImage: `linear-gradient(to right, ${
-      theme.palette.primary.main
-    }, ${theme.palette.error.main})`
+    backgroundImage: `linear-gradient(${[
+      'to right',
+      theme.palette.primary.main,
+      theme.palette.error.main
+    ]})`
   }))
 );
 

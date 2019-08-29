@@ -1,15 +1,16 @@
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Divider from '@material-ui/core/Divider';
 import FacebookLogin from './facebook-login';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import TwitterButton from './twitter-button';
 import TwitterLogin from './twitter-login';
-import Typography from '@material-ui/core/Typography';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Typography
+} from '@material-ui/core';
 import {MdVpnKey} from 'react-icons/md';
 
 export default class LoginButton extends Component {
@@ -62,12 +63,16 @@ export default class LoginButton extends Component {
           <DialogTitle>Pick your poison</DialogTitle>
           <DialogContent>
             <TwitterLogin>{props => <TwitterButton {...props} />}</TwitterLogin>
-            <Typography color="textSecondary" align="center" variant="overline">
+            <Typography
+              display="block"
+              color="textSecondary"
+              align="center"
+              variant="overline"
+            >
               or
             </Typography>
             <FacebookLogin />
           </DialogContent>
-          <Divider />
           <DialogActions>
             <Button onClick={this.closeDialog}>Close</Button>
           </DialogActions>

@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import mapProps from 'recompose/mapProps';
+import {TableCell, TableRow} from '@material-ui/core';
 import {formatMoney} from '../../utils/format';
+import {mapProps} from 'recompose';
 
 export const MoneyCell = mapProps(props => ({
   align: 'right',
@@ -13,7 +12,7 @@ export const MoneyCell = mapProps(props => ({
 export default function MoneyRow(props) {
   return (
     <TableRow>
-      <TableCell align="right">
+      <TableCell align="right" padding="default">
         <strong>{props.label}</strong>
       </TableCell>
       <MoneyCell value={props.value} />

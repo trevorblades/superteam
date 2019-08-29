@@ -1,13 +1,11 @@
-import compose from 'recompose/compose';
 import gql from 'graphql-tag';
-import mapProps from 'recompose/mapProps';
-import toRenderProps from 'recompose/toRenderProps';
-import {graphql} from 'react-apollo';
+import {compose, mapProps, toRenderProps} from 'recompose';
+import {graphql} from '@apollo/react-hoc';
 
 export const withUser = compose(
   graphql(gql`
     {
-      user @client {
+      user @client(always: true) {
         id
         name
         image

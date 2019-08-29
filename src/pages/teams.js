@@ -1,40 +1,42 @@
 import AuthRequired from '../components/auth-required';
-import Button from '@material-ui/core/Button';
 import EntryDrawer from '../components/entry-drawer';
 import FinancialCells, {FinancialHeaders} from '../components/financial-cells';
 import Footer from '../components/footer';
-import Grid from '@material-ui/core/Grid';
 import Helmet from 'react-helmet';
-import IconButton from '@material-ui/core/IconButton';
 import Layout from '../components/layout';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import LoadingIndicator from '../components/loading-indicator';
 import NoIndex from '../components/no-index';
-import NoSsr from '@material-ui/core/NoSsr';
 import PrimaryCheckbox from '../components/primary-checkbox';
 import PrimaryEntryCard from '../components/primary-entry-card';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
-import Step from '@material-ui/core/Step';
-import StepContent from '@material-ui/core/StepContent';
-import StepLabel from '@material-ui/core/StepLabel';
-import Stepper from '@material-ui/core/Stepper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Tooltip from '@material-ui/core/Tooltip';
 import TwitterLogin from '../components/twitter-login';
-import Typography from '@material-ui/core/Typography';
 import getEntryFinancials from '../utils/get-entry-financials';
 import styled from '@emotion/styled';
+import {
+  Button,
+  Grid,
+  IconButton,
+  LinearProgress,
+  NoSsr,
+  Step,
+  StepContent,
+  StepLabel,
+  Stepper,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Typography
+} from '@material-ui/core';
 import {Follow} from 'react-twitter-widgets';
 import {LIST_ENTRIES} from '../utils/queries';
 import {Link} from 'gatsby';
 import {MdArrowForward, MdShare, MdVerifiedUser} from 'react-icons/md';
 import {PageWrapper, Section} from '../components/common';
-import {Query} from 'react-apollo';
+import {Query} from '@apollo/react-components';
 
 const StyledStepper = styled(Stepper)({
   padding: 0,

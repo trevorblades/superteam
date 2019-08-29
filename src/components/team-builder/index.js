@@ -1,18 +1,21 @@
-import Grid from '@material-ui/core/Grid';
-import Hidden from '@material-ui/core/Hidden';
-import MenuItem from '@material-ui/core/MenuItem';
 import PlayerCard from '../player-card';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Region from './region';
-import Select from '@material-ui/core/Select';
 import TeamFooter from './team-footer';
 import getPlayerCost from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
 import {GRID_SPACING, TEAM_SIZE, TOTAL_BUDGET} from '../../utils/constants';
+import {
+  Grid,
+  Hidden,
+  MenuItem,
+  Select,
+  withStyles,
+  withTheme
+} from '@material-ui/core';
 import {PageWrapper} from '../common';
 import {StaticQuery, graphql} from 'gatsby';
-import {withStyles, withTheme} from '@material-ui/core/styles';
 
 const halfGridSpacing = GRID_SPACING / 2;
 const GridWrapper = styled.div({

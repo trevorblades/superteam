@@ -1,27 +1,30 @@
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import LoginButton from '../login-button';
 import MoneyRow, {MoneyCell} from './money-row';
 import PlayerAvatar from '../player-avatar';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import SaveButton from '../save-button';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TextField from '@material-ui/core/TextField';
 import getPlayerCost from '../../utils/get-player-cost';
 import styled from '@emotion/styled';
+import {
+  Button,
+  Checkbox,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  FormControlLabel,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography
+} from '@material-ui/core';
 import {CREATE_ENTRY, LIST_ENTRIES} from '../../utils/queries';
 import {FaChevronLeft} from 'react-icons/fa';
-import {Mutation} from 'react-apollo';
+import {Mutation} from '@apollo/react-components';
 import {TOTAL_BUDGET} from '../../utils/constants';
 import {navigate} from 'gatsby';
 import {sum} from '../../utils/get-entry-financials';
@@ -118,7 +121,9 @@ class CheckoutDialog extends Component {
               <Table padding="none">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Player name</TableCell>
+                    <TableCell padding="default" style={{paddingLeft: 0}}>
+                      Player name
+                    </TableCell>
                     <TableCell align="right">Cost</TableCell>
                   </TableRow>
                 </TableHead>
@@ -150,13 +155,13 @@ class CheckoutDialog extends Component {
                   />
                 }
                 label={
-                  <span>
+                  <Typography variant="body2">
                     I have read and agree with the{' '}
                     <a href="/rules" target="_blank" rel="noopener noreferrer">
                       official contest rules
                     </a>
                     .
-                  </span>
+                  </Typography>
                 }
               />
             </DialogContent>

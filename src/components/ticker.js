@@ -1,10 +1,9 @@
 import Diff from './diff';
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
+import {Typography, withTheme} from '@material-ui/core';
 import {graphql, useStaticQuery} from 'gatsby';
 import {ratingToCost} from '../utils/get-player-cost';
-import {withTheme} from '@material-ui/core/styles';
 
 const StyledMarquee = withTheme(
   styled.marquee(({theme}) => ({
@@ -57,7 +56,12 @@ export default function Ticker() {
         .filter(player => player.change)
         .sort((a, b) => Math.abs(b.change) - Math.abs(a.change))
         .map(player => (
-          <StyledText component="span" color="inherit" key={player.id}>
+          <StyledText
+            variant="body2"
+            component="span"
+            color="inherit"
+            key={player.id}
+          >
             {player.ign}: <Diff value={player.change} />
           </StyledText>
         ))}

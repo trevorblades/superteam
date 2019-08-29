@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {ColoredButton} from './common';
 import {FaFacebook} from 'react-icons/fa';
-import {userFromToken} from '../utils/user-from-storage';
-import {withApollo} from 'react-apollo';
+import {userFromToken} from '../utils';
+import {withApollo} from '@apollo/react-hoc';
 
 class FacebookLogin extends Component {
   static propTypes = {

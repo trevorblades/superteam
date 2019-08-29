@@ -43,10 +43,6 @@ export default function Layout(props) {
             />
             <Helmet defaultTitle={title} titleTemplate={`%s - ${title}`}>
               <meta name="description" content={description} />
-              <link
-                rel="stylesheet"
-                href="https://fonts.googleapis.com/css?family=Inconsolata:400,700"
-              />
               <meta property="og:title" content={title} />
               <meta property="og:description" content={description} />
               <meta property="og:image" content={socialCardUrl} />

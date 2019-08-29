@@ -1,14 +1,12 @@
-import Grid from '@material-ui/core/Grid';
 import React, {Fragment} from 'react';
-import Typography from '@material-ui/core/Typography';
 import headset from '../assets/images/headset.png';
 import mousepad from '../assets/images/mousepad.png';
 import stickers from '../assets/images/stickers.png';
 import styled from '@emotion/styled';
+import {Grid, Typography, withTheme} from '@material-ui/core';
 import {Link} from 'gatsby';
 import {PageWrapper, Section} from './common';
 import {epic, legendary, rare} from '../utils/scale';
-import {withTheme} from '@material-ui/core/styles';
 
 const StyledImage = styled.img({
   display: 'block',
@@ -65,7 +63,7 @@ export default function Prizes() {
           <Typography variant="h3" gutterBottom>
             Earn prizes
           </Typography>
-          <Typography variant="body1" paragraph>
+          <Typography paragraph>
             At the end of each quarter, the 20 players who have seen the highest
             gains in their team&apos;s value will be rewared with awesome
             prizes. You can check on the current status of the top 20 and your

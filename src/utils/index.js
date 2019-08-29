@@ -11,8 +11,3 @@ export function userFromToken(token) {
     return null;
   }
 }
-
-export default function userFromStorage() {
-  const token = localStorage.getItem('token');
-  return userFromToken(token);
-}

@@ -1,7 +1,6 @@
-import Button from '@material-ui/core/Button';
 import styled from '@emotion/styled';
+import {Button, withTheme} from '@material-ui/core';
 import {mix} from 'polished';
-import {withTheme} from '@material-ui/core/styles';
 
 const sectionPadding = {
   lg: 56,

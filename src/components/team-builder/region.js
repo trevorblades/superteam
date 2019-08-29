@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
+import {Typography} from '@material-ui/core';
 
 const StyledText = styled(Typography)({
   padding: 0,

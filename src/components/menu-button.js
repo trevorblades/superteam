@@ -1,6 +1,6 @@
-import Menu from '@material-ui/core/Menu';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
+import {Menu} from '@material-ui/core';
 
 export default class MenuButton extends Component {
   static propTypes = {

@@ -4,11 +4,10 @@ import Layout from '../components/layout';
 import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
 import {PageWrapper, Section} from '../components/common';
+import {Typography, withTheme} from '@material-ui/core';
 import {graphql} from 'gatsby';
-import {withTheme} from '@material-ui/core/styles';
 
 const StyledListItem = withTheme(
   styled.li(({theme}) => ({

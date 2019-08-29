@@ -1,12 +1,9 @@
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import PropTypes from 'prop-types';
 import React from 'react';
-import groupBy from 'lodash/groupBy';
 import styled from '@emotion/styled';
+import {List, ListItem, ListItemText, ListSubheader} from '@material-ui/core';
 import {formatDate, formatMoney} from '../../utils/format';
+import {groupBy} from 'lodash';
 
 const StyledList = styled(List)({
   backgroundColor: 'white'

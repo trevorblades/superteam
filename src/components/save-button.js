@@ -1,5 +1,5 @@
-import Button from '@material-ui/core/Button';
 import React from 'react';
+import {Button} from '@material-ui/core';
 import {MdCheck} from 'react-icons/md';
 
 export default function SaveButton(props) {

@@ -2,8 +2,8 @@ import Footer from './footer';
 import LoginButton from './login-button';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
-import Typography from '@material-ui/core/Typography';
 import {PageWrapper, Section} from './common';
+import {Typography} from '@material-ui/core';
 import {withUser} from './with-user';
 
 function AuthRequired(props) {
@@ -20,7 +20,7 @@ function AuthRequired(props) {
           <Typography gutterBottom variant="h3">
             Login required
           </Typography>
-          <Typography paragraph variant="body1">
+          <Typography paragraph>
             You need to be logged in to see this page
           </Typography>
           <LoginButton

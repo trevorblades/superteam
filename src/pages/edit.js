@@ -3,18 +3,17 @@ import Helmet from 'react-helmet';
 import Layout from '../components/layout';
 import LoadingIndicator from '../components/loading-indicator';
 import NoIndex from '../components/no-index';
-import NoSsr from '@material-ui/core/NoSsr';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
 import SaveButton from '../components/save-button';
 import TeamBuilder from '../components/team-builder';
-import Typography from '@material-ui/core/Typography';
 import getEntryFinancials, {
   getEntryPlayers
 } from '../utils/get-entry-financials';
 import styled from '@emotion/styled';
 import {GET_ENTRY, UPDATE_ENTRY} from '../utils/queries';
-import {Mutation, Query} from 'react-apollo';
+import {Mutation, Query} from '@apollo/react-components';
+import {NoSsr, Typography} from '@material-ui/core';
 import {Section} from '../components/common';
 import {TEAM_SIZE} from '../utils/constants';
 import {navigate} from 'gatsby';
@@ -48,7 +47,7 @@ export default function Edit(props) {
                       <Typography variant="h2" gutterBottom>
                         Error
                       </Typography>
-                      <Typography variant="body1">{error.message}</Typography>
+                      <Typography>{error.message}</Typography>
                     </Section>
                   );
                 }

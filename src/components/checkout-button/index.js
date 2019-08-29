@@ -1,8 +1,7 @@
-import Button from '@material-ui/core/Button';
 import CheckoutDialog from './checkout-dialog';
-import Dialog from '@material-ui/core/Dialog';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
+import {Button, Dialog} from '@material-ui/core';
 import {MdShoppingCart} from 'react-icons/md';
 import {TEAM_SIZE} from '../../utils/constants';
 

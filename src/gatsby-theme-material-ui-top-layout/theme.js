@@ -1,18 +1,8 @@
 import {createMuiTheme} from '@material-ui/core';
-
-const headingStyles = {
-  fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
-  fontWeight: 700
-};
+import {themeOptions} from '@trevorblades/mui-theme';
 
 const theme = createMuiTheme({
-  overrides: {
-    MuiTypography: {
-      overline: {
-        fontWeight: 700
-      }
-    }
-  },
+  ...themeOptions,
   palette: {
     primary: {
       main: '#0000ff'
@@ -24,18 +14,6 @@ const theme = createMuiTheme({
     error: {
       main: '#ff0000'
     }
-  },
-  typography: {
-    useNextVariants: true,
-    fontSize: 16,
-    fontFamily: 'Inconsolata, monospace',
-    fontWeightMedium: 700,
-    h1: headingStyles,
-    h2: headingStyles,
-    h3: headingStyles,
-    h4: headingStyles,
-    h5: headingStyles,
-    h6: headingStyles
   }
 });
 
