@@ -18,7 +18,6 @@ module.exports = {
     'gatsby-plugin-emotion',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-svgr',
-    'gatsby-plugin-netlify',
     'gatsby-plugin-lodash',
     {
       resolve: 'gatsby-source-filesystem',
