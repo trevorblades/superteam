@@ -1,16 +1,13 @@
-const dotenv = require('dotenv');
-const theme = require('./src/utils/theme');
-
-dotenv.config();
+require('dotenv').config();
 
 module.exports = {
   siteMetadata: {
     title: 'Superteam',
     description:
-      "Build a team of current and future CS:GO superstars and earn points based on your team's weekly performance.",
-    lastUpdated: Date.now()
+      "Build a team of current and future CS:GO superstars and earn points based on your team's weekly performance."
   },
   plugins: [
+    'gatsby-theme-material-ui',
     'gatsby-plugin-emotion',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-svgr',
@@ -45,12 +42,6 @@ module.exports = {
         typeName: 'Superteam',
         fieldName: 'superteam',
         url: `${process.env.GATSBY_API_URL}/graphql`
-      }
-    },
-    {
-      resolve: 'gatsby-plugin-material-ui',
-      options: {
-        theme
       }
     },
     {

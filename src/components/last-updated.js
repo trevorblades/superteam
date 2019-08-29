@@ -1,5 +1,4 @@
 import React from 'react';
-import format from 'date-fns/format';
 import {StaticQuery, graphql} from 'gatsby';
 
 export default function LastUpdated() {
@@ -8,21 +7,11 @@ export default function LastUpdated() {
       query={graphql`
         {
           site {
-            siteMetadata {
-              lastUpdated
-            }
+            buildTime(formatString: "MMM d, YYYY [at] h:mm a")
           }
         }
       `}
-      render={data => (
-        <span>
-          Last updated{' '}
-          {format(
-            data.site.siteMetadata.lastUpdated,
-            "MMM d, yyyy 'at' h:mm a"
-          )}
-        </span>
-      )}
+      render={data => <span>Last updated {data.site.buildTime}</span>}
     />
   );
 }

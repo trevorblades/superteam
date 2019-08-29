@@ -43,7 +43,7 @@ const StyledLoadingIndicator = styled(LoadingIndicator)({
   margin: 'auto'
 });
 
-const CreatedAt = withTheme()(
+const CreatedAt = withTheme(
   styled.span(({theme}) => ({
     fontWeight: 700,
     color: theme.palette.primary.main

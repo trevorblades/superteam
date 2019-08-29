@@ -20,7 +20,7 @@ const StyledPageWrapper = styled(PageWrapper)({
   paddingTop: 16
 });
 
-const PrizeWrapper = withTheme()(
+const PrizeWrapper = withTheme(
   styled.div(({theme}) => ({
     height: '100%',
     padding: 32,
@@ -74,7 +74,7 @@ export default function Prizes() {
           </Typography>
         </PageWrapper>
         <StyledPageWrapper>
-          <Grid container justify="center" spacing={32}>
+          <Grid container justify="center" spacing={4}>
             {prizeKeys.map((key, index, array) => {
               const prize = prizes[key];
               return (

@@ -19,7 +19,7 @@ const GridWrapper = styled.div({
   padding: GRID_SPACING
 });
 
-const Subheader = withTheme()(
+const Subheader = withTheme(
   styled.header(({theme}) => {
     const {minHeight, ...toolbar} = theme.mixins.toolbar;
     const styles = Object.keys(toolbar).reduce((acc, key) => {
@@ -210,7 +210,8 @@ export default class TeamBuilder extends Component {
               </Subheader>
               <GridWrapper>
                 <PageWrapper>
-                  <Grid container spacing={GRID_SPACING}>
+                  {/* TODO: consider using a spacing unit for GRID_SPACING */}
+                  <Grid container spacing={GRID_SPACING / 8}>
                     {filteredPlayers.map(player => {
                       const isSelected = this.isPlayerSelected(player);
                       return (

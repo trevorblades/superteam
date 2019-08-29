@@ -18,7 +18,7 @@ import {MdShowChart} from 'react-icons/md';
 import {getEntryPlayers} from '../../utils/get-entry-financials';
 import {withTheme} from '@material-ui/core/styles';
 
-const StyledStar = withTheme()(
+const StyledStar = withTheme(
   styled(FaStar)(({theme}) => ({
     display: 'block',
     fill: theme.palette.primary.main
@@ -63,7 +63,7 @@ export default function PrimaryEntryCard(props) {
         subheader="Primary team"
       />
       <CardContent>
-        <Grid container spacing={16}>
+        <Grid container spacing={2}>
           {players.map(player => (
             <PlayerGridItem key={player.id}>
               <PlayerCard mini static selected player={player} />

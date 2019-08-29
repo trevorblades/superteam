@@ -9,7 +9,7 @@ import {PageWrapper, getSectionStyles} from './common';
 import {navItems} from './header';
 import {withTheme} from '@material-ui/core/styles';
 
-const Container = withTheme()(
+const Container = withTheme(
   styled.footer(getSectionStyles(24), ({theme}) => ({
     marginTop: 'auto',
     color: theme.palette.grey[600],
@@ -17,7 +17,7 @@ const Container = withTheme()(
   }))
 );
 
-const StyledPageWrapper = withTheme()(
+const StyledPageWrapper = withTheme(
   styled(PageWrapper)(({theme}) => ({
     display: 'flex',
     alignItems: 'flex-start',
@@ -32,7 +32,7 @@ const StyledLogoTitle = styled(LogoTitle)({
   marginLeft: -4
 });
 
-const StyledNav = withTheme()(
+const StyledNav = withTheme(
   styled.nav(({theme}) => ({
     display: 'flex',
     alignItems: 'flex-start',

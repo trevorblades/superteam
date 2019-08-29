@@ -18,7 +18,7 @@ import {Link} from 'gatsby';
 import {PageWrapper} from '../common';
 import {withTheme} from '@material-ui/core/styles';
 
-const StyledToolbar = withTheme()(
+const StyledToolbar = withTheme(
   styled(Toolbar)(({theme}) => ({
     [theme.breakpoints.up('md')]: {
       padding: `0 ${GRID_SPACING}px`
@@ -31,7 +31,7 @@ const StyledPageWrapper = styled(PageWrapper)({
   alignSelf: 'stretch'
 });
 
-const StyledLogoTitle = withTheme()(
+const StyledLogoTitle = withTheme(
   styled(LogoTitle)(({theme}) => ({
     pointerEvents: 'none',
     [theme.breakpoints.up('md')]: {
@@ -50,7 +50,7 @@ const Nav = styled.nav({
 });
 
 const NavItem = compose(
-  withTheme(),
+  withTheme,
   withProps({variant: 'subtitle1'})
 )(
   styled(Typography)(({theme}) => {
@@ -94,7 +94,7 @@ const MobileNavWrapper = styled.div({
   height: '100%'
 });
 
-const Action = withTheme()(
+const Action = withTheme(
   styled.div(({theme}) => ({
     margin: 'auto',
     marginRight: 0,

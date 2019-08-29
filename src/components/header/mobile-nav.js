@@ -8,7 +8,7 @@ import {Link} from 'gatsby';
 import {MdMenu} from 'react-icons/md';
 import {withTheme} from '@material-ui/core/styles';
 
-const StyledButton = withTheme()(
+const StyledButton = withTheme(
   styled(IconButton)(({theme}) => ({
     [theme.breakpoints.only('xs')]: {
       marginLeft: -8

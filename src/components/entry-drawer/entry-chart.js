@@ -87,4 +87,4 @@ EntryChart.propTypes = {
   week: PropTypes.number.isRequired
 };
 
-export default withTheme()(EntryChart);
+export default withTheme(EntryChart);

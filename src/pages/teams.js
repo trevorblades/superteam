@@ -103,7 +103,7 @@ export default function Teams(props) {
                       return (
                         <Fragment>
                           <br />
-                          <Grid container spacing={32}>
+                          <Grid container spacing={4}>
                             <Grid item xs={12} sm={11} md={9} lg={8}>
                               <PrimaryEntryCard
                                 entry={data.entries.find(

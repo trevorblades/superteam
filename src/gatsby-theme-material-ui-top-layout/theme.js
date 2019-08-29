@@ -1,9 +1,11 @@
+import {createMuiTheme} from '@material-ui/core';
+
 const headingStyles = {
   fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
   fontWeight: 700
 };
 
-module.exports = {
+const theme = createMuiTheme({
   overrides: {
     MuiTypography: {
       overline: {
@@ -35,4 +37,6 @@ module.exports = {
     h5: headingStyles,
     h6: headingStyles
   }
-};
+});
+
+export default theme;

@@ -7,7 +7,7 @@ import {Link} from 'gatsby';
 import {PageWrapper, Section} from './common';
 import {withTheme} from '@material-ui/core/styles';
 
-const StyledSection = withTheme()(
+const StyledSection = withTheme(
   styled(Section)(({theme}) => ({
     color: 'white',
     backgroundImage: `linear-gradient(to right, ${

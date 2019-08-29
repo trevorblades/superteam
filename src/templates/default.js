@@ -10,7 +10,7 @@ import {PageWrapper, Section} from '../components/common';
 import {graphql} from 'gatsby';
 import {withTheme} from '@material-ui/core/styles';
 
-const StyledListItem = withTheme()(
+const StyledListItem = withTheme(
   styled.li(({theme}) => ({
     fontFamily: theme.typography.fontFamily,
     color: theme.palette.text.primary

@@ -42,7 +42,7 @@ const PlayerCardWrapper = styled.div({
   alignSelf: 'stretch'
 });
 
-const Icons = withTheme()(
+const Icons = withTheme(
   styled.div(({theme}) => ({
     display: 'flex',
     position: 'absolute',

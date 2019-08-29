@@ -47,7 +47,7 @@ export default class Standings extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      quarter: getQuarter(props.data.site.siteMetadata.lastUpdated)
+      quarter: getQuarter(Number(props.data.site.buildTime))
     };
   }
 
@@ -73,7 +73,7 @@ export default class Standings extends Component {
     const financials = getQuarterlyFinancials(
       this.props.data.superteam.entries,
       quarters,
-      this.props.data.site.siteMetadata.lastUpdated
+      Number(this.props.data.site.buildTime)
     );
 
     const entries = financials[this.state.quarter];
@@ -161,10 +161,8 @@ export default class Standings extends Component {
 
   render() {
     const numQuarters =
-      differenceInQuarters(
-        this.props.data.site.siteMetadata.lastUpdated,
-        startDate
-      ) + 1;
+      differenceInQuarters(Number(this.props.data.site.buildTime), startDate) +
+      1;
 
     const quarters = Array.from(Array(numQuarters).keys())
       .map(num => num + 1)
@@ -192,9 +190,7 @@ export default class Standings extends Component {
 export const query = graphql`
   {
     site {
-      siteMetadata {
-        lastUpdated
-      }
+      buildTime(formatString: "x")
     }
     superteam {
       entries: standings {

@@ -32,11 +32,11 @@ export function getSectionStyles(padding = sectionPadding) {
   };
 }
 
-export const Section = withTheme()(
+export const Section = withTheme(
   styled.section(props => getSectionStyles(props.padding))
 );
 
-export const Hero = withTheme()(
+export const Hero = withTheme(
   styled(Section)(
     getSectionStyles({
       lg: 96,
@@ -53,7 +53,7 @@ export const PageWrapper = styled.div(props => ({
   margin: '0 auto'
 }));
 
-export const EmptyPlayerCard = withTheme()(
+export const EmptyPlayerCard = withTheme(
   styled.div(({theme}) => ({
     display: 'flex',
     flexDirection: 'column',
@@ -66,7 +66,7 @@ export const EmptyPlayerCard = withTheme()(
   }))
 );
 
-export const ColoredButton = withTheme()(
+export const ColoredButton = withTheme(
   styled(Button)(({theme, hex}) => {
     const {main, dark} = theme.palette.augmentColor({main: hex});
     return {

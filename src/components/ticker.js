@@ -6,7 +6,7 @@ import {graphql, useStaticQuery} from 'gatsby';
 import {ratingToCost} from '../utils/get-player-cost';
 import {withTheme} from '@material-ui/core/styles';
 
-const StyledMarquee = withTheme()(
+const StyledMarquee = withTheme(
   styled.marquee(({theme}) => ({
     display: 'block',
     margin: 0,
