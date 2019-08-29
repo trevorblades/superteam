@@ -5,26 +5,27 @@
   "scripts": {
     "pretest": "eslint bin/update src",
     "test": "echo \"Error: no test specified\" && exit",
-    "start": "nodemon -r esm -r dotenv/config src/index.js"
+    "start": "nodemon -r esm -r dotenv/config src/index.js",
+    "update": "bin/update"
   },
   "dependencies": {
     "apollo-server-express": "^2.4.8",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "cors": "^2.8.5",
     "date-fns": "^2.0.0-alpha.27",
     "esm": "^3.2.10",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "graphql": "^14.1.1",
-    "hltv": "^2.14.0",
+    "hltv": "^2.16.0",
     "jsonwebtoken": "^8.5.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "minimist": "^1.2.0",
     "node-r_esm": "^0.1.0",
     "passport": "^0.4.0",
     "passport-twitter": "^1.0.4",
     "pg": "^7.8.1",
-    "sequelize": "^4.43.0",
+    "sequelize": "^5.17.0",
     "socket.io": "^2.2.0",
     "twitter": "^1.7.1"
   },
