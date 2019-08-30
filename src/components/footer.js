@@ -9,10 +9,9 @@ import {navItems} from './header';
 import {withProps} from 'recompose';
 
 const Container = withTheme(
-  styled.footer(getSectionStyles(24), ({theme}) => ({
+  styled.footer(getSectionStyles(48), ({theme}) => ({
     marginTop: 'auto',
-    color: theme.palette.grey[600],
-    backgroundColor: theme.palette.grey[100]
+    color: theme.palette.grey[600]
   }))
 );
 
@@ -51,11 +50,16 @@ const NavGroup = styled.ul({
   }
 });
 
-const Text = withProps({color: 'inherit'})(Typography);
+const Text = withProps({
+  color: 'inherit',
+  variant: 'body2'
+})(Typography);
+
 const NavSubheader = withProps({
   component: 'li',
+  display: 'block',
   variant: 'overline'
-})(Text);
+})(Typography);
 
 const NavItem = styled.li({
   listStyle: 'none',
