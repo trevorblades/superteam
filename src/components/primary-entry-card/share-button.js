@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {IconButton, Tooltip} from '@material-ui/core';
 import {MdShare} from 'react-icons/md';
-import {stringify} from 'querystring';
+import {stringify} from 'query-string';
 
 export default class ShareButton extends Component {
   static propTypes = {

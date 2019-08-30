@@ -17,6 +17,7 @@ import {NoSsr, Typography} from '@material-ui/core';
 import {Section} from '../components/common';
 import {TEAM_SIZE} from '../utils/constants';
 import {navigate} from 'gatsby';
+import {parse} from 'query-string';
 
 const StyledLoadingIndicator = styled(LoadingIndicator)({
   position: 'absolute',
@@ -28,14 +29,14 @@ const StyledLoadingIndicator = styled(LoadingIndicator)({
 export default function Edit(props) {
   // we don't need to make sure this is truthy because...
   // we're redirecting /edit to /create in static/_redirects
-  const match = props.location.pathname.match(/^\/edit\/(\S+)\/?$/);
+  const {id} = parse(props.location.search);
   return (
     <Layout>
       <NoIndex />
       <NoSsr>
         <AuthRequired>
-          {match && (
-            <Query query={GET_ENTRY} variables={{id: match[1]}}>
+          {id ? (
+            <Query query={GET_ENTRY} variables={{id}}>
               {({data, loading, error}) => {
                 if (loading) {
                   return <StyledLoadingIndicator />;
@@ -90,6 +91,8 @@ export default function Edit(props) {
                 );
               }}
             </Query>
+          ) : (
+            <Typography>No id parameter given</Typography>
           )}
         </AuthRequired>
       </NoSsr>

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 import {Component} from 'react';
-import {stringify} from 'querystring';
+import {stringify} from 'query-string';
 import {userFromToken} from '../utils';
 import {withApollo} from '@apollo/react-hoc';
 

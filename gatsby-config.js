@@ -20,14 +20,13 @@ module.exports = {
     'gatsby-plugin-svgr',
     'gatsby-plugin-lodash',
     {
-      resolve: 'gatsby-source-filesystem',
+      resolve: 'gatsby-plugin-mdx',
       options: {
-        path: `${__dirname}/src/pages`,
-        name: 'markdown-pages'
+        defaultLayouts: {
+          default: require.resolve('./src/components/template.js')
+        }
       }
     },
-    'gatsby-transformer-remark',
-    'gatsby-plugin-markdown-pages',
     {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
@@ -49,12 +48,6 @@ module.exports = {
         typeName: 'Superteam',
         fieldName: 'superteam',
         url: `${process.env.GATSBY_API_URL}/graphql`
-      }
-    },
-    {
-      resolve: 'gatsby-plugin-create-client-paths',
-      options: {
-        prefixes: ['/teams/*', '/edit/*']
       }
     }
   ]
