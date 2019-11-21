@@ -8,6 +8,9 @@
     "start": "nodemon -r esm -r dotenv/config src/index.js",
     "update": "bin/update"
   },
+  "eslintConfig": {
+    "extends": "@trevorblades"
+  },
   "dependencies": {
     "apollo-server-express": "^2.4.8",
     "axios": "^0.18.1",
