@@ -117,10 +117,14 @@ export default class TeamFooter extends Component {
         />
         <Icons>
           <Tooltip title={<Colophon />}>
-            <MdCopyright size={20} />
+            <div>
+              <MdCopyright size={20} />
+            </div>
           </Tooltip>
           <Tooltip title={<LastUpdated />}>
-            <MdUpdate size={20} />
+            <div>
+              <MdUpdate size={20} />
+            </div>
           </Tooltip>
         </Icons>
       </Container>

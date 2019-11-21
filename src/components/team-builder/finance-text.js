@@ -28,7 +28,6 @@ export default function FinanceText(props) {
         {({number}) => (
           <AnimatedNumberText
             variant="h4"
-            color={props.colored ? 'inherit' : 'default'}
             style={{
               color: props.colored ? scale(number / TOTAL_BUDGET).hex() : null
             }}
