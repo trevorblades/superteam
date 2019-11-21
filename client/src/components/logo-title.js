@@ -6,7 +6,7 @@ import {ReactComponent as Logo} from '../assets/logo.svg';
 import {LogoTitleProps} from '@trevorblades/mui-theme';
 import {graphql, useStaticQuery} from 'gatsby';
 
-export default function LogoTitle(props) {
+export default function LogoTitle({vector, ...props}) {
   const data = useStaticQuery(
     graphql`
       {
@@ -21,8 +21,8 @@ export default function LogoTitle(props) {
 
   const {title} = data.site.siteMetadata;
   return (
-    <Box {...LogoTitleProps.root} className={props.className}>
-      {props.vector ? (
+    <Box {...LogoTitleProps.root} {...props}>
+      {vector ? (
         <Box component={Logo} {...LogoTitleProps.logo} fill="currentColor" />
       ) : (
         <Box component="img" {...LogoTitleProps.logo} alt={title} src={logo} />
@@ -33,7 +33,5 @@ export default function LogoTitle(props) {
 }
 
 LogoTitle.propTypes = {
-  vector: PropTypes.bool,
-  className: PropTypes.string,
-  color: PropTypes.string
+  vector: PropTypes.bool
 };

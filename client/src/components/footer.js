@@ -26,10 +26,6 @@ const StyledPageWrapper = withTheme(
   }))
 );
 
-const StyledLogoTitle = styled(LogoTitle)({
-  marginLeft: -4
-});
-
 const StyledNav = withTheme(
   styled.nav(({theme}) => ({
     display: 'flex',
@@ -86,7 +82,7 @@ export default function Footer() {
     <Container>
       <StyledPageWrapper>
         <div>
-          <StyledLogoTitle vector color="inherit" />
+          <LogoTitle vector ml={-0.5} mb={1} fontSize={32} />
           <Text variant="caption">
             <Colophon />
           </Text>

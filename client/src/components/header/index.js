@@ -11,6 +11,7 @@ import {
   NoSsr,
   Toolbar,
   Typography,
+  makeStyles,
   withTheme
 } from '@material-ui/core';
 import {GRID_SPACING} from '../../utils/constants';
@@ -30,18 +31,6 @@ const StyledPageWrapper = styled(PageWrapper)({
   display: 'flex',
   alignSelf: 'stretch'
 });
-
-const StyledLogoTitle = withTheme(
-  styled(LogoTitle)(({theme}) => ({
-    pointerEvents: 'none',
-    [theme.breakpoints.up('md')]: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)'
-    }
-  }))
-);
 
 const Nav = styled.nav({
   display: 'flex',
@@ -122,7 +111,16 @@ export const navItems = [
   }
 ];
 
+const useStyles = makeStyles(({breakpoints}) => ({
+  logoTitle: {
+    [breakpoints.up('md')]: {
+      transform: 'translate(-50%, -50%)'
+    }
+  }
+}));
+
 export default function Header() {
+  const {logoTitle} = useStyles();
   return (
     <AppBar position="sticky" color="inherit" elevation={0}>
       <StyledToolbar>
@@ -145,7 +143,16 @@ export default function Header() {
               <MobileNav items={navItems} />
             </MobileNavWrapper>
           </Hidden>
-          <StyledLogoTitle />
+          <LogoTitle
+            className={logoTitle}
+            fontSize={34}
+            top="50%"
+            left="50%"
+            position={{
+              xs: 'static',
+              md: 'absolute'
+            }}
+          />
           <NoSsr>
             <Action>
               <WithUser>
