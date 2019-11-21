@@ -44,10 +44,10 @@ export default function HomepageHero() {
         }
       }
       superteam {
-        player1: player(id: "39") {
+        player1: player(id: "7412") {
           ...PlayerFragment
         }
-        player2: player(id: "10394") {
+        player2: player(id: "11893") {
           ...PlayerFragment
         }
       }
