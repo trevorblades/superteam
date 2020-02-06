@@ -15,10 +15,11 @@ exports.sourceNodes = async ({actions, createNodeId, createContentDigest}) => {
     endDate: formatDate(endDate)
   });
 
-  for (const {id} of response) {
+  for (const {id, rating} of response) {
     const player = await HLTV.getPlayer({id});
     actions.createNode({
       ...player,
+      rating,
       team: player.team && (await HLTV.getTeam({id: player.team.id})),
       id: createNodeId(`player-${player.id}`),
       internal: {
