@@ -76,6 +76,7 @@ export default function Index(props) {
                 rounded="lg"
                 overflow="hidden"
                 role="group"
+                transition="box-shadow 150ms"
                 _hover={{
                   shadow: 'xl'
                 }}
@@ -87,6 +88,7 @@ export default function Index(props) {
                   bgImg={`linear-gradient(${[color, 'transparent']})`}
                   bgPos="center"
                   bgSize="200%"
+                  transition="background-color 150ms"
                   _groupHover={{
                     bg: hoverBg[colorMode]
                   }}
@@ -135,6 +137,7 @@ export default function Index(props) {
                     position="relative"
                     fill="currentColor"
                     color={bg[colorMode]}
+                    transition="color 150ms"
                     _groupHover={{
                       color: hoverBg[colorMode]
                     }}
