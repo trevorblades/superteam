@@ -105,8 +105,9 @@ export default function Index(props) {
                     />
                   )}
                   <Box p="4" bg="inherit" position="relative">
-                    <Heading as="h6" fontSize="lg">
+                    <Heading as="h4" fontSize="lg">
                       $400
+                      {/* ✅ Acquired */}
                     </Heading>
                   </Box>
                   <Image
@@ -152,7 +153,7 @@ export default function Index(props) {
                     </Heading>
                     <Heading
                       isTruncated
-                      as="h4"
+                      as="h5"
                       fontWeight="normal"
                       fontSize="md"
                     >
