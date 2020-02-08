@@ -104,6 +104,11 @@ export default function Index(props) {
                       style={{mixBlendMode: 'luminosity'}}
                     />
                   )}
+                  <Box p="4" bg="inherit" position="relative">
+                    <Heading as="h6" fontSize="lg">
+                      $400
+                    </Heading>
+                  </Box>
                   <Image
                     src={player.image}
                     h="full"
