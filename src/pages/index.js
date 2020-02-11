@@ -48,7 +48,7 @@ export default function Index(props) {
       </Helmet>
       <Flex mx="auto" maxWidth="containers.xl" p="10" direction="column">
         <Flex align="center" mx="auto" mb="10">
-          <Box mr="3" as={Logo} w="12" h="12" />
+          <Box mr="3" as={Logo} w="10" h="10" />
           <Heading fontSize="3xl">Superteam</Heading>
         </Flex>
         <Grid gap="6" templateColumns="repeat(auto-fit, minmax(250px, 1fr))">
