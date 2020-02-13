@@ -17,12 +17,12 @@ export default function PlayerCard(props) {
   const {emoji} = emojiFlags.countryCode(props.player.country.code);
 
   const bg = {
-    light: 'gray.50',
+    light: 'gray.100',
     dark: 'gray.700'
   };
 
   const hoverBg = {
-    light: 'gray.100',
+    light: 'gray.50',
     dark: 'gray.600'
   };
 
@@ -41,7 +41,7 @@ export default function PlayerCard(props) {
       role="group"
       transition="box-shadow 150ms"
       cursor={props.isDisabled && 'not-allowed'}
-      onClick={() => props.onClick(props.player.id)}
+      onClick={() => props.onClick(props.player)}
       _hover={{shadow: shouldHover && 'xl'}}
       _disabled={{opacity: 0.5}}
     >

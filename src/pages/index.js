@@ -2,6 +2,7 @@ import Helmet from 'react-helmet';
 import PlayerCard from '../components/player-card';
 import PropTypes from 'prop-types';
 import React, {Fragment, useCallback, useMemo, useState} from 'react';
+import TeamSlots from '../components/team-slots';
 import chroma from 'chroma-js';
 import {
   Box,
@@ -11,7 +12,6 @@ import {
   Heading,
   Stack,
   Text,
-  Tooltip,
   useColorMode,
   useTheme
 } from '@chakra-ui/core';
@@ -19,12 +19,6 @@ import {ReactComponent as Logo} from '../assets/logo.svg';
 import {graphql} from 'gatsby';
 
 const MAX_TEAM_SIZE = 5;
-
-const teamSlotProps = {
-  size: 16,
-  rounded: 'full',
-  shadow: 'lg'
-};
 
 export default function Index(props) {
   const {colors} = useTheme();
@@ -95,12 +89,16 @@ export default function Index(props) {
     [classes, minRating, ratingDelta]
   );
 
-  function togglePlayer(id) {
+  function togglePlayer({id}) {
     setTeam(prevTeam =>
       prevTeam.includes(id)
         ? prevTeam.filter(playerId => playerId !== id)
         : [...prevTeam, id]
     );
+  }
+
+  function removePlayer(player) {
+    setTeam(prevTeam => prevTeam.filter(playerId => playerId !== player.id));
   }
 
   return (
@@ -185,55 +183,13 @@ export default function Index(props) {
               );
             })}
         </Grid>
-        <Stack
-          spacing="4"
-          mx="auto"
-          position="fixed"
-          left="4"
-          top="50%"
-          transform="translateY(-50%)"
-          zIndex="overlay"
-        >
-          {team.map(playerId => {
-            const player = playerById[playerId];
-            const color = getPlayerColor(player.rating);
-            return (
-              <Box key={playerId}>
-                <Tooltip label={player.ign}>
-                  <Box
-                    {...teamSlotProps}
-                    display="block"
-                    outline="none"
-                    as="button"
-                    bg={color}
-                    bgImage={`url(${player.image})`}
-                    backgroundSize="200%"
-                    bgPos="center top"
-                    onClick={() =>
-                      setTeam(prevTeam =>
-                        prevTeam.filter(playerId => playerId !== player.id)
-                      )
-                    }
-                  />
-                </Tooltip>
-              </Box>
-            );
-          })}
-          {Array(MAX_TEAM_SIZE - team.length)
-            .fill(null)
-            .map((item, index) => (
-              <Flex
-                {...teamSlotProps}
-                key={index}
-                bg="gray.500"
-                color="gray.600"
-                align="center"
-                justify="center"
-              >
-                <Text fontSize="xl">{index + 1 + team.length}</Text>
-              </Flex>
-            ))}
-        </Stack>
+        <TeamSlots
+          team={team}
+          onPlayerClick={removePlayer}
+          getPlayerColor={getPlayerColor}
+          playerById={playerById}
+          maxTeamSize={MAX_TEAM_SIZE}
+        />
         <Box as="footer" py="10">
           <Text>&copy; {new Date().getFullYear()} Trevor Blades</Text>
         </Box>
