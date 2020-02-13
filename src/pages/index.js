@@ -13,6 +13,7 @@ import {
   Image,
   PseudoBox,
   Stack,
+  Text,
   useColorMode,
   useTheme
 } from '@chakra-ui/core';
@@ -22,6 +23,7 @@ import {graphql} from 'gatsby';
 export default function Index(props) {
   const {colors} = useTheme();
   const {colorMode} = useColorMode();
+  const [team, setTeam] = useState([]);
   const [region, setRegion] = useState(null);
 
   const {continents} = props.data.countries;
@@ -38,6 +40,18 @@ export default function Index(props) {
   );
 
   const players = props.data.allPlayer.nodes;
+  const playerById = useMemo(
+    () =>
+      players.reduce(
+        (acc, player) => ({
+          ...acc,
+          [player.id]: player
+        }),
+        {}
+      ),
+    [players]
+  );
+
   const ratings = useMemo(() => players.map(player => player.rating), [
     players
   ]);
@@ -47,15 +61,19 @@ export default function Index(props) {
     [players]
   );
 
-  const classes = chroma
-    .scale([
-      colors.gray[500],
-      colors.green[500],
-      colors.blue[500],
-      colors.purple[500],
-      colors.yellow[500]
-    ])
-    .classes([0, 0.1, 0.4, 0.7, 0.9, 1]);
+  const scale = [
+    colors.gray[500],
+    colors.green[500],
+    colors.blue[500],
+    colors.purple[500],
+    colors.yellow[500]
+  ];
+
+  const intervals = Array.from(Array(scale.length + 1).keys()).map(
+    (num, index, array) => num / (array.length - 1)
+  );
+
+  const classes = chroma.scale(scale).classes(intervals);
 
   const maxRating = Math.max(...ratings);
   const minRating = Math.min(...ratings);
@@ -154,6 +172,13 @@ export default function Index(props) {
                   overflow="hidden"
                   role="group"
                   transition="box-shadow 150ms"
+                  onClick={() =>
+                    setTeam(prevTeam =>
+                      prevTeam.includes(player.id)
+                        ? prevTeam.filter(playerId => playerId !== player.id)
+                        : [...prevTeam, player.id]
+                    )
+                  }
                   _hover={{
                     shadow: 'xl'
                   }}
@@ -180,14 +205,14 @@ export default function Index(props) {
                         left="50%"
                         transform="translate(-50%, -50%)"
                         opacity="0.5"
+                        pointerEvents="none"
                         style={{mixBlendMode: 'luminosity'}}
                       />
                     )}
-                    <Box p="4" bg="inherit" position="relative">
-                      <Heading as="h4" fontSize="lg">
-                        $400
-                        {/* ✅ Acquired */}
-                      </Heading>
+                    <Box px="4" py="3" bg="inherit" position="relative">
+                      <Text fontWeight="bold" fontSize="xl">
+                        {team.includes(player.id) ? '✅ Acquired' : '$400'}
+                      </Text>
                     </Box>
                     <Image
                       src={player.image}
@@ -195,6 +220,7 @@ export default function Index(props) {
                       maxW="none"
                       position="absolute"
                       left="0"
+                      pointerEvents="none"
                     />
                     <Box
                       w="full"
@@ -243,6 +269,12 @@ export default function Index(props) {
               );
             })}
         </Grid>
+        <Flex mx="auto" position="sticky" bottom="0">
+          {team.map(playerId => {
+            const player = playerById[playerId];
+            return <div key={playerId}>{player.name}</div>;
+          })}
+        </Flex>
       </Flex>
     </Fragment>
   );
