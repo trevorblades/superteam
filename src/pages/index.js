@@ -178,8 +178,13 @@ export default function Index(props) {
                 dark: 'gray.600'
               };
 
+              const isSelected = team.includes(player.id);
+
+              // TODO: expand on the disabled state stuff
+              // change the visual look of disabled cards
               return (
                 <AspectRatioBox
+                  disabled={team.length === 5 && !isSelected}
                   ratio={3 / 4}
                   key={player.id}
                   as="button"
@@ -229,7 +234,7 @@ export default function Index(props) {
                     )}
                     <Box px="4" py="3" bg="inherit" position="relative">
                       <Text fontWeight="bold" fontSize="xl">
-                        {team.includes(player.id) ? '✅ Acquired' : '$400'}
+                        {isSelected ? '✅ Acquired' : '$400'}
                       </Text>
                     </Box>
                     <Image
@@ -323,7 +328,17 @@ export default function Index(props) {
           {Array(5 - team.length)
             .fill(null)
             .map((item, index) => (
-              <Box {...teamSlotProps} key={index} bg="gray.600" />
+              <Flex
+                {...teamSlotProps}
+                key={index}
+                bg="gray.600"
+                align="center"
+                justify="center"
+              >
+                <Text color="gray.700" fontSize="xl">
+                  {index + 1 + team.length}
+                </Text>
+              </Flex>
             ))}
         </Stack>
       </Flex>
