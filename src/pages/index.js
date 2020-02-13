@@ -1,6 +1,6 @@
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
-import React, {Fragment, useMemo, useState} from 'react';
+import React, {Fragment, useCallback, useMemo, useState} from 'react';
 import chroma from 'chroma-js';
 import emojiFlags from 'emoji-flags';
 import {
@@ -14,11 +14,18 @@ import {
   PseudoBox,
   Stack,
   Text,
+  Tooltip,
   useColorMode,
   useTheme
 } from '@chakra-ui/core';
 import {ReactComponent as Logo} from '../assets/logo.svg';
 import {graphql} from 'gatsby';
+
+const teamSlotProps = {
+  size: 16,
+  rounded: 'full',
+  shadow: 'lg'
+};
 
 export default function Index(props) {
   const {colors} = useTheme();
@@ -61,23 +68,33 @@ export default function Index(props) {
     [players]
   );
 
-  const scale = [
-    colors.gray[500],
-    colors.green[500],
-    colors.blue[500],
-    colors.purple[500],
-    colors.yellow[500]
-  ];
+  const classes = useMemo(() => {
+    const scale = [
+      colors.gray[500],
+      colors.green[500],
+      colors.blue[500],
+      colors.purple[500],
+      colors.yellow[500]
+    ];
 
-  const intervals = Array.from(Array(scale.length + 1).keys()).map(
-    (num, index, array) => num / (array.length - 1)
-  );
+    const intervals = Array.from(Array(scale.length + 1).keys()).map(
+      (num, index, array) => num / (array.length - 1)
+    );
 
-  const classes = chroma.scale(scale).classes(intervals);
+    return chroma.scale(scale).classes(intervals);
+  }, [colors]);
 
   const maxRating = Math.max(...ratings);
   const minRating = Math.min(...ratings);
   const ratingDelta = maxRating - minRating;
+
+  const getPlayerColor = useCallback(
+    rating => {
+      const score = (rating - minRating) / ratingDelta;
+      return classes(score).hex();
+    },
+    [classes, minRating, ratingDelta]
+  );
 
   return (
     <Fragment>
@@ -148,8 +165,7 @@ export default function Index(props) {
                 : true
             )
             .map(player => {
-              const score = (player.rating - minRating) / ratingDelta;
-              const color = classes(score).hex();
+              const color = getPlayerColor(player.rating);
               const {emoji} = emojiFlags.countryCode(player.country.code);
 
               const bg = {
@@ -166,8 +182,10 @@ export default function Index(props) {
                 <AspectRatioBox
                   ratio={3 / 4}
                   key={player.id}
+                  as="button"
+                  textAlign="left"
+                  outline="none"
                   shadow="md"
-                  cursor="pointer"
                   rounded="lg"
                   overflow="hidden"
                   role="group"
@@ -269,12 +287,45 @@ export default function Index(props) {
               );
             })}
         </Grid>
-        <Flex mx="auto" position="sticky" bottom="0">
+        <Stack
+          spacing="4"
+          mx="auto"
+          position="fixed"
+          left="4"
+          top="50%"
+          transform="translateY(-50%)"
+        >
           {team.map(playerId => {
             const player = playerById[playerId];
-            return <div key={playerId}>{player.name}</div>;
+            const color = getPlayerColor(player.rating);
+            return (
+              <Box key={playerId}>
+                <Tooltip label={player.ign}>
+                  <Box
+                    {...teamSlotProps}
+                    display="block"
+                    outline="none"
+                    as="button"
+                    bg={color}
+                    bgImage={`url(${player.image})`}
+                    backgroundSize="200%"
+                    bgPos="center top"
+                    onClick={() =>
+                      setTeam(prevTeam =>
+                        prevTeam.filter(playerId => playerId !== player.id)
+                      )
+                    }
+                  />
+                </Tooltip>
+              </Box>
+            );
           })}
-        </Flex>
+          {Array(5 - team.length)
+            .fill(null)
+            .map((item, index) => (
+              <Box {...teamSlotProps} key={index} bg="gray.600" />
+            ))}
+        </Stack>
       </Flex>
     </Fragment>
   );
