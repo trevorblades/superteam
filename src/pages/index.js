@@ -21,6 +21,8 @@ import {
 import {ReactComponent as Logo} from '../assets/logo.svg';
 import {graphql} from 'gatsby';
 
+const MAX_TEAM_SIZE = 5;
+
 const teamSlotProps = {
   size: 16,
   rounded: 'full',
@@ -184,7 +186,7 @@ export default function Index(props) {
               // change the visual look of disabled cards
               return (
                 <AspectRatioBox
-                  disabled={team.length === 5 && !isSelected}
+                  disabled={team.length === MAX_TEAM_SIZE && !isSelected}
                   ratio={3 / 4}
                   key={player.id}
                   as="button"
@@ -325,7 +327,7 @@ export default function Index(props) {
               </Box>
             );
           })}
-          {Array(5 - team.length)
+          {Array(MAX_TEAM_SIZE - team.length)
             .fill(null)
             .map((item, index) => (
               <Flex
