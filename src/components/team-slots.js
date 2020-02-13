@@ -10,6 +10,17 @@ const teamSlotProps = {
 
 export default function TeamSlots(props) {
   const {colorMode} = useColorMode();
+
+  const bg = {
+    dark: 'gray.500',
+    light: 'gray.200'
+  };
+
+  const color = {
+    dark: 'gray.600',
+    light: 'gray.400'
+  };
+
   return (
     <Stack
       spacing="4"
@@ -47,8 +58,8 @@ export default function TeamSlots(props) {
           <Flex
             {...teamSlotProps}
             key={index}
-            bg={colorMode === 'dark' ? 'gray.500' : 'gray.200'}
-            color={colorMode === 'dark' ? 'gray.600' : 'gray.400'}
+            bg={bg[colorMode]}
+            color={color[colorMode]}
             align="center"
             justify="center"
           >
