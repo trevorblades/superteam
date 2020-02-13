@@ -26,8 +26,6 @@ export default function PlayerCard(props) {
     dark: 'gray.600'
   };
 
-  // TODO: expand on the disabled state stuff
-  // change the visual look of disabled cards
   const shouldHover = !props.isSelected && !props.isDisabled;
   return (
     <AspectRatioBox
