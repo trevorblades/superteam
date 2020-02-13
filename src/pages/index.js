@@ -1,17 +1,14 @@
 import Helmet from 'react-helmet';
+import PlayerCard from '../components/player-card';
 import PropTypes from 'prop-types';
 import React, {Fragment, useCallback, useMemo, useState} from 'react';
 import chroma from 'chroma-js';
-import emojiFlags from 'emoji-flags';
 import {
-  AspectRatioBox,
   Box,
   Button,
   Flex,
   Grid,
   Heading,
-  Image,
-  PseudoBox,
   Stack,
   Text,
   Tooltip,
@@ -98,6 +95,14 @@ export default function Index(props) {
     [classes, minRating, ratingDelta]
   );
 
+  function togglePlayer(id) {
+    setTeam(prevTeam =>
+      prevTeam.includes(id)
+        ? prevTeam.filter(playerId => playerId !== id)
+        : [...prevTeam, id]
+    );
+  }
+
   return (
     <Fragment>
       <Helmet>
@@ -107,18 +112,18 @@ export default function Index(props) {
           content="Build a team of current and future CS:GO superstars and earn points based on your team's weekly performance."
         />
       </Helmet>
-      <Flex mx="auto" maxWidth="containers.xl" p="10" direction="column">
-        <Flex align="center" mx="auto" mt="2" mb="8">
+      <Flex mx="auto" maxWidth="containers.xl" px="10" direction="column">
+        <Flex align="center" mx="auto" mt="12" mb="8">
           <Box mr="5" as={Logo} w="16" h="16" />
           <Heading fontSize="5xl">Superteam</Heading>
         </Flex>
         <Flex
           position="sticky"
           top="0"
-          zIndex="1"
+          zIndex="sticky"
           as="nav"
           py="2"
-          mb="8"
+          mb="10"
           bg={colorMode === 'dark' ? 'gray.800' : 'white'}
         >
           <Stack isInline spacing="4" mx="auto">
@@ -167,130 +172,16 @@ export default function Index(props) {
                 : true
             )
             .map(player => {
-              const color = getPlayerColor(player.rating);
-              const {emoji} = emojiFlags.countryCode(player.country.code);
-
-              const bg = {
-                light: 'gray.50',
-                dark: 'gray.700'
-              };
-
-              const hoverBg = {
-                light: 'gray.100',
-                dark: 'gray.600'
-              };
-
               const isSelected = team.includes(player.id);
-
-              // TODO: expand on the disabled state stuff
-              // change the visual look of disabled cards
               return (
-                <AspectRatioBox
-                  disabled={team.length === MAX_TEAM_SIZE && !isSelected}
-                  ratio={3 / 4}
+                <PlayerCard
                   key={player.id}
-                  as="button"
-                  textAlign="left"
-                  outline="none"
-                  shadow="md"
-                  rounded="lg"
-                  overflow="hidden"
-                  role="group"
-                  transition="box-shadow 150ms"
-                  onClick={() =>
-                    setTeam(prevTeam =>
-                      prevTeam.includes(player.id)
-                        ? prevTeam.filter(playerId => playerId !== player.id)
-                        : [...prevTeam, player.id]
-                    )
-                  }
-                  _hover={{
-                    shadow: 'xl'
-                  }}
-                >
-                  <PseudoBox
-                    display="flex"
-                    flexDirection="column"
-                    bg={bg[colorMode]}
-                    bgImg={`linear-gradient(${[color, 'transparent']})`}
-                    bgPos="center"
-                    bgSize="200%"
-                    transition="background-color 150ms"
-                    _groupHover={{
-                      bg: hoverBg[colorMode]
-                    }}
-                  >
-                    {player.team && (
-                      <Image
-                        w="175%"
-                        maxW="none"
-                        src={player.team.logo}
-                        position="absolute"
-                        top="50%"
-                        left="50%"
-                        transform="translate(-50%, -50%)"
-                        opacity="0.5"
-                        pointerEvents="none"
-                        style={{mixBlendMode: 'luminosity'}}
-                      />
-                    )}
-                    <Box px="4" py="3" bg="inherit" position="relative">
-                      <Text fontWeight="bold" fontSize="xl">
-                        {isSelected ? '✅ Acquired' : '$400'}
-                      </Text>
-                    </Box>
-                    <Image
-                      src={player.image}
-                      h="full"
-                      maxW="none"
-                      position="absolute"
-                      left="0"
-                      pointerEvents="none"
-                    />
-                    <Box
-                      w="full"
-                      h="50%"
-                      bgImg={`linear-gradient(${['transparent', color]})`}
-                      position="absolute"
-                      bottom="0"
-                      style={{mixBlendMode: 'overlay'}}
-                    />
-                    <PseudoBox
-                      as="svg"
-                      mt="auto"
-                      viewBox="0 0 100 48"
-                      preserveAspectRatio="none"
-                      w="full"
-                      h="12"
-                      position="relative"
-                      fill="currentColor"
-                      color={bg[colorMode]}
-                      transition="color 150ms"
-                      _groupHover={{color: hoverBg[colorMode]}}
-                    >
-                      <path d="M 0,48 Q 50,0 100,48 Z" />
-                    </PseudoBox>
-                    <Box
-                      p="5"
-                      pt="1"
-                      bg="inherit"
-                      textAlign="center"
-                      position="relative"
-                    >
-                      <Heading mb="1" as="h3" fontSize="2xl">
-                        {player.ign}
-                      </Heading>
-                      <Heading
-                        isTruncated
-                        as="h5"
-                        fontWeight="normal"
-                        fontSize="md"
-                      >
-                        {emoji} {player.name}
-                      </Heading>
-                    </Box>
-                  </PseudoBox>
-                </AspectRatioBox>
+                  getPlayerColor={getPlayerColor}
+                  player={player}
+                  isSelected={isSelected}
+                  isDisabled={team.length === MAX_TEAM_SIZE && !isSelected}
+                  onClick={togglePlayer}
+                />
               );
             })}
         </Grid>
@@ -301,6 +192,7 @@ export default function Index(props) {
           left="4"
           top="50%"
           transform="translateY(-50%)"
+          zIndex="overlay"
         >
           {team.map(playerId => {
             const player = playerById[playerId];
@@ -333,16 +225,18 @@ export default function Index(props) {
               <Flex
                 {...teamSlotProps}
                 key={index}
-                bg="gray.600"
+                bg="gray.500"
+                color="gray.600"
                 align="center"
                 justify="center"
               >
-                <Text color="gray.700" fontSize="xl">
-                  {index + 1 + team.length}
-                </Text>
+                <Text fontSize="xl">{index + 1 + team.length}</Text>
               </Flex>
             ))}
         </Stack>
+        <Box as="footer" py="10">
+          <Text>&copy; {new Date().getFullYear()} Trevor Blades</Text>
+        </Box>
       </Flex>
     </Fragment>
   );
