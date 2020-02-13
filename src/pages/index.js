@@ -71,39 +71,49 @@ export default function Index(props) {
         />
       </Helmet>
       <Flex mx="auto" maxWidth="containers.xl" p="10" direction="column">
-        <Flex align="center" mx="auto" mb="10">
+        <Flex align="center" mx="auto" mb="8">
           <Box mr="3" as={Logo} w="10" h="10" />
           <Heading fontSize="3xl">Superteam</Heading>
         </Flex>
-        <Stack isInline spacing="4" as="nav" mb="8" mx="auto">
-          <Button
-            variantColor={region ? undefined : 'blue'}
-            variant={region ? 'ghost' : 'solid'}
-            onClick={() => setRegion(null)}
-          >
-            All regions
-          </Button>
-          {continents
-            .filter(
-              continent =>
-                continent.countries.filter(country =>
-                  countryCodes.includes(country.code)
-                ).length
-            )
-            .map(continent => {
-              const isSelected = continent.code === region;
-              return (
-                <Button
-                  variantColor={isSelected ? 'blue' : undefined}
-                  variant={isSelected ? 'solid' : 'ghost'}
-                  key={continent.code}
-                  onClick={() => setRegion(continent.code)}
-                >
-                  {continent.name}
-                </Button>
-              );
-            })}
-        </Stack>
+        <Flex
+          position="sticky"
+          top="0"
+          zIndex="1"
+          as="nav"
+          py="2"
+          mb="8"
+          bg={colorMode === 'dark' ? 'gray.800' : 'white'}
+        >
+          <Stack isInline spacing="4" mx="auto">
+            <Button
+              variantColor={region ? undefined : 'blue'}
+              variant={region ? 'ghost' : 'solid'}
+              onClick={() => setRegion(null)}
+            >
+              All regions
+            </Button>
+            {continents
+              .filter(
+                continent =>
+                  continent.countries.filter(country =>
+                    countryCodes.includes(country.code)
+                  ).length
+              )
+              .map(continent => {
+                const isSelected = continent.code === region;
+                return (
+                  <Button
+                    variantColor={isSelected ? 'blue' : undefined}
+                    variant={isSelected ? 'solid' : 'ghost'}
+                    key={continent.code}
+                    onClick={() => setRegion(continent.code)}
+                  >
+                    {continent.name}
+                  </Button>
+                );
+              })}
+          </Stack>
+        </Flex>
         <Grid
           gap="6"
           templateColumns={[
