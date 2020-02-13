@@ -106,9 +106,9 @@ export default function Index(props) {
         />
       </Helmet>
       <Flex mx="auto" maxWidth="containers.xl" p="10" direction="column">
-        <Flex align="center" mx="auto" mb="8">
-          <Box mr="3" as={Logo} w="10" h="10" />
-          <Heading fontSize="3xl">Superteam</Heading>
+        <Flex align="center" mx="auto" mt="2" mb="8">
+          <Box mr="5" as={Logo} w="16" h="16" />
+          <Heading fontSize="5xl">Superteam</Heading>
         </Flex>
         <Flex
           position="sticky"
