@@ -10,6 +10,7 @@ import {
   Flex,
   Grid,
   Heading,
+  Link,
   Stack,
   Text,
   useColorMode,
@@ -191,7 +192,10 @@ export default function Index(props) {
           maxTeamSize={MAX_TEAM_SIZE}
         />
         <Box as="footer" py="10">
-          <Text>&copy; {new Date().getFullYear()} Trevor Blades</Text>
+          <Text>
+            &copy; {new Date().getFullYear()}{' '}
+            <Link href="https://trevorblades.com">Trevor Blades</Link>
+          </Text>
         </Box>
       </Flex>
     </Fragment>
