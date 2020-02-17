@@ -42,7 +42,7 @@ export default function PlayerCard(props) {
       cursor={props.isDisabled && 'not-allowed'}
       onClick={() => props.onClick(props.player)}
       _hover={{shadow: shouldHover && 'xl'}}
-      _disabled={{opacity: 0.5}}
+      _disabled={{opacity: 0.4}}
     >
       <PseudoBox
         display="flex"
