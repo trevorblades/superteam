@@ -35,11 +35,10 @@ export default function PlayerCard(props) {
       as="button"
       textAlign="left"
       outline="none"
-      shadow="md"
+      shadow={props.isSelected ? `0 0 0 3px ${color}` : 'md'}
       rounded="lg"
       overflow="hidden"
       role="group"
-      transition="box-shadow 150ms"
       cursor={props.isDisabled && 'not-allowed'}
       onClick={() => props.onClick(props.player)}
       _hover={{shadow: shouldHover && 'xl'}}
@@ -52,7 +51,6 @@ export default function PlayerCard(props) {
         bgImg={`linear-gradient(${[color, 'transparent']})`}
         bgPos="center"
         bgSize="200%"
-        transition="background-color 150ms"
         _groupHover={{
           bg: shouldHover && hoverBg[colorMode]
         }}
@@ -102,7 +100,6 @@ export default function PlayerCard(props) {
           position="relative"
           fill="currentColor"
           color={bg[colorMode]}
-          transition="color 150ms"
           _groupHover={{color: shouldHover && hoverBg[colorMode]}}
         >
           <path d="M 0,48 Q 50,0 100,48 Z" />
