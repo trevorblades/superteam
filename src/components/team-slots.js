@@ -5,7 +5,7 @@ import {Box, Flex, Stack, Text, Tooltip, useColorMode} from '@chakra-ui/core';
 const teamSlotProps = {
   size: 16,
   rounded: 'full',
-  shadow: 'lg'
+  shadow: 'inner'
 };
 
 export default function TeamSlots(props) {
