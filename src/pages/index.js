@@ -184,13 +184,7 @@ export default function Index(props) {
           <Grid
             px="10"
             gap="6"
-            templateColumns={[
-              '1fr',
-              'repeat(2, 1fr)',
-              'repeat(3, 1fr)',
-              'repeat(4, 1fr)',
-              'repeat(5, 1fr)'
-            ]}
+            templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
           >
             {players
               .filter(player =>
