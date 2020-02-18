@@ -144,14 +144,17 @@ export default function Index(props) {
         <Flex flexGrow="1" direction="column" minH="100vh">
           <Flex
             my="8"
+            align="center"
             position="sticky"
             top="0"
             zIndex="sticky"
             as="nav"
-            py="2"
+            py="3"
+            px="10"
             bg={colorMode === 'dark' ? 'gray.800' : 'white'}
           >
-            <Stack isInline spacing="4" mx="auto">
+            <Heading fontSize="2xl">$16,000 remaining</Heading>
+            <Stack isInline spacing="4" ml="auto">
               <Button
                 variantColor={region ? undefined : 'blue'}
                 variant={region ? 'ghost' : 'solid'}
