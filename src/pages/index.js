@@ -123,7 +123,7 @@ export default function Index(props) {
           <Flex
             align="center"
             position="absolute"
-            top="3"
+            top="5"
             left="5"
             transform="rotate(90deg) translateY(-100%)"
             transformOrigin="top left"
