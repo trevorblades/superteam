@@ -17,12 +17,12 @@ export default function PlayerCard(props) {
   const {emoji} = emojiFlags.countryCode(props.player.country.code);
 
   const bg = {
-    light: 'gray.100',
+    light: 'gray.200',
     dark: 'gray.700'
   };
 
   const hoverBg = {
-    light: 'gray.50',
+    light: 'gray.300',
     dark: 'gray.600'
   };
 

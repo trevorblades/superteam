@@ -111,92 +111,113 @@ export default function Index(props) {
           content="Build a team of current and future CS:GO superstars and earn points based on your team's weekly performance."
         />
       </Helmet>
-      <Flex mx="auto" maxWidth="containers.xl" px="10" direction="column">
-        <Flex align="center" mx="auto" mt="12" mb="8">
-          <Box mr="5" as={Logo} w="16" h="16" />
-          <Heading fontSize="5xl">Superteam</Heading>
-        </Flex>
+      <Flex align="flex-start">
         <Flex
+          p="3"
+          h="100vh"
           position="sticky"
-          top="0"
           zIndex="sticky"
-          as="nav"
-          py="2"
-          mb="10"
-          bg={colorMode === 'dark' ? 'gray.800' : 'white'}
+          top="0"
+          bg={colorMode === 'dark' ? 'gray.900' : 'gray.50'}
         >
-          <Stack isInline spacing="4" mx="auto">
-            <Button
-              variantColor={region ? undefined : 'blue'}
-              variant={region ? 'ghost' : 'solid'}
-              onClick={() => setRegion(null)}
-            >
-              All regions
-            </Button>
-            {continents
-              .filter(
-                continent =>
-                  continent.countries.filter(country =>
-                    countryCodes.includes(country.code)
-                  ).length
+          <Flex
+            align="center"
+            position="absolute"
+            top="3"
+            left="5"
+            transform="rotate(90deg) translateY(-100%)"
+            transformOrigin="top left"
+          >
+            <Box mr="4" as={Logo} w="12" h="12" transform="rotate(-90deg)" />
+            <Heading fontSize="4xl" letterSpacing="tighter">
+              Superteam
+            </Heading>
+          </Flex>
+          <TeamSlots
+            team={team}
+            onPlayerClick={removePlayer}
+            getPlayerColor={getPlayerColor}
+            playerById={playerById}
+            maxTeamSize={MAX_TEAM_SIZE}
+          />
+        </Flex>
+        <Flex flexGrow="1" direction="column" minH="100vh">
+          <Flex
+            my="8"
+            position="sticky"
+            top="0"
+            zIndex="sticky"
+            as="nav"
+            py="2"
+            bg={colorMode === 'dark' ? 'gray.800' : 'white'}
+          >
+            <Stack isInline spacing="4" mx="auto">
+              <Button
+                variantColor={region ? undefined : 'blue'}
+                variant={region ? 'ghost' : 'solid'}
+                onClick={() => setRegion(null)}
+              >
+                All regions
+              </Button>
+              {continents
+                .filter(
+                  continent =>
+                    continent.countries.filter(country =>
+                      countryCodes.includes(country.code)
+                    ).length
+                )
+                .map(continent => {
+                  const isSelected = continent.code === region;
+                  return (
+                    <Button
+                      variantColor={isSelected ? 'blue' : undefined}
+                      variant={isSelected ? 'solid' : 'ghost'}
+                      key={continent.code}
+                      onClick={() => setRegion(continent.code)}
+                    >
+                      {continent.name}
+                    </Button>
+                  );
+                })}
+            </Stack>
+          </Flex>
+          <Grid
+            px="10"
+            gap="6"
+            templateColumns={[
+              '1fr',
+              'repeat(2, 1fr)',
+              'repeat(3, 1fr)',
+              'repeat(4, 1fr)'
+            ]}
+          >
+            {players
+              .filter(player =>
+                region
+                  ? countriesByContinent[region].includes(player.country.code)
+                  : true
               )
-              .map(continent => {
-                const isSelected = continent.code === region;
+              .map(player => {
+                const isSelected = team.includes(player.id);
                 return (
-                  <Button
-                    variantColor={isSelected ? 'blue' : undefined}
-                    variant={isSelected ? 'solid' : 'ghost'}
-                    key={continent.code}
-                    onClick={() => setRegion(continent.code)}
-                  >
-                    {continent.name}
-                  </Button>
+                  <PlayerCard
+                    key={player.id}
+                    getPlayerColor={getPlayerColor}
+                    player={player}
+                    isSelected={isSelected}
+                    isDisabled={team.length === MAX_TEAM_SIZE && !isSelected}
+                    onClick={togglePlayer}
+                  />
                 );
               })}
-          </Stack>
+          </Grid>
+          <Box mt="auto" as="footer" py="8" px="10">
+            <Text>
+              &copy; {new Date().getFullYear()}{' '}
+              <Link href="https://trevorblades.com">Trevor Blades</Link>
+            </Text>
+          </Box>
         </Flex>
-        <Grid
-          gap="6"
-          templateColumns={[
-            '1fr',
-            'repeat(2, 1fr)',
-            'repeat(3, 1fr)',
-            'repeat(4, 1fr)'
-          ]}
-        >
-          {players
-            .filter(player =>
-              region
-                ? countriesByContinent[region].includes(player.country.code)
-                : true
-            )
-            .map(player => {
-              const isSelected = team.includes(player.id);
-              return (
-                <PlayerCard
-                  key={player.id}
-                  getPlayerColor={getPlayerColor}
-                  player={player}
-                  isSelected={isSelected}
-                  isDisabled={team.length === MAX_TEAM_SIZE && !isSelected}
-                  onClick={togglePlayer}
-                />
-              );
-            })}
-        </Grid>
-        <TeamSlots
-          team={team}
-          onPlayerClick={removePlayer}
-          getPlayerColor={getPlayerColor}
-          playerById={playerById}
-          maxTeamSize={MAX_TEAM_SIZE}
-        />
-        <Box as="footer" py="10">
-          <Text>
-            &copy; {new Date().getFullYear()}{' '}
-            <Link href="https://trevorblades.com">Trevor Blades</Link>
-          </Text>
-        </Box>
       </Flex>
     </Fragment>
   );

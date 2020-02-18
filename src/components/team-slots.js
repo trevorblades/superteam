@@ -12,25 +12,17 @@ export default function TeamSlots(props) {
   const {colorMode} = useColorMode();
 
   const bg = {
-    dark: 'gray.500',
-    light: 'gray.200'
+    dark: 'gray.600',
+    light: 'gray.300'
   };
 
   const color = {
-    dark: 'gray.600',
-    light: 'gray.400'
+    dark: 'gray.700',
+    light: 'gray.500'
   };
 
   return (
-    <Stack
-      spacing="4"
-      mx="auto"
-      position="fixed"
-      left="4"
-      top="50%"
-      transform="translateY(-50%)"
-      zIndex="overlay"
-    >
+    <Stack mt="auto" spacing="3" position="relative">
       {props.team.map(playerId => {
         const player = props.playerById[playerId];
         const color = props.getPlayerColor(player.rating);
