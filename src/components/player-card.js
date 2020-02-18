@@ -13,7 +13,7 @@ import {
 
 export default function PlayerCard(props) {
   const {colorMode} = useColorMode();
-  const color = props.getPlayerColor(props.player.rating);
+  const color = props.getPlayerColor(props.player);
   const {emoji} = emojiFlags.countryCode(props.player.country.code);
 
   const bg = {
@@ -71,7 +71,9 @@ export default function PlayerCard(props) {
         )}
         <Box px="4" py="3" bg="inherit" position="relative">
           <Text fontWeight="bold" fontSize="xl">
-            {props.isSelected ? '✅ Acquired' : '$400'}
+            {props.isSelected
+              ? '✅ Acquired'
+              : '$' + props.cost.toLocaleString()}
           </Text>
         </Box>
         <Image
@@ -118,6 +120,7 @@ export default function PlayerCard(props) {
 }
 
 PlayerCard.propTypes = {
+  cost: PropTypes.number.isRequired,
   player: PropTypes.object.isRequired,
   isSelected: PropTypes.bool.isRequired,
   getPlayerColor: PropTypes.func.isRequired,

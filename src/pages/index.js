@@ -20,6 +20,8 @@ import {ReactComponent as Logo} from '../assets/logo.svg';
 import {graphql} from 'gatsby';
 
 const MAX_TEAM_SIZE = 5;
+const TOTAL_BUDGET = 16000;
+const AVG_PLAYER_COST = TOTAL_BUDGET / MAX_TEAM_SIZE;
 
 export default function Index(props) {
   const {colors} = useTheme();
@@ -82,12 +84,37 @@ export default function Index(props) {
   const minRating = Math.min(...ratings);
   const ratingDelta = maxRating - minRating;
 
+  const getPlayerScore = useCallback(
+    player => (player.rating - minRating) / ratingDelta,
+    [minRating, ratingDelta]
+  );
+
+  const getPlayerCost = useCallback(
+    player => {
+      const baseCost = player.rating * AVG_PLAYER_COST;
+      const score = getPlayerScore(player);
+      const modifier = 4 / 3 - score / 3; // magic ✨
+      return Math.round(baseCost / modifier);
+    },
+    [getPlayerScore]
+  );
+
+  const budget = useMemo(
+    () =>
+      TOTAL_BUDGET -
+      team.reduce(
+        (acc, playerId) => acc + getPlayerCost(playerById[playerId]),
+        0
+      ),
+    [getPlayerCost, playerById, team]
+  );
+
   const getPlayerColor = useCallback(
-    rating => {
-      const score = (rating - minRating) / ratingDelta;
+    player => {
+      const score = getPlayerScore(player);
       return classes(score).hex();
     },
-    [classes, minRating, ratingDelta]
+    [classes, getPlayerScore]
   );
 
   function togglePlayer({id}) {
@@ -153,7 +180,9 @@ export default function Index(props) {
             px="10"
             bg={colorMode === 'dark' ? 'gray.800' : 'white'}
           >
-            <Heading fontSize="2xl">$16,000 remaining</Heading>
+            <Heading fontSize="2xl">
+              ${budget.toLocaleString()} remaining
+            </Heading>
             <Stack isInline spacing="4" ml="auto">
               <Button
                 variantColor={region ? undefined : 'blue'}
@@ -197,14 +226,19 @@ export default function Index(props) {
               )
               .map(player => {
                 const isSelected = team.includes(player.id);
+                const cost = getPlayerCost(player);
                 return (
                   <PlayerCard
                     key={player.id}
                     getPlayerColor={getPlayerColor}
                     player={player}
                     isSelected={isSelected}
-                    isDisabled={team.length === MAX_TEAM_SIZE && !isSelected}
+                    isDisabled={
+                      (team.length === MAX_TEAM_SIZE || cost > budget) &&
+                      !isSelected
+                    }
                     onClick={togglePlayer}
+                    cost={cost}
                   />
                 );
               })}

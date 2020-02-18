@@ -25,7 +25,7 @@ export default function TeamSlots(props) {
     <Stack mt="auto" spacing="3" position="relative">
       {props.team.map(playerId => {
         const player = props.playerById[playerId];
-        const color = props.getPlayerColor(player.rating);
+        const color = props.getPlayerColor(player);
         return (
           <Box key={playerId}>
             <Tooltip label={player.ign}>
