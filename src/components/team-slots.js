@@ -12,13 +12,8 @@ export default function TeamSlots(props) {
   const {colorMode} = useColorMode();
 
   const bg = {
-    dark: 'gray.600',
-    light: 'gray.300'
-  };
-
-  const color = {
     dark: 'gray.700',
-    light: 'gray.500'
+    light: 'gray.200'
   };
 
   return (
@@ -51,7 +46,7 @@ export default function TeamSlots(props) {
             {...teamSlotProps}
             key={index}
             bg={bg[colorMode]}
-            color={color[colorMode]}
+            color="gray.500"
             align="center"
             justify="center"
           >
