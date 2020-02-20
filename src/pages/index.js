@@ -8,7 +8,6 @@ import TeamSlots from '../components/team-slots';
 import chroma from 'chroma-js';
 import {
   Box,
-  DarkMode,
   Flex,
   Grid,
   Heading,
@@ -150,104 +149,102 @@ export default function Index(props) {
         />
       </Helmet>
       {/* TODO: https://github.com/chakra-ui/chakra-ui/issues/349 */}
-      <DarkMode>
-        <Flex align="flex-start">
+      <Flex align="flex-start">
+        <Flex
+          p="3"
+          h="100vh"
+          position="sticky"
+          zIndex="sticky"
+          top="0"
+          bg={colorMode === 'dark' ? 'gray.900' : 'gray.50'}
+          display={['none', 'flex']}
+        >
           <Flex
-            p="3"
-            h="100vh"
-            position="sticky"
-            zIndex="sticky"
-            top="0"
-            bg={colorMode === 'dark' ? 'gray.900' : 'gray.50'}
-            display={['none', 'flex']}
+            align="center"
+            position="absolute"
+            top="5"
+            left="5"
+            transform="rotate(90deg) translateY(-100%)"
+            transformOrigin="top left"
           >
-            <Flex
-              align="center"
-              position="absolute"
-              top="5"
-              left="5"
-              transform="rotate(90deg) translateY(-100%)"
-              transformOrigin="top left"
-            >
-              <Box mr="4" as={Logo} w="12" h="12" transform="rotate(-90deg)" />
-              <Heading fontSize="4xl" letterSpacing="tighter">
-                Superteam
+            <Box mr="4" as={Logo} w="12" h="12" transform="rotate(-90deg)" />
+            <Heading fontSize="4xl" letterSpacing="tighter">
+              Superteam
+            </Heading>
+          </Flex>
+          <TeamSlots
+            teamPlayers={teamPlayers}
+            onPlayerClick={removePlayer}
+            getPlayerColor={getPlayerColor}
+            maxTeamSize={MAX_TEAM_SIZE}
+          />
+        </Flex>
+        <Flex flexGrow="1" direction="column" minH="100vh">
+          <Flex
+            my={[4, 6, 8]}
+            align="center"
+            position="sticky"
+            top="0"
+            zIndex="sticky"
+            as="nav"
+            py="3"
+            px={[6, 8, 10]}
+            bg={colorMode === 'dark' ? 'gray.800' : 'white'}
+          >
+            {team.length === MAX_TEAM_SIZE ? (
+              <DownloadButton teamPlayers={teamPlayers} />
+            ) : (
+              <Heading fontSize="2xl">
+                ${budget.toLocaleString()}{' '}
+                <Box
+                  as="span"
+                  display={{
+                    xs: 'none',
+                    md: 'initial'
+                  }}
+                >
+                  remaining
+                </Box>
               </Heading>
-            </Flex>
-            <TeamSlots
-              teamPlayers={teamPlayers}
-              onPlayerClick={removePlayer}
-              getPlayerColor={getPlayerColor}
-              maxTeamSize={MAX_TEAM_SIZE}
+            )}
+            <RegionSelect
+              region={region}
+              setRegion={setRegion}
+              continents={validContinents}
             />
           </Flex>
-          <Flex flexGrow="1" direction="column" minH="100vh">
-            <Flex
-              my={[4, 6, 8]}
-              align="center"
-              position="sticky"
-              top="0"
-              zIndex="sticky"
-              as="nav"
-              py="3"
-              px={[6, 8, 10]}
-              bg={colorMode === 'dark' ? 'gray.800' : 'white'}
-            >
-              {team.length === MAX_TEAM_SIZE ? (
-                <DownloadButton teamPlayers={teamPlayers} />
-              ) : (
-                <Heading fontSize="2xl">
-                  ${budget.toLocaleString()}{' '}
-                  <Box
-                    as="span"
-                    display={{
-                      xs: 'none',
-                      md: 'initial'
-                    }}
-                  >
-                    remaining
-                  </Box>
-                </Heading>
-              )}
-              <RegionSelect
-                region={region}
-                setRegion={setRegion}
-                continents={validContinents}
-              />
-            </Flex>
-            <Grid
-              px={[6, 8, 10]}
-              gap="6"
-              templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
-            >
-              {players.filter(isPlayerFromRegion).map(player => {
-                const isSelected = team.includes(player.id);
-                const cost = getPlayerCost(player);
-                return (
-                  <PlayerCard
-                    key={player.id}
-                    getPlayerColor={getPlayerColor}
-                    player={player}
-                    isSelected={isSelected}
-                    isDisabled={
-                      (team.length === MAX_TEAM_SIZE || cost > budget) &&
-                      !isSelected
-                    }
-                    onClick={togglePlayer}
-                    cost={cost}
-                  />
-                );
-              })}
-            </Grid>
-            <Box mt="auto" as="footer" py={[4, 6, 8]} px={[6, 8, 10]}>
-              <Text>
-                &copy; {new Date().getFullYear()}{' '}
-                <Link href="https://trevorblades.com">Trevor Blades</Link>
-              </Text>
-            </Box>
-          </Flex>
+          <Grid
+            px={[6, 8, 10]}
+            gap="6"
+            templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
+          >
+            {players.filter(isPlayerFromRegion).map(player => {
+              const isSelected = team.includes(player.id);
+              const cost = getPlayerCost(player);
+              return (
+                <PlayerCard
+                  key={player.id}
+                  getPlayerColor={getPlayerColor}
+                  player={player}
+                  isSelected={isSelected}
+                  isDisabled={
+                    (team.length === MAX_TEAM_SIZE || cost > budget) &&
+                    !isSelected
+                  }
+                  onClick={togglePlayer}
+                  cost={cost}
+                />
+              );
+            })}
+          </Grid>
+          <Box mt="auto" as="footer" py={[4, 6, 8]} px={[6, 8, 10]}>
+            <Text>
+              &copy; {new Date().getFullYear()}{' '}
+              <Link href="https://trevorblades.com">Trevor Blades</Link>
+            </Text>
+          </Box>
         </Flex>
-      </DarkMode>
+      </Flex>
     </Fragment>
   );
 }
