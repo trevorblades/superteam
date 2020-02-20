@@ -1,5 +1,6 @@
 import DownloadButton from '../components/download-button';
 import Helmet from 'react-helmet';
+import LogoTitle from '../components/logo-title';
 import PlayerCard from '../components/player-card';
 import PropTypes from 'prop-types';
 import React, {Fragment, useCallback, useMemo, useState} from 'react';
@@ -16,7 +17,6 @@ import {
   useColorMode,
   useTheme
 } from '@chakra-ui/core';
-import {ReactComponent as Logo} from '../assets/logo.svg';
 import {graphql} from 'gatsby';
 
 const MAX_TEAM_SIZE = 5;
@@ -158,19 +158,14 @@ export default function Index(props) {
           bg={colorMode === 'dark' ? 'gray.900' : 'gray.50'}
           display={['none', 'flex']}
         >
-          <Flex
-            align="center"
+          <LogoTitle
             position="absolute"
             top="5"
             left="5"
             transform="rotate(90deg) translateY(-100%)"
             transformOrigin="top left"
-          >
-            <Box mr="4" as={Logo} w="12" h="12" transform="rotate(-90deg)" />
-            <Heading fontSize="4xl" letterSpacing="tighter">
-              Superteam
-            </Heading>
-          </Flex>
+            logoProps={{transform: 'rotate(-90deg)'}}
+          />
           <TeamSlots
             teamPlayers={teamPlayers}
             onPlayerClick={removePlayer}
@@ -179,6 +174,15 @@ export default function Index(props) {
           />
         </Flex>
         <Flex flexGrow="1" direction="column" minH="100vh">
+          <LogoTitle
+            mt="10"
+            mb="2"
+            mx="auto"
+            display={{
+              xs: 'flex',
+              sm: 'none'
+            }}
+          />
           <Flex
             my={[4, 6, 8]}
             align="center"
