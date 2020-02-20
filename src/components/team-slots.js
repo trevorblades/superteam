@@ -11,6 +11,7 @@ const teamSlotProps = {
 export default function TeamSlots(props) {
   const {colorMode} = useColorMode();
 
+  const teamSize = props.teamPlayers.length;
   const bg = {
     dark: 'gray.700',
     light: 'gray.200'
@@ -18,11 +19,10 @@ export default function TeamSlots(props) {
 
   return (
     <Stack mt="auto" spacing="3" position="relative">
-      {props.team.map(playerId => {
-        const player = props.playerById[playerId];
+      {props.teamPlayers.map(player => {
         const color = props.getPlayerColor(player);
         return (
-          <Box key={playerId}>
+          <Box key={player.id}>
             <Tooltip label={player.ign}>
               <Box
                 {...teamSlotProps}
@@ -39,7 +39,7 @@ export default function TeamSlots(props) {
           </Box>
         );
       })}
-      {Array(props.maxTeamSize - props.team.length)
+      {Array(props.maxTeamSize - teamSize)
         .fill(null)
         .map((item, index) => (
           <Flex
@@ -50,7 +50,7 @@ export default function TeamSlots(props) {
             align="center"
             justify="center"
           >
-            <Text fontSize="xl">{index + 1 + props.team.length}</Text>
+            <Text fontSize="xl">{index + 1 + teamSize}</Text>
           </Flex>
         ))}
     </Stack>
@@ -58,8 +58,7 @@ export default function TeamSlots(props) {
 }
 
 TeamSlots.propTypes = {
-  playerById: PropTypes.object.isRequired,
-  team: PropTypes.array.isRequired,
+  teamPlayers: PropTypes.array.isRequired,
   onPlayerClick: PropTypes.func.isRequired,
   maxTeamSize: PropTypes.number.isRequired,
   getPlayerColor: PropTypes.func.isRequired

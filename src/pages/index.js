@@ -1,3 +1,4 @@
+import DownloadButton from '../components/download-button';
 import Helmet from 'react-helmet';
 import PlayerCard from '../components/player-card';
 import PropTypes from 'prop-types';
@@ -43,15 +44,8 @@ export default function Index(props) {
   );
 
   const players = props.data.allPlayer.nodes;
-  const playerById = useMemo(
-    () =>
-      players.reduce(
-        (acc, player) => ({
-          ...acc,
-          [player.id]: player
-        }),
-        {}
-      ),
+  const getPlayerById = useCallback(
+    playerId => players.find(player => player.id === playerId),
     [players]
   );
 
@@ -99,14 +93,16 @@ export default function Index(props) {
     [getPlayerScore]
   );
 
+  const teamPlayers = useMemo(() => team.map(getPlayerById), [
+    team,
+    getPlayerById
+  ]);
+
   const budget = useMemo(
     () =>
       TOTAL_BUDGET -
-      team.reduce(
-        (acc, playerId) => acc + getPlayerCost(playerById[playerId]),
-        0
-      ),
-    [getPlayerCost, playerById, team]
+      teamPlayers.reduce((acc, player) => acc + getPlayerCost(player), 0),
+    [getPlayerCost, teamPlayers]
   );
 
   const getPlayerColor = useCallback(
@@ -161,10 +157,9 @@ export default function Index(props) {
             </Heading>
           </Flex>
           <TeamSlots
-            team={team}
+            teamPlayers={teamPlayers}
             onPlayerClick={removePlayer}
             getPlayerColor={getPlayerColor}
-            playerById={playerById}
             maxTeamSize={MAX_TEAM_SIZE}
           />
         </Flex>
@@ -180,9 +175,13 @@ export default function Index(props) {
             px="10"
             bg={colorMode === 'dark' ? 'gray.800' : 'white'}
           >
-            <Heading fontSize="2xl">
-              ${budget.toLocaleString()} remaining
-            </Heading>
+            {team.length === MAX_TEAM_SIZE ? (
+              <DownloadButton teamPlayers={teamPlayers} />
+            ) : (
+              <Heading fontSize="2xl">
+                ${budget.toLocaleString()} remaining
+              </Heading>
+            )}
             <Stack isInline spacing="4" ml="auto">
               <Button
                 variantColor={region ? undefined : 'blue'}
