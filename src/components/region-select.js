@@ -1,14 +1,19 @@
 import PropTypes from 'prop-types';
-import React from 'react';
-import useWindowSize from 'react-use/lib/useWindowSize';
-import {Button, Select, Stack} from '@chakra-ui/core';
+import React, {Fragment} from 'react';
+import {Box, Button, Select, Stack} from '@chakra-ui/core';
 
 export default function RegionSelect(props) {
-  const {width} = useWindowSize();
-
-  if (width > 1100) {
-    return (
-      <Stack isInline spacing="4" ml="auto">
+  return (
+    <Fragment>
+      <Stack
+        isInline
+        spacing="4"
+        ml="auto"
+        display={{
+          xs: 'none',
+          lg: 'flex'
+        }}
+      >
         <Button
           variantColor={props.region ? undefined : 'blue'}
           variant={props.region ? 'ghost' : 'solid'}
@@ -30,23 +35,25 @@ export default function RegionSelect(props) {
           );
         })}
       </Stack>
-    );
-  }
-
-  return (
-    <Select
-      w="auto"
-      ml="auto"
-      value={props.region}
-      onChange={event => props.setRegion(event.target.value)}
-    >
-      <option value="">All regions</option>
-      {props.continents.map(continent => (
-        <option key={continent.code} value={continent.code}>
-          {continent.name}
-        </option>
-      ))}
-    </Select>
+      <Box
+        ml="auto"
+        display={{
+          lg: 'none'
+        }}
+      >
+        <Select
+          value={props.region}
+          onChange={event => props.setRegion(event.target.value)}
+        >
+          <option value="">All regions</option>
+          {props.continents.map(continent => (
+            <option key={continent.code} value={continent.code}>
+              {continent.name}
+            </option>
+          ))}
+        </Select>
+      </Box>
+    </Fragment>
   );
 }
 

@@ -197,7 +197,7 @@ export default function Index(props) {
             {team.length === MAX_TEAM_SIZE ? (
               <DownloadButton teamPlayers={teamPlayers} />
             ) : (
-              <Heading fontSize="2xl">
+              <Heading isTruncated fontSize="2xl" w="0" flexGrow="1">
                 ${budget.toLocaleString()}{' '}
                 <Box
                   as="span"
