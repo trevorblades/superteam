@@ -156,6 +156,7 @@ export default function Index(props) {
           zIndex="sticky"
           top="0"
           bg={colorMode === 'dark' ? 'gray.900' : 'gray.50'}
+          display={['none', 'flex']}
         >
           <Flex
             align="center"
@@ -179,21 +180,30 @@ export default function Index(props) {
         </Flex>
         <Flex flexGrow="1" direction="column" minH="100vh">
           <Flex
-            my="8"
+            my={[4, 6, 8]}
             align="center"
             position="sticky"
             top="0"
             zIndex="sticky"
             as="nav"
             py="3"
-            px="10"
+            px={[6, 8, 10]}
             bg={colorMode === 'dark' ? 'gray.800' : 'white'}
           >
             {team.length === MAX_TEAM_SIZE ? (
               <DownloadButton teamPlayers={teamPlayers} />
             ) : (
               <Heading fontSize="2xl">
-                ${budget.toLocaleString()} remaining
+                ${budget.toLocaleString()}{' '}
+                <Box
+                  as="span"
+                  display={{
+                    xs: 'none',
+                    md: 'initial'
+                  }}
+                >
+                  remaining
+                </Box>
               </Heading>
             )}
             <RegionSelect
@@ -203,7 +213,7 @@ export default function Index(props) {
             />
           </Flex>
           <Grid
-            px="10"
+            px={[6, 8, 10]}
             gap="6"
             templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
           >
@@ -226,7 +236,7 @@ export default function Index(props) {
               );
             })}
           </Grid>
-          <Box mt="auto" as="footer" py="8" px="10">
+          <Box mt="auto" as="footer" py={[4, 6, 8]} px={[6, 8, 10]}>
             <Text>
               &copy; {new Date().getFullYear()}{' '}
               <Link href="https://trevorblades.com">Trevor Blades</Link>
