@@ -149,6 +149,7 @@ export default function Index(props) {
           content="Build a team of current and future CS:GO superstars and earn points based on your team's weekly performance."
         />
       </Helmet>
+      {/* TODO: https://github.com/chakra-ui/chakra-ui/issues/349 */}
       <DarkMode>
         <Flex align="flex-start">
           <Flex
