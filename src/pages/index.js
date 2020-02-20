@@ -3,16 +3,15 @@ import Helmet from 'react-helmet';
 import PlayerCard from '../components/player-card';
 import PropTypes from 'prop-types';
 import React, {Fragment, useCallback, useMemo, useState} from 'react';
+import RegionSelect from '../components/region-select';
 import TeamSlots from '../components/team-slots';
 import chroma from 'chroma-js';
 import {
   Box,
-  Button,
   Flex,
   Grid,
   Heading,
   Link,
-  Stack,
   Text,
   useColorMode,
   useTheme
@@ -28,22 +27,42 @@ export default function Index(props) {
   const {colors} = useTheme();
   const {colorMode} = useColorMode();
   const [team, setTeam] = useState([]);
-  const [region, setRegion] = useState(null);
-
-  const {continents} = props.data.countries;
-  const countriesByContinent = useMemo(
-    () =>
-      continents.reduce(
-        (acc, continent) => ({
-          ...acc,
-          [continent.code]: continent.countries.map(country => country.code)
-        }),
-        {}
-      ),
-    [continents]
-  );
+  const [region, setRegion] = useState('');
 
   const players = props.data.allPlayer.nodes;
+  const {continents} = props.data.countries;
+
+  const validContinents = useMemo(() => {
+    const countryCodes = players.map(player => player.country.code);
+    return continents.filter(
+      continent =>
+        continent.countries.filter(country =>
+          countryCodes.includes(country.code)
+        ).length
+    );
+  }, [continents, players]);
+
+  const isPlayerFromRegion = useCallback(
+    player => {
+      if (!region) {
+        return true;
+      }
+
+      const {countries} = validContinents.find(
+        continent => continent.code === region
+      );
+
+      for (const country of countries) {
+        if (country.code === player.country.code) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+    [region, validContinents]
+  );
+
   const getPlayerById = useCallback(
     playerId => players.find(player => player.id === playerId),
     [players]
@@ -52,11 +71,6 @@ export default function Index(props) {
   const ratings = useMemo(() => players.map(player => player.rating), [
     players
   ]);
-
-  const countryCodes = useMemo(
-    () => players.map(player => player.country.code),
-    [players]
-  );
 
   const classes = useMemo(() => {
     const scale = [
@@ -182,65 +196,35 @@ export default function Index(props) {
                 ${budget.toLocaleString()} remaining
               </Heading>
             )}
-            <Stack isInline spacing="4" ml="auto">
-              <Button
-                variantColor={region ? undefined : 'blue'}
-                variant={region ? 'ghost' : 'solid'}
-                onClick={() => setRegion(null)}
-              >
-                All regions
-              </Button>
-              {continents
-                .filter(
-                  continent =>
-                    continent.countries.filter(country =>
-                      countryCodes.includes(country.code)
-                    ).length
-                )
-                .map(continent => {
-                  const isSelected = continent.code === region;
-                  return (
-                    <Button
-                      variantColor={isSelected ? 'blue' : undefined}
-                      variant={isSelected ? 'solid' : 'ghost'}
-                      key={continent.code}
-                      onClick={() => setRegion(continent.code)}
-                    >
-                      {continent.name}
-                    </Button>
-                  );
-                })}
-            </Stack>
+            <RegionSelect
+              region={region}
+              setRegion={setRegion}
+              continents={validContinents}
+            />
           </Flex>
           <Grid
             px="10"
             gap="6"
             templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
           >
-            {players
-              .filter(player =>
-                region
-                  ? countriesByContinent[region].includes(player.country.code)
-                  : true
-              )
-              .map(player => {
-                const isSelected = team.includes(player.id);
-                const cost = getPlayerCost(player);
-                return (
-                  <PlayerCard
-                    key={player.id}
-                    getPlayerColor={getPlayerColor}
-                    player={player}
-                    isSelected={isSelected}
-                    isDisabled={
-                      (team.length === MAX_TEAM_SIZE || cost > budget) &&
-                      !isSelected
-                    }
-                    onClick={togglePlayer}
-                    cost={cost}
-                  />
-                );
-              })}
+            {players.filter(isPlayerFromRegion).map(player => {
+              const isSelected = team.includes(player.id);
+              const cost = getPlayerCost(player);
+              return (
+                <PlayerCard
+                  key={player.id}
+                  getPlayerColor={getPlayerColor}
+                  player={player}
+                  isSelected={isSelected}
+                  isDisabled={
+                    (team.length === MAX_TEAM_SIZE || cost > budget) &&
+                    !isSelected
+                  }
+                  onClick={togglePlayer}
+                  cost={cost}
+                />
+              );
+            })}
           </Grid>
           <Box mt="auto" as="footer" py="8" px="10">
             <Text>
