@@ -23,7 +23,7 @@ const imagePositions = {
 };
 
 export default function DownloadButton(props) {
-  const canvas = useRef(null);
+  const canvas = useRef();
   const {colors} = useTheme();
   const [loading, setLoading] = useState(false);
 
