@@ -174,15 +174,7 @@ export default function Index(props) {
           />
         </Flex>
         <Flex flexGrow="1" direction="column" minH="100vh">
-          <LogoTitle
-            mt="10"
-            mb="2"
-            mx="auto"
-            display={{
-              xs: 'flex',
-              sm: 'none'
-            }}
-          />
+          <LogoTitle mt="10" mb="2" mx="auto" display={['flex', 'none']} />
           <Flex
             my={[4, 6, 8]}
             align="center"
@@ -202,7 +194,7 @@ export default function Index(props) {
                 <Box
                   as="span"
                   display={{
-                    xs: 'none',
+                    base: 'none',
                     md: 'initial'
                   }}
                 >

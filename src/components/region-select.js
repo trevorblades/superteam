@@ -10,7 +10,7 @@ export default function RegionSelect(props) {
         spacing="4"
         ml="auto"
         display={{
-          xs: 'none',
+          base: 'none',
           lg: 'flex'
         }}
       >
