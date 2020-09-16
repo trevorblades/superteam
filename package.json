@@ -22,8 +22,8 @@
     "gatsby-plugin-manifest": "^2.2.41",
     "gatsby-plugin-react-helmet": "^3.0.6",
     "gatsby-plugin-svgr": "^2.0.2",
-    "gatsby-source-graphql": "^2.1.11",
-    "hltv": "latest",
+    "gatsby-source-graphql": "^2.7.4",
+    "hltv": "^2.20.3",
     "lodash.merge": "^4.6.2",
     "prop-types": "^15.7.2",
     "react": "^16.9.0",
@@ -31,7 +31,7 @@
     "react-helmet": "^5.2.0"
   },
   "devDependencies": {
-    "@trevorblades/eslint-config": "^7.0.2",
+    "@trevorblades/eslint-config": "^7.2.1",
     "eslint": "^6.2.2"
   }
 }
