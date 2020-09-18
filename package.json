@@ -23,7 +23,7 @@
     "gatsby-plugin-react-helmet": "^3.0.6",
     "gatsby-plugin-svgr": "^2.0.2",
     "gatsby-source-graphql": "^2.7.4",
-    "hltv": "^2.20.3",
+    "hltv": "^2.20.4",
     "lodash.merge": "^4.6.2",
     "prop-types": "^15.7.2",
     "react": "^16.9.0",
