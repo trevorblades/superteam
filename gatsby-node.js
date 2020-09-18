@@ -17,22 +17,26 @@ exports.sourceNodes = async ({actions, createNodeId, createContentDigest}) => {
   const teams = {};
 
   for (const {id, rating} of response) {
-    const player = await HLTV.getPlayer({id});
+    try {
+      const player = await HLTV.getPlayer({id});
 
-    if (player.team && !teams[player.team.id]) {
-      teams[player.team.id] = await HLTV.getTeam({id: player.team.id});
-    }
-
-    actions.createNode({
-      ...player,
-      rating,
-      team: player.team && teams[player.team.id],
-      id: createNodeId(`player-${player.id}`),
-      internal: {
-        type: 'Player',
-        content: JSON.stringify(player),
-        contentDigest: createContentDigest(player)
+      if (player.team && !teams[player.team.id]) {
+        teams[player.team.id] = await HLTV.getTeam({id: player.team.id});
       }
-    });
+
+      actions.createNode({
+        ...player,
+        rating,
+        team: player.team && teams[player.team.id],
+        id: createNodeId(`player-${player.id}`),
+        internal: {
+          type: 'Player',
+          content: JSON.stringify(player),
+          contentDigest: createContentDigest(player)
+        }
+      });
+    } catch (error) {
+      console.warn('Failed sourcing player:', id);
+    }
   }
 };
