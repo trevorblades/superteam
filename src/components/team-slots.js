@@ -10,9 +10,9 @@ import {
 } from '@chakra-ui/core';
 
 const teamSlotProps = {
-  size: 16,
-  rounded: 'full',
-  shadow: 'inner'
+  boxSize: 16,
+  borderRadius: 'full',
+  boxShadow: 'inner'
 };
 
 export default function TeamSlots({
@@ -21,13 +21,13 @@ export default function TeamSlots({
   onPlayerClick,
   maxTeamSize
 }) {
-  const bg = useColorModeValue('gray.700', 'gray.200');
+  const bg = useColorModeValue('gray.200', 'gray.700');
   return (
     <Stack mt="auto" spacing="3" position="relative">
       {teamPlayers.map(player => {
         const color = getPlayerColor(player);
         return (
-          <Box key={player.id}>
+          <div key={player.id}>
             <Tooltip label={player.ign}>
               <Box
                 {...teamSlotProps}
@@ -41,7 +41,7 @@ export default function TeamSlots({
                 onClick={() => onPlayerClick(player)}
               />
             </Tooltip>
-          </Box>
+          </div>
         );
       })}
       {Array(maxTeamSize - teamPlayers.length)

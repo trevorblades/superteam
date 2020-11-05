@@ -12,7 +12,7 @@ import {
 import {transparentize} from 'polished';
 
 export default function PlayerCard(props) {
-  const bg = useColorModeValue('gray.200', 'gray.700');
+  const bgColor = useColorModeValue('gray.200', 'gray.700');
   const bgHover = useColorModeValue('gray.300', 'gray.600');
 
   const color = props.getPlayerColor(props.player);
@@ -52,11 +52,11 @@ export default function PlayerCard(props) {
       <Box
         display="flex"
         flexDirection="column"
-        bg={bg}
+        bgColor={bgColor}
         bgImg={`linear-gradient(${[color, 'transparent']})`}
         bgPos="center"
         bgSize="200%"
-        _groupHover={{bg: bgHover}}
+        _groupHover={{bgColor: bgHover}}
       >
         {props.player.team && (
           <Image
@@ -115,10 +115,10 @@ export default function PlayerCard(props) {
           textAlign="center"
           position="relative"
         >
-          <Heading mb="1" as="h3" fontSize="2xl">
+          <Heading mb="1" as="h3" lineHeight="tall" fontSize="2xl">
             {props.player.ign}
           </Heading>
-          <Heading isTruncated as="h5" fontWeight="normal" fontSize="md">
+          <Heading isTruncated as="h5" fontWeight="normal" size="sm">
             {emoji} {props.player.name}
           </Heading>
         </Box>
