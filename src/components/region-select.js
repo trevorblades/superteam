@@ -15,7 +15,7 @@ export default function RegionSelect(props) {
         }}
       >
         <Button
-          variantColor={props.region ? undefined : 'blue'}
+          colorScheme={props.region ? undefined : 'blue'}
           variant={props.region ? 'ghost' : 'solid'}
           onClick={() => props.setRegion('')}
         >
@@ -25,7 +25,7 @@ export default function RegionSelect(props) {
           const isSelected = continent.code === props.region;
           return (
             <Button
-              variantColor={isSelected ? 'blue' : undefined}
+              colorScheme={isSelected ? 'blue' : undefined}
               variant={isSelected ? 'solid' : 'ghost'}
               key={continent.code}
               onClick={() => props.setRegion(continent.code)}
@@ -35,12 +35,7 @@ export default function RegionSelect(props) {
           );
         })}
       </Stack>
-      <Box
-        ml="auto"
-        display={{
-          lg: 'none'
-        }}
-      >
+      <Box ml="auto" display={{lg: 'none'}}>
         <Select
           value={props.region}
           onChange={event => props.setRegion(event.target.value)}

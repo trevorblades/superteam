@@ -72,7 +72,7 @@ export default function DownloadButton(props) {
       <Button
         isLoading={loading}
         loadingText="Downloading"
-        variantColor="green"
+        colorScheme="green"
         leftIcon="download"
         onClick={handleClick}
       >

@@ -2,58 +2,61 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import emojiFlags from 'emoji-flags';
 import {
-  AspectRatioBox,
+  AspectRatio,
   Box,
   Heading,
   Image,
-  PseudoBox,
   Text,
-  useColorMode
+  useColorModeValue
 } from '@chakra-ui/core';
+import {transparentize} from 'polished';
 
 export default function PlayerCard(props) {
-  const {colorMode} = useColorMode();
+  const bg = useColorModeValue('gray.200', 'gray.700');
+  const bgHover = useColorModeValue('gray.300', 'gray.600');
+
   const color = props.getPlayerColor(props.player);
   const {emoji} = emojiFlags.countryCode(props.player.country.code);
-
-  const bg = {
-    light: 'gray.200',
-    dark: 'gray.700'
+  const transparent = transparentize(1, color);
+  const colorProps = {
+    bg: 'inherit',
+    bgSize: '400%',
+    bgImage: `linear-gradient(${[
+      'to right',
+      color,
+      `${color} 25%`,
+      `${transparent} 75%`,
+      transparent
+    ]})`,
+    transition: 'background-position 700ms', // cost of a deagle
+    style: {backgroundPosition: props.isSelected ? '0%' : '100%'}
   };
 
-  const hoverBg = {
-    light: 'gray.300',
-    dark: 'gray.600'
-  };
-
-  const shouldHover = !props.isSelected && !props.isDisabled;
   return (
-    <AspectRatioBox
+    <AspectRatio
       disabled={props.isDisabled}
       ratio={3 / 4}
       key={props.player.id}
       as="button"
       textAlign="left"
       outline="none"
-      shadow={props.isSelected ? `0 0 0 3px ${color}` : 'md'}
-      rounded="lg"
+      borderRadius="lg"
       overflow="hidden"
       role="group"
-      cursor={props.isDisabled && 'not-allowed'}
       onClick={() => props.onClick(props.player)}
-      _hover={{shadow: shouldHover && 'xl'}}
-      _disabled={{opacity: 0.4}}
+      _disabled={{
+        opacity: 0.4,
+        cursor: 'not-allowed'
+      }}
     >
-      <PseudoBox
+      <Box
         display="flex"
         flexDirection="column"
-        bg={bg[colorMode]}
+        bg={bg}
         bgImg={`linear-gradient(${[color, 'transparent']})`}
         bgPos="center"
         bgSize="200%"
-        _groupHover={{
-          bg: shouldHover && hoverBg[colorMode]
-        }}
+        _groupHover={{bg: bgHover}}
       >
         {props.player.team && (
           <Image
@@ -66,10 +69,10 @@ export default function PlayerCard(props) {
             transform="translate(-50%, -50%)"
             opacity="0.5"
             pointerEvents="none"
-            style={{mixBlendMode: 'luminosity'}}
+            css={{mixBlendMode: 'luminosity'}}
           />
         )}
-        <Box px="4" py="3" bg="inherit" position="relative">
+        <Box {...colorProps} w="full" px="4" py="3" position="relative">
           <Text fontWeight="bold" fontSize="xl">
             {props.isSelected
               ? '✅ Acquired'
@@ -87,26 +90,31 @@ export default function PlayerCard(props) {
         <Box
           w="full"
           h="50%"
-          bgImg={`linear-gradient(${['transparent', color]})`}
+          bgImg={`linear-gradient(${[transparent, color]})`}
           position="absolute"
           bottom="0"
-          style={{mixBlendMode: 'overlay'}}
+          css={{mixBlendMode: 'overlay'}}
         />
-        <PseudoBox
-          as="svg"
+        <Box
+          {...colorProps}
           mt="auto"
-          viewBox="0 0 100 48"
-          preserveAspectRatio="none"
-          w="full"
           h="12"
+          w="full"
+          css={{
+            maskImage:
+              'url(\'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 48" preserveAspectRatio="none"><path d="M 0,48 Q 50,0 100,48 Z"></path></svg>\')',
+            maskSize: '100%',
+            maskRepeat: 'no-repeat'
+          }}
+        />
+        <Box
+          {...colorProps}
+          w="full"
+          p="5"
+          pt="0"
+          textAlign="center"
           position="relative"
-          fill="currentColor"
-          color={bg[colorMode]}
-          _groupHover={{color: shouldHover && hoverBg[colorMode]}}
         >
-          <path d="M 0,48 Q 50,0 100,48 Z" />
-        </PseudoBox>
-        <Box p="5" pt="0" bg="inherit" textAlign="center" position="relative">
           <Heading mb="1" as="h3" fontSize="2xl">
             {props.player.ign}
           </Heading>
@@ -114,8 +122,8 @@ export default function PlayerCard(props) {
             {emoji} {props.player.name}
           </Heading>
         </Box>
-      </PseudoBox>
-    </AspectRatioBox>
+      </Box>
+    </AspectRatio>
   );
 }
 

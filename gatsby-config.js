@@ -2,13 +2,7 @@ module.exports = {
   plugins: [
     'gatsby-plugin-svgr',
     'gatsby-plugin-react-helmet',
-    {
-      resolve: 'gatsby-plugin-chakra-ui',
-      options: {
-        // see https://github.com/chakra-ui/chakra-ui/issues/349
-        isUsingColorMode: false
-      }
-    },
+    'gatsby-plugin-chakra-ui',
     {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
